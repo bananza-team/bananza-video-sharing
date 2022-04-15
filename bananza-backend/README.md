@@ -4,8 +4,7 @@ referring the platform's users, their channels and videos.
 
 ---
 
-## Deploying this project as a single container
-
+### Deploying this project as a single container
 For an easy plug-and-play setup, you have to deploy the project into a Docker container, using the Dockerfile in here.
 
 Steps:
