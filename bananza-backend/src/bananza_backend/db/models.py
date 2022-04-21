@@ -86,3 +86,16 @@ class Channel(BaseModel):
     )
 
 
+class Video(BaseModel):
+    __tablename__ = "videos"
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True,
+        autoincrement=True
+    )
+    channel_id = (Integer, ForeignKey("channels.id"))
+    channel = relationship(
+        "Channel",
+        back_populates=""
+    )
