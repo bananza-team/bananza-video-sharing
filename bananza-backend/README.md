@@ -58,19 +58,20 @@ Steps:
 docker pull postgres
 ```
 
-2. Make a container out of it, mapping the 5432 port, and setting up the root user's password:
+2. Make a container out of it, mapping the 5432 port, and setting up the root user's password (POSTGRES_PASSWORD):
 
 For Windows hosts:
 ```
 docker run --name postgres-container -p 5432:5432 -e POSTGRES_PASSWORD=mypassword -d postgres
 ```
 
-3. Enter the container (if this step is done right after 3. you should already be in it), use the psql script, enter the root password you just set up, and create a database named "bananza", with an "admin" user for it:
+3. Enter the container, enter the psql client in it, and create a database named "bananza", with an "admin" user for it:
 ```
-psql -u postgres
+docker exec -it postgres-container bash
+psql -U postgres
 CREATE DATABASE bananza;
-CREATE USER admin WITH PASSWORD ‘admin’; 
-GRANT ALL PRIVILEGES ON bananza TO admin;
+CREATE USER admin WITH PASSWORD 'admin';
+GRANT ALL PRIVILEGES ON DATABASE bananza TO admin;
 ```
 
 ---
