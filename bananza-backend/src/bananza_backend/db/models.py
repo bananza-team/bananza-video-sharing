@@ -56,3 +56,33 @@ class User(BaseModel):
     surname = Column(String, nullable=True)
     phone = Column(String, nullable=True)
 
+
+class Channel(BaseModel):
+    __tablename__ = "channels"
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True,
+        autoincrement=True
+    )
+    username = Column(
+        String,
+        unique=True,
+        index=True,
+        nullable=False
+    )
+    description = Column(
+        String,
+        nullable=True
+    )
+    cover_picture_link = Column(
+        String,
+        nullable=True
+    )
+    videos = relationship(
+        "Video",
+        back_populates="channel_id"
+    )
+
+
