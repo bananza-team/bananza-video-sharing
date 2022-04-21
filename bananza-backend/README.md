@@ -1,4 +1,4 @@
-### Bananza Backend
+## Bananza Backend
 This project's goal is a backend service for the video sharing app named Bananza, that can handle various tasks
 referring the platform's users, their channels and videos.
 
@@ -65,11 +65,12 @@ For Windows hosts:
 docker run --name postgres-container -p 5432:5432 -e POSTGRES_PASSWORD=mypassword -d postgres
 ```
 
-3. Enter the container (if this step is done right after 3. you should already be in it), and create a database named "bananza", and an "admin" user for it:
+3. Enter the container (if this step is done right after 3. you should already be in it), use the psql script, enter the root password you just set up, and create a database named "bananza", with an "admin" user for it:
 ```
-CREATE DATABASE myDB;
-CREATE USER myUser WITH PASSWORD ‘myPassword’; 
-GRANT ALL PRIVILEGES ON myDB TO myUser;
+psql -u postgres
+CREATE DATABASE bananza;
+CREATE USER admin WITH PASSWORD ‘admin’; 
+GRANT ALL PRIVILEGES ON bananza TO admin;
 ```
 
 ---
@@ -86,4 +87,21 @@ docker run -p 80:80 \
     -e 'PGADMIN_DEFAULT_EMAIL=user@domain.com' \
     -e 'PGADMIN_DEFAULT_PASSWORD=SuperSecret' \
     -d dpage/pgadmin4
+```
+
+---
+
+### Running database migrations
+
+In order to use the SQLAlchemy models for creating our database tables, we'll have to use *alembic*, a tool which runs migrations for SQLAlchemy.
+
+Here are the steps:
+
+1. Go to the code location that adresses the db:
+```
+cd bananza-backend/src/bananza_backend/db/alembic
+```
+2. Run latest existing migrations:
+```
+poetry run alembic upgrade heads
 ```
