@@ -1,0 +1,31 @@
+.biglogo > img {
+  width: auto;
+  height: 200px;
+}
+.guestcontainer {
+  padding: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.guestoption {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  padding: 10px;
+  width: 200px;
+  background: var(--orange);
+  color: white;
+  margin: 5px;
+  border-left: 5px dashed var(--black);
+  border-right: 5px dashed var(--black);
+  box-shadow: var(--shadow);
+  border-radius: 2px;
+  cursor: pointer;
+}
+.guestoption:hover {
+  border-left-width: 10px;
+  border-right-width: 10px;
+}
