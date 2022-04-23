@@ -2,12 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import logging
 
-POSTGRES_USER = "admin"
-POSTGRES_PASS = "admin"
-POSTGRES_HOST = "localhost"
-POSTGRES_DB = "bananza"
-
-SQLALCHEMY_DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASS}@{POSTGRES_HOST}/{POSTGRES_DB}"
+SQLALCHEMY_DATABASE_URL = f"sqlite:///models.db"
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
