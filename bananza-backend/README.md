@@ -2,6 +2,8 @@
 This project's goal is a backend service for the video sharing app named Bananza, that can handle various tasks
 referring the platform's users, their channels and videos.
 
+We'll use _Poetry_ as a package and environment manager.
+
 ---
 
 ### Deploying the backend project as a single container
@@ -47,56 +49,32 @@ Steps:
  docker exec -it bananza-backend /bin/bash
 
  ````
-
------------------
-
-### Deploying and configuring a PostgreSQL database container
-
-1. Pull the image 
-
-```
-docker pull postgres
-```
-
-2. Make a container out of it, mapping the 5432 port, and setting up the root user's password (POSTGRES_PASSWORD):
-
-For Windows hosts:
-```
-docker run --name postgres-container -p 5432:5432 -e POSTGRES_PASSWORD=mypassword -d postgres
-```
-
-3. Enter the container, enter the psql client in it, and create a database named "bananza", with an "admin" user for it:
-```
-docker exec -it postgres-container bash
-psql -U postgres
-CREATE DATABASE bananza;
-CREATE USER admin WITH PASSWORD 'admin';
-GRANT ALL PRIVILEGES ON DATABASE bananza TO admin;
-```
-
 ---
 
-### Connecting to the database 
+### Creating an automatic migration based on existing models
 
-There are 2 options for this:
-1. Using the Jetbrains **Datagrip** desktop tool, which is very promising and easy to do by entering the credentials of the database
-2. Using the **pgadmin4** tool, which can be easily deployed in a Docker container on port 80, in 2 steps:
+In order to use the SQLAlchemy models for creating our database tables, we'll have to use *alembic*,
+a tool which manages migrations for SQLAlchemy, using the SQLite database.
+
+Steps for **creating** a migration based on existing models:
+
+1. Go to the code location that contains the alembic scripts, migrations and the sqlite db:
 ```
-docker pull dpage/pgadmin4
-
-docker run -p 80:80 \
-    -e 'PGADMIN_DEFAULT_EMAIL=user@domain.com' \
-    -e 'PGADMIN_DEFAULT_PASSWORD=SuperSecret' \
-    -d dpage/pgadmin4
+cd bananza-backend/src/bananza_backend/db/alembic
+```
+2. Run latest existing migrations:
+```
+poetry run alembic revision --autogenerate -m "<Migration name>"
 ```
 
 ---
 
 ### Running database migrations
 
-In order to use the SQLAlchemy models for creating our database tables, we'll have to use *alembic*, a tool which runs migrations for SQLAlchemy.
+In order to change the database structure using SQLAlchemy, we need to run the created migrations.
+For that, we'll also use Alembic.
 
-Here are the steps:
+Here are the steps for running (applying) the latest migration:
 
 1. Go to the code location that adresses the db:
 ```
@@ -106,3 +84,6 @@ cd bananza-backend/src/bananza_backend/db/alembic
 ```
 poetry run alembic upgrade heads
 ```
+
+
+
