@@ -3,29 +3,24 @@
   height: 200px;
 }
 .guestcontainer {
-  padding: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  width:100%;
+  height:100%;
 }
-.guestoption {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
-  padding: 10px;
-  width: 200px;
-  background: var(--orange);
-  color: white;
-  margin: 5px;
-  border-left: 5px dashed var(--black);
-  border-right: 5px dashed var(--black);
-  box-shadow: var(--shadow);
-  border-radius: 2px;
-  cursor: pointer;
+.biglogo{
+  width:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
-.guestoption:hover {
-  border-left-width: 10px;
-  border-right-width: 10px;
+.guestForms{
+  height:100%;
+  width:50%;
+  background:var(--orange);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
 }
