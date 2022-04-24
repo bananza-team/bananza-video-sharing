@@ -7,8 +7,19 @@ let login = (event) => {
   event.preventDefault();
 };
 
+let register=login;
+
 export default function Home() {
   const [activeForm, setActiveForm] = useState(0);
+  const [registerFormData, setRegisterFormData] = useState({
+    username:'', email:'', password:'', applyManager:''
+  });
+
+  const updateRegisterData = (e)=>{
+    setRegisterFormData({...registerFormData, [e.target.name]:e.target.value});
+    console.log(e.target.value);
+  }
+
   return (
     <>
       <PageHead pageTitle="Bananza - Homepage"></PageHead>
@@ -41,6 +52,11 @@ export default function Home() {
             {/* !! to prevent React from rendering a 0 */}
             {!!activeForm && 
             <span id="register-form">
+              <form onSubmit={register} onChange={updateRegisterData}>
+              <Input name="username" placeholderText="Your username" label="Username" inputType="text"/>
+              <Input name="password" placeholderText="Your password" label="Password" inputType="password"/>
+              <Input name="email" placeholderText="Your email" label="Email" inputType="email"/>
+              </form>
             </span>
             }
             {!activeForm && (
