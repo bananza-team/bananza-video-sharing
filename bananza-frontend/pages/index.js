@@ -3,7 +3,7 @@ import styles from "../styles/Home.module.css";
 import Input from "/components/forms/input";
 import React, { useState } from "react";
 import Checkbox from "/components/forms/checkbox";
-import Link from "next/link";
+import Nav from "/components/general/nav";
 
 export default function Home() {
   let [userState, setUserState] = useState(0);
@@ -162,16 +162,7 @@ export default function Home() {
         </div>
       )}
       {!!userState &&
-      <nav>
-        <span className="leftNav">
-          <Link href="/"><a>Home</a></Link>
-          <Link href="/profile"><a>Profile</a></Link>
-        </span>
-        <span className="rightNav">
-          <Link href="/channel"><a>Channel</a></Link>
-          <Link href="/logout"><a>Logout</a></Link>
-        </span>
-        </nav>
+      <Nav/>
       }
     </>
   );
