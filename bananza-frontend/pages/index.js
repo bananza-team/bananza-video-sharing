@@ -45,6 +45,7 @@ export default function Home() {
           <div className={styles.biglogo}>
             <img src="/logo.png" />
           </div>
+          <div className={styles.formsBG}>
           <div className={styles.guestForms}>
             <div className={styles.guestOptions}>
               <span
@@ -157,6 +158,7 @@ export default function Home() {
                   </form>
                 </span>
               )}
+            </div>
             </div>
           </div>
         </div>

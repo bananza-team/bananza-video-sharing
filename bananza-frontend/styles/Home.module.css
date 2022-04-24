@@ -25,6 +25,15 @@
   flex-direction: column;
   box-shadow:var(--shadow);
 }
+.guestForms{
+  background: rgb(38, 41, 42, 0.9);
+  width: 100%;
+}
+.formsBG{
+  background:url("/index.jpg") !important;
+  width:50%;
+  height:100%;
+}
 .guestOption {
   display:inline-table;
   padding: 10px;
