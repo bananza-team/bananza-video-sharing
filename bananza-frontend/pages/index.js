@@ -2,7 +2,8 @@ import PageHead from "/components/general/pageHead.js";
 import styles from "../styles/Home.module.css";
 import Form from "/components/forms/form.js";
 
-function login(){
+let login = event => {
+  event.preventDefault();
   console.log("login handler");
 }
 
@@ -15,27 +16,27 @@ export default function Home() {
             <img src="/logo.png" />
           </div>
         <div className={styles.guestForms}>
-          <div className={styles.guestoptions}>
-            <span className={styles.guestoption} id="guest-login">
+          <div className={styles.guestOptions}>
+            <span className={`${styles.guestOption} ${styles.selected}`} id="guest-login">
               Login
             </span>
-            <span className={styles.guestoption} id="guest-register">
+            <span className={styles.guestOption} id="guest-register">
               Register
             </span>
           </div>
           <div className={styles.gforms}>
             <span id="login-form">
-              <Form eventHandler="login">
+              <form onSubmit={login}>
                 <span>
-                  <label for="username">Username</label>
+                  <label htmlFor="username">Username</label>
                   <input type="text" placeholder="Your username"></input>
                 </span>
                 <span>
-                  <label for="password">Password</label>
+                  <label or="password">Password</label>
                   <input type="password" placeholder="Your password"></input>
                 </span>
                 <span><button type="submit">Submit</button></span>
-              </Form>
+              </form>
             </span>
             <span id="register-form"></span>
           </div>

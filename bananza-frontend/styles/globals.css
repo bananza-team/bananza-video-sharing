@@ -1,14 +1,16 @@
-:root{
-  --black:#303335;
-  --orange:#cc7f1f;
-  --shadow: box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); /* https://codepen.io/sdthornton/pen/wBZdXq */
+:root {
+  --black: #303335;
+  --orange: #cc7f1f;
+  --shadow: 0px 4px 5px 0px hsla(0, 0%, 0%, 0.14),
+    0px 1px 10px 0px hsla(0, 0%, 0%, 0.12),
+    0px 2px 4px -1px hsla(0, 0%, 0%, 0.2);
 }
 
 html,
 body {
   padding: 0;
   margin: 0;
-  font-size:18px;
+  font-size: 18px;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
@@ -18,17 +20,54 @@ a {
   text-decoration: none;
 }
 
-* {
+*, *:hover, *:focus {
   box-sizing: border-box;
-  transition:cubic-bezier(.68,-0.55,.27,1.55);
-  transition-duration:.4s;
+  transition: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  transition-duration: 0.4s;
 }
 
 body {
   background: var(--black);
 }
 
-body, html, main, #__next{
-width:100%;
-height:100%;
+body,
+html,
+main,
+#__next {
+  width: 100%;
+  height: 100%;
+}
+
+/* Forms */
+form {
+  color: white;
+}
+form span {
+  display: table;
+  margin: 5px;
+}
+label {
+  display: table;
+  padding: 5px;
+}
+input {
+  all: unset;
+  padding: 5px;
+  border: none;
+  background: none;
+  border-bottom: 2px solid var(--black);
+}
+input:focus {
+  border: none;
+  background: white;
+  color:var(--orange);
+  border-bottom: 2px solid white;
+}
+button {
+  all: unset;
+  background: var(--black);
+  color: white;
+  padding: 10px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
 }
