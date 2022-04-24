@@ -1,6 +1,6 @@
 import PageHead from "/components/general/pageHead.js";
 import styles from "../styles/Home.module.css";
-import Form from "/components/forms/form.js";
+import Input from "/components/forms/input.js";
 import React, { useState } from "react";
 
 let login = (event) => {
@@ -38,19 +38,16 @@ export default function Home() {
             </span>
           </div>
           <div className={styles.gforms}>
-            {!!activeForm && <span id="register-form">register form here</span>}
             {/* !! to prevent React from rendering a 0 */}
+            {!!activeForm && 
+            <span id="register-form">
+            </span>
+            }
             {!activeForm && (
               <span id="login-form">
                 <form onSubmit={login}>
-                  <span>
-                    <label htmlFor="username">Username</label>
-                    <input type="text" placeholder="Your username"></input>
-                  </span>
-                  <span>
-                    <label or="password">Password</label>
-                    <input type="password" placeholder="Your password"></input>
-                  </span>
+                  <Input name="username" placeholderText="Your username" label="Username" inputType="text"/>
+                  <Input name="password" placeholderText="Your password" label="Password" inputType="password"/>
                   <span>
                     <button type="submit">Submit</button>
                   </span>
