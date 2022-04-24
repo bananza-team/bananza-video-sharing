@@ -24,9 +24,6 @@
   align-items: center;
   flex-direction: column;
 }
-.guestOptions {
-
-}
 .guestOption {
   display:inline-table;
   padding: 10px;
