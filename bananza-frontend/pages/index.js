@@ -56,25 +56,41 @@ export default function Home() {
           <div className={styles.gforms}>
             {/* !! to prevent React from rendering a 0 */}
             {!!activeForm && 
-            <span id="register-form">
+            <span id="registerForm">
               <form onSubmit={register} onChange={updateRegisterData}>
+              <div className="formFields">
+              <div className="formColumn">
               <Input name="username" placeholderText="Your username" label="Username" inputType="text"/>
               <Input name="password" placeholderText="Your password" label="Password" inputType="password"/>
               <Input name="email" placeholderText="Your email" label="Email" inputType="email"/>
+              </div>
+              <div className="formColumn">
               <Checkbox onChange={updateRegisterData} name="applyManager" label="Apply for Manager" value={registerFormData.applyManager}>
-                manager options
+              <Input name="name" placeholderText="Your name" label="Name" inputType="text"/>
+              <Input name="surname" placeholderText="Your surname" label="Surname" inputType="text"/>
+              <Input name="phone" placeholderText="Your phone number" label="Phone number" inputType="text"/>
+              <Input name="cv" placeholderText="Your cv" label="Upload CV" inputType="file"/>
               </Checkbox>
+              </div>
+              </div>
+              <div className="formSubmit">
+                    <button type="submit">Submit</button>
+                  </div>
              </form>
             </span>
             }
             {!activeForm && (
               <span id="login-form">
                 <form onSubmit={login}>
+                  <div className="formFields">
+                  <div className={styles.formColumn}>
                   <Input name="username" placeholderText="Your username" label="Username" inputType="text"/>
                   <Input name="password" placeholderText="Your password" label="Password" inputType="password"/>
-                  <span>
+                  </div>
+                  </div>
+                  <div className="formSubmit">
                     <button type="submit">Submit</button>
-                  </span>
+                  </div>
                 </form>
               </span>
             )}

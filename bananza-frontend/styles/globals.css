@@ -1,6 +1,7 @@
 :root {
   --black: #303335;
-  --orange: #cc7f1f;
+  --dblack: #26292a;
+  --orange: #a46517;
   --shadow: 0px 4px 5px 0px hsla(0, 0%, 0%, 0.14),
     0px 1px 10px 0px hsla(0, 0%, 0%, 0.12),
     0px 2px 4px -1px hsla(0, 0%, 0%, 0.2);
@@ -41,14 +42,31 @@ main,
 /* Forms */
 form {
   color: white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction: column;
+  width:100%;
 }
-form span {
-  display: table;
-  margin: 5px;
+
+.formFields{
+  display:flex;
+  justify-content:center;
+  align-items: center;
+  width:100%;
 }
-label {
-  display: table;
-  padding: 5px;
+
+.formFields div{
+  padding:10px;
+}
+
+form div>span {
+  display:table;
+  margin:5px;
+}
+
+label input{
+  display:table;
 }
 
 input {
@@ -68,9 +86,31 @@ input:focus {
 }
 button {
   all: unset;
-  background: var(--black);
+  background: var(--orange);
   color: white;
   padding: 10px;
   box-shadow: var(--shadow);
   cursor: pointer;
+}
+
+button:hover{
+  background:var(--black);
+}
+
+button:focus{
+  box-shadow: inset var(--shadow);
+}
+
+.checkboxContainer>*{
+  display:inline-table;
+}
+[type="checkbox"]{
+  margin-right:5px;
+  width: initial !important;
+}
+input{
+  width:250px;
+}
+label{
+margin-bottom:2px;
 }

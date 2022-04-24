@@ -18,22 +18,26 @@
 .guestForms {
   height: 100%;
   width: 50%;
-  background: var(--orange);
+  background: var(--dblack);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  box-shadow:var(--shadow);
 }
 .guestOption {
   display:inline-table;
   padding: 10px;
   color: white;
   cursor: pointer;
-  border-bottom:2px solid var(--orange);
   font-size:20px;
+  border:2px solid var(--dblack);
 }
 .selected {
-  border-bottom-color:var(--black);
   background:var(--black);
   border-radius:10px 0px 10px 0px;
+  border-color:var(--orange);
+}
+.guestOptions{
+  margin-bottom:5px;
 }
