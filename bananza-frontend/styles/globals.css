@@ -157,3 +157,9 @@ nav .rightNav{
   position:absolute;
   right: 0;
 }
+
+.label{
+  background: var(--orange);
+  border-radius:2px;
+  margin:5px;
+}

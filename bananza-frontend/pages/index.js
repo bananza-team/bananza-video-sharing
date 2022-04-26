@@ -61,6 +61,7 @@ export default function Home() {
     {
       video:videos[0],
       reportReason:"misleading title",
+      key:0
     }
   ]
   reports[1]=reports[2]=reports[3]=reports[4]=reports[0];

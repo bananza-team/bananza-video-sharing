@@ -5,7 +5,7 @@ export default function Report(props){
         <span className={styles.reportedVideo}>
             {props.report.video.title}
         </span>
-        <span classMame={styles.reportReason}>
+        <span className={styles.reportReason}>
             {props.report.reportReason}
         </span>
         <span className={styles.reportedChannel}>
