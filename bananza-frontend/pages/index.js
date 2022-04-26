@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import Checkbox from "/components/forms/checkbox";
 import Nav from "/components/general/nav";
 import TopFive from "/components/videos/topfive";
+import LatestReports from "/components/reports/latestReports";
 
 export default function Home() {
   let [userState, setUserState] = useState(0);
@@ -55,6 +56,14 @@ export default function Home() {
     },
   ];
   videos[2]=videos[3]=videos[4]=videos[0];
+
+  let reports=[
+    {
+      video:videos[0],
+      reportReason:"misleading title",
+    }
+  ]
+  reports[1]=reports[2]=reports[3]=reports[4]=reports[0];
 
   return (
     <>
@@ -186,6 +195,7 @@ export default function Home() {
         <>
           <Nav />
           <TopFive videos={videos} />
+          <LatestReports reports={reports}/>
         </>
       )}
     </>
