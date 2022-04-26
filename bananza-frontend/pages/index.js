@@ -54,6 +54,7 @@ export default function Home() {
       key: 1,
     },
   ];
+  videos[2]=videos[3]=videos[4]=videos[0];
 
   return (
     <>

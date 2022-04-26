@@ -1,0 +1,23 @@
+.videoCard{
+    height:200px;
+    margin:10px;
+    margin-right:0px;
+    background-position: center !important;
+    background-size: cover !important;
+    box-shadow:var(--shadow);
+    width:100%;
+    flex:1;
+}
+.videoData{
+    background: rgb(0,0,0,0.5);
+    color:white;
+    padding:10px;
+    display:flex;
+    flex-direction:column;
+    margin-bottom:auto; 
+    margin-top:50%;
+    box-shadow: var(--shadow);
+}
+.videoTitle{
+    font-size:30px;
+}
