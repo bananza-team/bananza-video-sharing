@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 BaseModel = declarative_base()
 
 
-class User(BaseModel):
+class UserModel(BaseModel):
     __tablename__ = "users"
     id = Column(
         Integer,
@@ -72,12 +72,12 @@ class User(BaseModel):
         String,
         nullable=True)
     videos = relationship(
-        "Video",
+        "VideoModel",
         back_populates="owner"
     )
 
 
-class Video(BaseModel):
+class VideoModel(BaseModel):
     __tablename__ = "videos"
     id = Column(
         Integer,
@@ -85,11 +85,11 @@ class Video(BaseModel):
         index=True,
         autoincrement=True
     )
-    owner_id = (
+    owner_id = Column(
         Integer,
         ForeignKey("users.id")
     )
     owner = relationship(
-        "User",
+        "UserModel",
         back_populates="videos"
     )
