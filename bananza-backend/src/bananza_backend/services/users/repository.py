@@ -90,6 +90,18 @@ class UserRepo:
         self.db.refresh(db_user)
         return db_user
 
+    def get_all(self):
+        pass
+
+    def delete_by_id(self):
+        pass
+
+    def suspend_by_id(self):
+        pass
+
+    def unsuspend_by_id(self):
+        pass
+
     def __hash_password(self, plain_text_password: str):
         bytecode_password = plain_text_password.encode('UTF-8')
         hashed_password = bcrypt.hashpw(
