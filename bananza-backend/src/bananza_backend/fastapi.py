@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
-from bananza_backend.api import users
+from bananza_backend.api import users, manager_applications
 from bananza_backend.exceptions import *
 from requests import Request
 
@@ -9,6 +9,7 @@ app = FastAPI(
     version="0.1"
 )
 app.include_router(users.router)
+app.include_router(manager_applications.router)
 
 
 @app.exception_handler(EntityNotFound)
