@@ -2,6 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import logging
 import os.path
+from loguru import logger
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(BASE_DIR, "models.db")
@@ -20,6 +21,6 @@ def get_db():
     try:
         yield db
     except Exception as e:
-        logging.error(f"Couldn't load the database. Details: {e}")
+        logger.error(f"Database-level error occurred. Details: {str(e)}")
     finally:
         db.close()
