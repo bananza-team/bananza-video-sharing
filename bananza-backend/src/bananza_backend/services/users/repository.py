@@ -61,6 +61,35 @@ class UserRepo:
             raise EntityNotFound(message=f"User with email '{email}' not found")
         return found_user
 
+    # this will supposedly be used when parsing the JWT token of the "current user", returning a User object or his ID
+    def edit_by_id(self, user_id: int, new_user_details: UserCreate) -> UserModel:
+        db_user = self.get_by_id(user_id)
+
+        if new_user_details.username != db_user.username:
+            self.__check_username_unicity(new_user_details.username)
+
+        if new_user_details.email != db_user.email:
+            self.__check_email_unicity(new_user_details.email)
+
+        for key, value in new_user_details:
+            if hasattr(db_user, key):
+                setattr(db_user, key, value)
+            if key == 'password':
+                setattr(db_user, 'hashed_password', self.__hash_password(new_user_details.password))
+
+        # db_user.update({
+        #     'username': new_user_details.username,
+        #     'hashed_password': self.__hash_password(new_user_details.password),
+        #     'email': new_user_details.email,
+        #     'description': new_user_details.description,
+        #     'profile_picture_link': new_user_details.profile_picture_link,
+        #     'cover_picture_link': new_user_details.cover_picture_link
+        # }
+        # )
+        self.db.commit()
+        self.db.refresh(db_user)
+        return db_user
+
     def __hash_password(self, plain_text_password: str):
         bytecode_password = plain_text_password.encode('UTF-8')
         hashed_password = bcrypt.hashpw(
