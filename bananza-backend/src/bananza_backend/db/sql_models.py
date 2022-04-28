@@ -75,6 +75,11 @@ class UserModel(BaseModel):
         "VideoModel",
         back_populates="owner"
     )
+    manager_application = relationship(
+        "ManagerApplicationsModel",
+        back_populates="user",
+        uselist=False
+    )
 
 
 class VideoModel(BaseModel):
@@ -92,4 +97,27 @@ class VideoModel(BaseModel):
     owner = relationship(
         "UserModel",
         back_populates="videos"
+    )
+
+
+class ManagerApplicationsModel(BaseModel):
+    __tablename__ = "managementApplications"
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True,
+        autoincrement=True
+    )
+    answered = Column(
+        Boolean,
+        index=True,
+        default=False
+    )
+    user_id = Column(
+        Integer,
+        ForeignKey("users.id")
+    )
+    user = relationship(
+        "UserModel",
+        back_populates="manager_application"
     )
