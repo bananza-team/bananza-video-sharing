@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import logging
 
-SQLALCHEMY_DATABASE_URL = f"sqlite:///models.db"
+SQLALCHEMY_DATABASE_URL = f"sqlite:///alembic/models.db"
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
@@ -15,4 +15,5 @@ def get_db():
         yield db
     except Exception as e:
         logging.error(f"Couldn't load the database. Details: {e}")
+    finally:
         db.close()

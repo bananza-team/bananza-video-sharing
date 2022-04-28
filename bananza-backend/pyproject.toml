@@ -11,6 +11,7 @@ fastapi-utils = "^0.2.1"
 SQLAlchemy = "^1.4.35"
 uvicorn = "^0.17.6"
 alembic = "^1.7.7"
+importlib-resources = "^5.7.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

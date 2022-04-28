@@ -41,38 +41,11 @@ class User(BaseModel):
         index=True,
         nullable=False
     )
-    channel_id = Column(
-        Integer,
-        ForeignKey("channels.id"),
-        nullable=False
-    )
-    is_active = Column(
-        Boolean,
-        default=True,
-        nullable=False
-    )
-    cv_link = Column(String, nullable=True)
-    name = Column(String, nullable=True)
-    surname = Column(String, nullable=True)
-    phone = Column(String, nullable=True)
-
-
-class Channel(BaseModel):
-    __tablename__ = "channels"
-
-    id = Column(
-        Integer,
-        primary_key=True,
-        index=True,
-        autoincrement=True
-    )
-    username = Column(
-        String,
-        unique=True,
-        index=True,
-        nullable=False
-    )
     description = Column(
+        String,
+        nullable=True
+    )
+    profile_picture_link = Column(
         String,
         nullable=True
     )
@@ -80,9 +53,27 @@ class Channel(BaseModel):
         String,
         nullable=True
     )
+    is_active = Column(
+        Boolean,
+        default=True,
+        nullable=False
+    )
+    cv_link = Column(
+        String,
+        nullable=True
+    )
+    name = Column(
+        String,
+        nullable=True)
+    surname = Column(
+        String,
+        nullable=True)
+    phone = Column(
+        String,
+        nullable=True)
     videos = relationship(
         "Video",
-        back_populates="channel_id"
+        back_populates="owner"
     )
 
 
@@ -94,8 +85,11 @@ class Video(BaseModel):
         index=True,
         autoincrement=True
     )
-    channel_id = (Integer, ForeignKey("channels.id"))
-    channel = relationship(
-        "Channel",
-        back_populates=""
+    owner_id = (
+        Integer,
+        ForeignKey("users.id")
+    )
+    owner = relationship(
+        "User",
+        back_populates="videos"
     )

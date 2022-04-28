@@ -16,7 +16,7 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from bananza_backend.db.models import BaseModel
+from bananza_backend.db.sql_models import BaseModel
 target_metadata = BaseModel.metadata
 # target_metadata = None
 
