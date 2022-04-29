@@ -1,0 +1,18 @@
+.report{
+    background: var(--black);
+    padding:10px;
+    display:flex;
+    color:white;
+}
+.report:nth-child(2n){
+    background: var(--dblack);
+}
+.reportedVideo{
+    width:40%;
+}
+.reportReason{
+    width:40%;
+}
+.reportedChannel{
+    width:20%;
+}
