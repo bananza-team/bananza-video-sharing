@@ -4,7 +4,7 @@ import Input from "/components/forms/input";
 import React, { useState } from "react";
 import Checkbox from "/components/forms/checkbox";
 import Nav from "/components/general/nav";
-import TopFive from "/components/videos/topfive";
+import VideoList from "/components/videos/videolist";
 import LatestReports from "/components/reports/latestReports";
 
 export default function Home() {
@@ -195,7 +195,7 @@ export default function Home() {
       {!!userState && (
         <>
           <Nav />
-          <TopFive videos={videos} />
+          <VideoList videos={videos} header="Top five videos of today"/>
           <LatestReports reports={reports}/>
         </>
       )}

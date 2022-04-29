@@ -2,6 +2,7 @@
     height:200px;
     margin:10px;
     margin-right:0px;
+    margin-bottom:0;
     background-position: center !important;
     background-size: cover !important;
     box-shadow:var(--shadow);
@@ -14,9 +15,10 @@
     padding:10px;
     display:flex;
     flex-direction:column;
-    margin-bottom:auto; 
-    margin-top:50%;
     box-shadow: var(--shadow);
+    position:absolute;
+    bottom:0;
+    width:calc(20% - 10px);
 }
 .videoTitle{
     font-size:30px;

@@ -117,7 +117,7 @@ margin-bottom:2px;
 
 /* Navigation */
 nav{
-  background:var(--dblack);
+  background:url("/index.jpg");
   color:white;
   display:flex;
   align-items:center;
@@ -125,6 +125,9 @@ nav{
   width:100%;
   position:sticky;
   top:0;
+  background-position: center;
+  background-size:contain !important;
+  z-index: 10;
 }
 nav a{
   display:inline-table;
@@ -146,7 +149,6 @@ width:100px;
 height:auto;
 }
 .navLogo{
-  background:var(--black);
   padding:5px;
 }
 nav span{
@@ -162,4 +164,13 @@ nav .rightNav{
   background: var(--orange);
   border-radius:2px;
   margin:5px;
+}
+
+.fancyInput{
+  border-color:transparent;
+  width:100%;
+}
+.fancyInput:focus{
+  background: rgb(255,255,255,0.8);
+  box-shadow: var(--shadow);
 }

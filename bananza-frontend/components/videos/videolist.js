@@ -1,9 +1,9 @@
 import VideoCard from "./videocard.js"
 import styles from "/styles/topfive.module.css"
-export default function TopFive(props){
+export default function VideoList(props){
     return (
         <div className={styles.topFiveVideos}>
-        <span className={styles.topFiveHeader}>Top five videos of today</span>
+        <span className={styles.topFiveHeader}>{props.header}</span>
         <div className={styles.topFiveVideosContainer}>
         {
         props.videos.map((video, key) => (
