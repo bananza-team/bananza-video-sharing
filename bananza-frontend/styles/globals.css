@@ -80,8 +80,7 @@ input {
 
 input:focus {
   border: none;
-  background: white;
-  color:var(--orange);
+  color:white;
   border-bottom: 2px solid white;
 }
 button {
