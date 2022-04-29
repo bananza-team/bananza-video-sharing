@@ -1,3 +1,4 @@
 .idea/
-bananza-backend/src/*/__pycache__/
 .obsidian/
+__pycache__
+.DS_Store

@@ -20,4 +20,4 @@ EXPOSE 8000
 
 CMD ["cd", "src"]
 # start the server
-CMD ["/root/.poetry/bin/poetry", "run", "uvicorn", "bananza_backend.fastapi:app", "--host", "0", "--reload", "--port", "8000", "--reload"]
+CMD ["/root/.poetry/bin/poetry", "run", "uvicorn", "bananza_backend.fastapi:app", "--host", "0", "--port", "8000", "--reload"]
