@@ -15,9 +15,6 @@ export default function Nav() {
         </Link>
       </span>
       <span className="rightNav">
-        <Link href="/channel">
-          <a>Channel</a>
-        </Link>
         <Link href="/logout">
           <a>Logout</a>
         </Link>
