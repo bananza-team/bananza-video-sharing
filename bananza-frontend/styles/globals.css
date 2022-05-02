@@ -1,7 +1,17 @@
+:root {
+  --black: #303335;
+  --dblack: #26292a;
+  --orange: #a46517;
+  --shadow: 0px 4px 5px 0px hsla(0, 0%, 0%, 0.14),
+    0px 1px 10px 0px hsla(0, 0%, 0%, 0.12),
+    0px 2px 4px -1px hsla(0, 0%, 0%, 0.2);
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
+  font-size: 18px;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
@@ -11,6 +21,155 @@ a {
   text-decoration: none;
 }
 
-* {
+*, *:hover, *:focus, :after{
   box-sizing: border-box;
+  transition: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  transition-duration: 0.4s;
+}
+
+body {
+  background: var(--black);
+}
+
+body,
+html,
+main,
+#__next {
+  width: 100%;
+  height: 100%;
+}
+
+/* Forms */
+form {
+  color: white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction: column;
+  width:100%;
+}
+
+.formFields{
+  display:flex;
+  justify-content:center;
+  align-items: center;
+  width:100%;
+}
+
+.formFields div{
+  padding:10px;
+}
+
+form div>span {
+  display:table;
+  margin:5px;
+}
+
+label input{
+  display:table;
+}
+
+input {
+  padding: 5px;
+  border: none;
+  background: none;
+  border-bottom: 2px solid var(--black);
+  color:white;
+  outline: none !important;
+}
+
+input:focus {
+  border: none;
+  color:white;
+  border-bottom: 2px solid white;
+}
+button {
+  all: unset;
+  background: var(--orange);
+  color: white;
+  padding: 10px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+}
+
+button:hover{
+  background:var(--black);
+}
+
+button:focus{
+  box-shadow: inset var(--shadow);
+}
+
+.checkboxContainer>*{
+  display:inline-table;
+}
+[type="checkbox"]{
+  margin-right:5px;
+  width: initial !important;
+}
+input{
+  width:250px;
+}
+label{
+margin-bottom:2px;
+}
+
+/* Navigation */
+nav{
+  background:url("/index.jpg");
+  color:white;
+  display:flex;
+  align-items:center;
+  box-shadow: var(--shadow);
+  width:100%;
+  position:sticky;
+  top:0;
+  background-position: center;
+  background-size:contain !important;
+  z-index: 10;
+}
+nav a{
+  display:inline-table;
+  padding:5px;
+}
+nav a:after{
+  content: "";
+  width:0%;
+  background:white;
+  display:table;
+  height:2px;
+  margin-top:2px;
+}
+ nav a:hover:after{
+   width:100%;
+ }
+.navLogo img{
+width:100px;
+height:auto;
+}
+.navLogo{
+  padding:5px;
+}
+nav span{
+  padding:5px;
+}
+nav .rightNav{
+  justify-self:flex-end;
+  position:absolute;
+  right: 0;
+}
+
+.label{
+  background: var(--orange);
+  border-radius:2px;
+  margin:5px;
+}
+
+.fancyInput{
+  border-color:transparent;
+  width:100%;
+}
+.fancyInput:focus{
+  background: rgb(255,255,255,0.8);
+  box-shadow: var(--shadow);
 }
