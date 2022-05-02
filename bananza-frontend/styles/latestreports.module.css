@@ -1,9 +1,0 @@
-.reports{
-    display:flex;
-    flex-direction:column;
-    margin:10px;
-}
-.reportsHeader{
-    color:white;
-    padding:5px;
-}
