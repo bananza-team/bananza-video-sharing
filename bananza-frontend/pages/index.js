@@ -14,7 +14,16 @@ export default function Home() {
     username: "",
     email: "",
     password: "",
+    type: "creator",
+    description: "Your channel's description",
+    profile_picture_link: "default.png",
+    cover_picture_link: "default.png",
     applyManager: false,
+    is_active: true,
+    cv_link: "",
+    name: "",
+    surname: "",
+    phone: "",
   });
 
   let login = (event) => {
@@ -22,21 +31,43 @@ export default function Home() {
     setUserState(1);
   };
 
-  let register = login;
+  let register = (event) => {
+    event.preventDefault();
+    let data = registerFormData;
+    data.cv_link = "test link";
+    delete data.applyManager;
+
+    fetch("//localhost:8000/user", {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then(resp => resp.json()).then(console.log);
+  };
 
   const updateRegisterData = (e) => {
-    if (e.target.type != "checkbox") {
+    if (e.target.type == "file") {
       setRegisterFormData({
         ...registerFormData,
-        [e.target.name]: e.target.value,
+        ["cv_link"]: e.target.files[0],
       });
-      console.log(e);
-    } else {
+      return;
+    }
+
+    if (e.target.type == "checkbox") {
       setRegisterFormData({
         ...registerFormData,
         ["applyManager"]: !registerFormData.applyManager,
       });
+      return;
     }
+
+    setRegisterFormData({
+      ...registerFormData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   let videos = [
@@ -55,16 +86,16 @@ export default function Home() {
       key: 1,
     },
   ];
-  videos[2]=videos[3]=videos[4]=videos[0];
+  videos[2] = videos[3] = videos[4] = videos[0];
 
-  let reports=[
+  let reports = [
     {
-      video:videos[0],
-      reportReason:"misleading title",
-      key:0
-    }
-  ]
-  reports[1]=reports[2]=reports[3]=reports[4]=reports[0];
+      video: videos[0],
+      reportReason: "misleading title",
+      key: 0,
+    },
+  ];
+  reports[1] = reports[2] = reports[3] = reports[4] = reports[0];
 
   return (
     <>
@@ -195,8 +226,8 @@ export default function Home() {
       {!!userState && (
         <>
           <Nav />
-          <VideoList videos={videos} header="Top five videos of today"/>
-          <LatestReports reports={reports}/>
+          <VideoList videos={videos} header="Top five videos of today" />
+          <LatestReports reports={reports} />
         </>
       )}
     </>
