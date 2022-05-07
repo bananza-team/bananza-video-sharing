@@ -41,7 +41,10 @@ export default function Home() {
 
   let register = (event) => {
     event.preventDefault();
-    let data = registerFormData;
+    window.r=registerFormData;
+    let data = Object.assign({}, registerFormData);
+    // otherwise delete data.applyManager would delete it from the state too
+
     data.cv_link = "test link";
 
     let basicLength = (data)=>{
@@ -68,14 +71,33 @@ export default function Home() {
 
     fetch("//localhost:8000/user", {
       method: "POST",
+      mode: "no-cors",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+
       },
       body: JSON.stringify(data),
     })
-      .then((resp) => resp.json())
-      .then(console.log);
+      .then((resp) => {
+        if(response.status == 200){
+          NotificationManager.info("Registration was succesful!");
+          setTimeout(window.BeforeUnloadEvent, 4000);
+        }
+
+        if(response.status == 409){
+          NotificationManager.error(response.json().message);
+          return;
+        }
+
+        if(response.status == 422){
+          NotificationManager.error(response.json().detail.msg);
+          return;
+        }
+
+        NotificationManager.error("Unknown Network Error");
+
+      })
   } else {
     response.messages.forEach(message =>{
       NotificationManager.error(message);
