@@ -69,9 +69,8 @@ export default function Home() {
 
     if(response.status){
 
-    fetch("//localhost:8000/user", {
+    fetch("//localhost:8000/user/", {
       method: "POST",
-      mode: "no-cors",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -79,25 +78,29 @@ export default function Home() {
       },
       body: JSON.stringify(data),
     })
-      .then((resp) => {
+      .then((response) => {
+        response.json().then(parsedJSON =>{
+        window.r=response;
         if(response.status == 200){
           NotificationManager.info("Registration was succesful!");
-          setTimeout(window.BeforeUnloadEvent, 4000);
+          setUserState(1);
+          return;
         }
 
         if(response.status == 409){
-          NotificationManager.error(response.json().message);
+          NotificationManager.error(parsedJSON.message);
           return;
         }
 
         if(response.status == 422){
-          NotificationManager.error(response.json().detail.msg);
+          NotificationManager.error(parsedJSON.detail.msg);
           return;
         }
 
         NotificationManager.error("Unknown Network Error");
 
       })
+    })
   } else {
     response.messages.forEach(message =>{
       NotificationManager.error(message);
