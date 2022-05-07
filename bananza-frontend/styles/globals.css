@@ -173,3 +173,7 @@ nav .rightNav{
   background: rgb(255,255,255,0.8);
   box-shadow: var(--shadow);
 }
+
+.notification-container{
+  padding:10px;
+}

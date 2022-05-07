@@ -12,6 +12,7 @@ import {
   validatePhone,
   addValidation,
 } from "/libs/validation/validation.js";
+import { NotificationManager } from "react-notifications";
 
 export default function Home() {
 
@@ -75,6 +76,10 @@ export default function Home() {
     })
       .then((resp) => resp.json())
       .then(console.log);
+  } else {
+    response.messages.forEach(message =>{
+      NotificationManager.error(message);
+    })
   }
   };
 
