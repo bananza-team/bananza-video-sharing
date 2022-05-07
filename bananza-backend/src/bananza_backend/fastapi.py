@@ -1,9 +1,12 @@
+from bananza_backend.api import users, manager_applications
+from bananza_backend.exceptions import *
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from bananza_backend.api import users, manager_applications
-from bananza_backend.exceptions import *
+from fastapi.staticfiles import StaticFiles
 from requests import Request
+import os
 
 origins = [
     "http://localhost:3000",
@@ -14,6 +17,7 @@ app = FastAPI(
     title="Bananza Backend",
     version="0.1"
 )
+app.mount("/resources", StaticFiles(directory=os.path.join("..", "resources")), name="resources")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
