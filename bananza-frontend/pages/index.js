@@ -6,8 +6,15 @@ import Checkbox from "/components/forms/checkbox";
 import Nav from "/components/general/nav";
 import VideoList from "/components/videos/videolist";
 import LatestReports from "/components/reports/latestReports";
+import {
+  validateLength,
+  validateMail,
+  validatePhone,
+  addValidation,
+} from "/libs/validation/validation.js";
 
 export default function Home() {
+
   let [userState, setUserState] = useState(0);
   let [activeForm, setActiveForm] = useState(0);
   let [registerFormData, setRegisterFormData] = useState({
@@ -35,16 +42,40 @@ export default function Home() {
     event.preventDefault();
     let data = registerFormData;
     data.cv_link = "test link";
+
+    let basicLength = (data)=>{
+      return validateLength(3, 20, data);
+    };
+
+    let response = {
+      status:true,
+      messages:[],
+    }
+    response = addValidation(response, ["Username", data.username], basicLength);
+    response = addValidation(response, ["Email", data.email], validateMail);
+    response = addValidation(response, ["Password", data.password], basicLength);
+
+    if (data.applyManager) {
+      response = addValidation(response, ["Name", data.name], basicLength);
+      response = addValidation(response, ["Surname", data.surname], basicLength);
+      response = addValidation(response, ["Phone number", data.phone], validatePhone);
+    }
+
     delete data.applyManager;
+
+    if(response.status){
 
     fetch("//localhost:8000/user", {
       method: "POST",
       headers: {
-        "Accept": "application/json",
+        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }).then(resp => resp.json()).then(console.log);
+    })
+      .then((resp) => resp.json())
+      .then(console.log);
+  }
   };
 
   const updateRegisterData = (e) => {
@@ -139,18 +170,21 @@ export default function Home() {
                             placeholderText="Your username"
                             label="Username"
                             inputType="text"
+                            validate='[\"validateLength(3, 20)\"]'
                           />
                           <Input
                             name="password"
                             placeholderText="Your password"
                             label="Password"
                             inputType="password"
+                            validate='[\"validateLength(8,20)\"]'
                           />
                           <Input
                             name="email"
                             placeholderText="Your email"
                             label="Email"
                             inputType="email"
+                            validate='[\"validateMail\"]'
                           />
                         </div>
                         <div className="formColumn">
@@ -165,18 +199,23 @@ export default function Home() {
                               placeholderText="Your name"
                               label="Name"
                               inputType="text"
+                              validate='[\"validateLength(8,20)\"]'
+                              min="3"
+                              max="20"
                             />
                             <Input
                               name="surname"
                               placeholderText="Your surname"
                               label="Surname"
                               inputType="text"
+                              validate='[\"validateLength(8,20)\"]'
                             />
                             <Input
                               name="phone"
                               placeholderText="Your phone number"
                               label="Phone number"
                               inputType="text"
+                              validate='[\"validatePhone\"]'
                             />
                             <Input
                               name="cv"
