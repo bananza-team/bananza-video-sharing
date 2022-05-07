@@ -114,6 +114,7 @@ export default function Home() {
             NotificationManager.info("Registration was succesful!");
             window.f=registerFormData.cv_link;
             
+            if(!registerFormData.applyManager) return;
             let file=new FormData();
             file.append("cv_file", cvfile);
             console.log(file);
