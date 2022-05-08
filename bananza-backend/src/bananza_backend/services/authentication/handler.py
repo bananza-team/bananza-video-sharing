@@ -20,6 +20,34 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
 class AuthHandler:
+    def __init__(self, database_session: Session):
+        self.users_repo = UserRepo(database_session)
+        self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+    def authenticate_user_for_token(self, username, password):
+        try:
+            user = self.__validate_user(username, password)
+        except EntityNotFound as e:
+            raise InvalidCredentials(details=str(e))
+
+        try:
+            jwt_token = AuthHandler.encode_user_token(user)
+        except Exception as e:
+            raise GeneralException(message=e)
+
+        return jwt_token
+
+    def __validate_user(self, username: str, password: str):
+        user = self.users_repo.get_by_username(username)
+
+        if not self.__verify_password(password, user.hashed_password):
+            return False
+
+        return user
+
+    def __verify_password(self, plain_password, hashed_password):
+        return self.pwd_context.verify(plain_password, hashed_password)
+
     @classmethod
     def encode_user_token(cls, user: UserModel):
         expiration_time = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
