@@ -27,6 +27,7 @@ app.add_middleware(
 )
 app.include_router(users.router)
 app.include_router(manager_applications.router)
+app.include_router(auth.router)
 
 
 @app.exception_handler(EntityNotFound)
@@ -45,10 +46,36 @@ async def entity_already_exists_handler(request: Request, exception: EntityAlrea
     )
 
 
+@app.exception_handler(TokenSignatureExpired)
+async def token_signature_expired_handler(request: Request, exception: TokenSignatureExpired):
+    return JSONResponse(
+        status_code=401,
+        content={"message": "Token has expired", "details": exception.details}
+    )
+
+
+@app.exception_handler(InvalidToken)
+async def invalid_token_handler(request: Request, exception: InvalidToken):
+    return JSONResponse(
+        status_code=401,
+        content={"message": "Invalid token", "details": exception.details}
+    )
+
+
+@app.exception_handler(InvalidCredentials)
+async def invalid_credentials_exception(request: Request, exception: InvalidCredentials):
+    return JSONResponse(
+        status_code=401,
+        content={
+            "message": "Invalid username or password",
+            "details": exception.details,
+            "headers": {"WWW-Authenticate": "Bearer"}
+        }
+    )
+
 @app.exception_handler(Exception)
 async def unexpected_general_handler(request: Request, exception: Exception):
     return JSONResponse(
         status_code=500,
         content={"message": str(exception)}
     )
-

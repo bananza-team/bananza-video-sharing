@@ -246,21 +246,18 @@ export default function Home() {
                             placeholderText="Your username"
                             label="Username"
                             inputType="text"
-                            validate='[\"validateLength(3, 20)\"]'
                           />
                           <Input
                             name="password"
                             placeholderText="Your password"
                             label="Password"
                             inputType="password"
-                            validate='[\"validateLength(8,20)\"]'
                           />
                           <Input
                             name="email"
                             placeholderText="Your email"
                             label="Email"
                             inputType="email"
-                            validate='[\"validateMail\"]'
                           />
                         </div>
                         <div className="formColumn">
@@ -275,23 +272,18 @@ export default function Home() {
                               placeholderText="Your name"
                               label="Name"
                               inputType="text"
-                              validate='[\"validateLength(8,20)\"]'
-                              min="3"
-                              max="20"
                             />
                             <Input
                               name="surname"
                               placeholderText="Your surname"
                               label="Surname"
                               inputType="text"
-                              validate='[\"validateLength(8,20)\"]'
                             />
                             <Input
                               name="phone"
                               placeholderText="Your phone number"
                               label="Phone number"
                               inputType="text"
-                              validate='[\"validatePhone\"]'
                             />
                             <Input
                               name="cv"
