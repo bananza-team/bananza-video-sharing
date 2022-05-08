@@ -31,22 +31,16 @@ class UserCreate(UserBase):
 
 
 class User(UserBase):
+    id: Optional[int] = Field(description="Automatically generated user ID")
+
     class Config:
         orm_mode = True
-
-    id: Optional[int] = Field(description="Automatically generated user ID")
 
 
 class ManagerApplication(BaseModel):
-    class Config:
-        orm_mode = True
-
     id: Optional[int] = Field(description="Automatically generated application ID")
     user: Optional[User] = Field(description="The user that submitted this application on register")
     answered: Optional[bool] = Field(description="Status of the application, answered by the admins or not.",
                                      default=False)
-
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
+    class Config:
+        orm_mode = True
