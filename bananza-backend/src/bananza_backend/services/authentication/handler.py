@@ -36,10 +36,7 @@ class AuthHandler:
         return user
 
     def authenticate_user_for_token(self, username, password):
-        try:
-            user = self.__validate_user(username, password)
-        except EntityNotFound as e:
-            raise InvalidCredentials(details=str(e))
+        user = self.__validate_user(username, password)
 
         try:
             jwt_token = AuthHandler.encode_user_token(user)
@@ -49,10 +46,13 @@ class AuthHandler:
         return jwt_token
 
     def __validate_user(self, username: str, password: str):
-        user = self.users_repo.get_by_username(username)
+        try:
+            user = self.users_repo.get_by_username(username)
+        except EntityNotFound:
+            raise InvalidCredentials()
 
         if not self.__verify_password(password, user.hashed_password):
-            return False
+            raise InvalidCredentials()
 
         return user
 

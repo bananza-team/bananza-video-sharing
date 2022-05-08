@@ -16,7 +16,6 @@ async def register_user(user: UserCreate, db: Session = Depends(get_db)):
     return new_user
 
 
-
 @router.get("/current", summary="Get current user based on JWT token", response_model=User)
 async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     auth_handler = AuthHandler(db)
