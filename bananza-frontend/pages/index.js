@@ -45,8 +45,9 @@ export default function Home() {
     phone: "",
   });
 
-  async function login (event) {
+  function login (event) {
     event.preventDefault();
+    console.log(loginFormData);
 
     let response = {
       status: true,
@@ -68,19 +69,21 @@ export default function Home() {
       let formData = new FormData();
       formData.append("username", loginFormData.username);
       formData.append("password", loginFormData.password);
+      formData.append("grant_type", "password");
 
-      let resp = await fetch("//localhost:8000/auth/login/", {
+      fetch("//localhost:8000/auth/login", {
         method:"POST",
         body:formData
-      })
-
-      if(resp.status == 200){
-        let data = await resp.json();
-        localStorage.setItem('token', json.acces_token);
+      }).then((response) => {
+        response.json().then((parsedJSON) => {
+          if (response.status == 200) {
+            localStorage.setItem('token', parsedJSON.access_token);``
         setUserState(1);
-      } else {
+          } else {
         NotificationManager.error("Login failed");
       }
+    })
+  })
 
     } else {
       response.messages.forEach((message) => {
@@ -363,7 +366,7 @@ export default function Home() {
                 )}
                 {!activeForm && (
                   <span id="login-form">
-                    <form onSubmit={login} onChange={updateLoginData}>
+                    <form onSubmit={login} onChange={updateLoginData} autoComplete="off">
                       <div className="formFields">
                         <div className={styles.formColumn}>
                           <Input
@@ -377,6 +380,7 @@ export default function Home() {
                             placeholderText="Your password"
                             label="Password"
                             inputType="password"
+                            value=""
                           />
                         </div>
                       </div>
