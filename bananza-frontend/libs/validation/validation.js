@@ -8,6 +8,13 @@ let validateLength = (minlen, maxlen, data) => {
   };
 };
 
+let validateExists = (data) =>{
+  return {
+    status:data[1].length!=0,
+    messages: ["The "+data[0]+" must be filled in"],
+  }
+}
+
 let validateMail = (data) => {
   return {
     status: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(data[1]),
