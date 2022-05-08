@@ -3,6 +3,7 @@ from bananza_backend.exceptions import *
 
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+from requests import Request
 
 app = FastAPI(
     title="Bananza Backend",
