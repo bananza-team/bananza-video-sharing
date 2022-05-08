@@ -9,7 +9,15 @@ class GeneralException(Exception):
         logger.error(f"{self.message}. Details: {details if details else 'none'}")
 
 
-class EntityNotFound(GeneralException):
+class GeneralWarning(Exception):
+    def __init__(self, message="", details=""):
+        self.message = message
+        self.details = details
+        super().__init__(self.message)
+        logger.warning(f"{self.message}. Details: {details if details else 'none'}")
+
+
+class EntityNotFound(GeneralWarning):
     pass
 
 
