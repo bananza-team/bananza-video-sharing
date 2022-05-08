@@ -11,6 +11,7 @@ import {
   validateMail,
   validatePhone,
   addValidation,
+  validateExists,
 } from "/libs/validation/validation.js";
 import { NotificationManager } from "react-notifications";
 
@@ -46,7 +47,28 @@ export default function Home() {
 
   let login = (event) => {
     event.preventDefault();
-    setUserState(1);
+
+    let response = {
+      status: true,
+      messages: [],
+    };
+    response = addValidation(
+      response,
+      ["Username", loginFormData.username],
+      validateExists
+    );
+    response = addValidation(
+      response,
+      ["Password", loginFormData.password],
+      validateExists
+    );
+
+    if (response.status) {
+    } else {
+      response.messages.forEach((message) => {
+        NotificationManager.error(message);
+      });
+    }
   };
 
   let register = (event) => {
