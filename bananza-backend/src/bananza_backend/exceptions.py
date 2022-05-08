@@ -16,3 +16,18 @@ class EntityNotFound(GeneralException):
 class EntityAlreadyExists(GeneralException):
     pass
 
+
+class TokenSignatureExpired(GeneralException):
+    pass
+
+
+class InvalidToken(GeneralException):
+    pass
+
+
+class InvalidCredentials(GeneralException):
+    pass
+
+
+class InactiveUser(GeneralException):
+    pass
