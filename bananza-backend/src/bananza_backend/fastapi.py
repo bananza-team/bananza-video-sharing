@@ -57,7 +57,6 @@ async def invalid_credentials_exception(request: Request, exception: InvalidCred
         }
     )
 
-
 @app.exception_handler(Exception)
 async def unexpected_general_handler(request: Request, exception: Exception):
     return JSONResponse(
