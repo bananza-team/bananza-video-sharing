@@ -68,7 +68,7 @@ export default function Home() {
       response.messages.forEach((message) => {
         NotificationManager.error(message);
       });
-    }
+      }
   };
 
   let register = (event) => {

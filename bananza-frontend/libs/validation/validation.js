@@ -37,4 +37,4 @@ let addValidation = (response, data, validator) => {
   return response;
 };
 
-export { validateLength, validateMail, validatePhone, addValidation };
+export { validateLength, validateMail, validatePhone, addValidation, validateExists };
