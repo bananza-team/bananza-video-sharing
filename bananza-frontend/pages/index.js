@@ -45,7 +45,7 @@ export default function Home() {
     phone: "",
   });
 
-  let login = (event) => {
+  async function login (event) {
     event.preventDefault();
 
     let response = {
@@ -64,6 +64,24 @@ export default function Home() {
     );
 
     if (response.status) {
+
+      let formData = new FormData();
+      formData.append("username", loginFormData.username);
+      formData.append("password", loginFormData.password);
+
+      let resp = await fetch("//localhost:8000/auth/login/", {
+        method:"POST",
+        body:formData
+      })
+
+      if(resp.status == 200){
+        let data = await resp.json();
+        localStorage.setItem('token', json.acces_token);
+        setUserState(1);
+      } else {
+        NotificationManager.error("Login failed");
+      }
+
     } else {
       response.messages.forEach((message) => {
         NotificationManager.error(message);
@@ -150,7 +168,10 @@ export default function Home() {
             NotificationManager.info("Registration was succesful!");
             window.f = registerFormData.cv_link;
 
-            if (!registerFormData.applyManager) return;
+            if (!registerFormData.applyManager){
+              setUserState(1);
+              return;
+            };
             let file = new FormData();
             file.append("cv_file", cvfile);
             console.log(file);
