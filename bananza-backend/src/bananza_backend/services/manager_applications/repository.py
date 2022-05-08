@@ -23,7 +23,7 @@ class ManagerApplicationsRepo:
             if not cv_contents:
                 raise HTTPException(status_code=403, detail="Couldn't add manager application. No CV file given.")
 
-            cv_generated_name = f"cv-upload-{db_user.username}"
+            cv_generated_name = f"cv-upload-{db_user.username}.pdf"
             cv_saved_resource_path = path.join(self.folder_save_path, cv_generated_name)
 
             with open(cv_saved_resource_path, 'wb') as out_file:
