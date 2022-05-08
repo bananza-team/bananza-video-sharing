@@ -1,4 +1,4 @@
-from bananza_backend.api import users, manager_applications
+from bananza_backend.api import users, manager_applications, auth
 from bananza_backend.exceptions import *
 
 from fastapi import FastAPI
@@ -72,6 +72,7 @@ async def invalid_credentials_exception(request: Request, exception: InvalidCred
             "headers": {"WWW-Authenticate": "Bearer"}
         }
     )
+
 
 @app.exception_handler(Exception)
 async def unexpected_general_handler(request: Request, exception: Exception):
