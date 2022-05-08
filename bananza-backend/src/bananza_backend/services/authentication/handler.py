@@ -24,6 +24,17 @@ class AuthHandler:
         self.users_repo = UserRepo(database_session)
         self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+    def get_current_user_by_token(self, token: str):
+        token_data = AuthHandler.decode_user_token(token)
+        user_id: int = token_data['id']
+
+        try:
+            user = self.users_repo.get_by_id(user_id)
+        except EntityNotFound as e:
+            raise InvalidCredentials(details=e)
+
+        return user
+
     def authenticate_user_for_token(self, username, password):
         try:
             user = self.__validate_user(username, password)
