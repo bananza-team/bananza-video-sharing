@@ -96,6 +96,12 @@ export default function Home() {
           messages: ["CV File must be a PDF file"],
         };
         });
+      response = addValidation(response, ["CV File", cvfile], (data)=>{
+        return {
+          status: data[1]?data[1].size!=0:false,
+          messages:["CV File can't be empty"],
+        }
+      })
       }
 
     delete data.applyManager;
