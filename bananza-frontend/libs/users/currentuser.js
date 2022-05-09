@@ -1,19 +1,24 @@
-export default function getCurrentUser(){
+import React, { useState, useEffect } from "react";
+
+export default function getCurrentUser() {
+  let [user, setUser] = useState(null);
+
+  useEffect(() => {
     let token = localStorage.token;
-    if(token == undefined){
-        return undefined;
-    } else {
-        fetch("//localhost:8000/user/current", {
-            header:{
-                'Authorization':`Bearer ${token}`
-            }
-        }).then(response => response.json().then(parsedJSON =>{
-            if(response.status == 200){
-                return parsedJSON;
-            } else {
-                delete localStorage.token;
-                return undefined;
-            }
-        }))
-    }
+    (() => {
+      fetch("//localhost:8000/user/current", {
+        header: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then((response) =>
+        response.json().then((parsedJSON) => {
+          if (response.status == 200) {
+            setUser(parsedJSON);
+          }
+        })
+      );
+    })();
+  }, []);
+
+  return user;
 }
