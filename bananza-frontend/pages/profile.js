@@ -30,15 +30,9 @@ export default function Profile(props) {
           <div className={styles.profileUsernameBox}>
             <Input
               className="fancyInput"
-              name="channelName"
-              placeholder=""
-              value={props.user.channelName}
-            />
-            <Input
-              className="fancyInput"
               name="channeldescription"
               placeholder=""
-              value={props.user.channelDescription}
+              value={props.user.description}
             />
           </div>
         </div>
