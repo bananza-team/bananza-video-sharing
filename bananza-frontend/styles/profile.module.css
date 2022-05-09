@@ -45,3 +45,57 @@
     right: 0px;
     opacity: 0;
 }
+.profileBox:hover .updateCoverButton{
+    opacity: 1;
+}
+.updateAvatarOverlay{
+    opacity:0;
+    position: absolute;
+    background: rgb(0,0,0,0.7);
+    width:120px;
+    height:120px;
+    border-radius:100%;
+    display:flex;
+    justify-content:center;
+    align-items: center;
+}
+.profileAvatarBox:hover .updateAvatarOverlay{
+    opacity:1;
+}
+.profileColumns{
+    display:flex;
+    width:100%;
+}
+.profileColumn{
+    padding:10px;
+    padding-right:0px;
+    padding-bottom:0px;
+    color:white;
+    margin:5px;
+    margin-right:0px;
+}
+.profileColumnData{
+    margin-top:15px;
+}
+.profileHeader{
+    color:white;
+    font-size:20px;
+    border-left:4px solid var(--orange);
+    padding:5px;
+    width:100%;
+}
+.profileColumnData label{
+    background:var(--dblack);
+    border-radius:10px;
+    display:inline;
+    border-left:2px solid white;
+    padding:2px;
+    margin-top:10px;
+    display:table;
+}
+.profileUsernameBox{
+    font-size:25px;
+    margin-left:10px;
+    background: rgb(0,0,0,.5);
+    box-shadow: var(--shadow);
+}
