@@ -178,3 +178,32 @@ nav .rightNav{
 .notification-container{
   padding:10px;
 }
+
+.loader-container{
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  height:100%;
+}
+.loader-container > span{
+  width:50px;
+  height:50px;
+  border:2px double white;
+  border-left-color:var(--black);
+  border-right-color:var(--black);
+  display:table;
+  content:"";
+  border-radius:100%;
+  animation:2s cubic-bezier(0.68, -0.55, 0.27, 1.55) loading infinite;
+}
+@keyframes loading{
+  0%{
+    transform:rotate(0deg);
+  }
+  50%{
+    transform: rotate(360deg);
+  }
+  100%{
+    transform:rotate(0deg);
+  }
+}
