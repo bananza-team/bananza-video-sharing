@@ -41,6 +41,35 @@ export default function Profile(props) {
             />
           </div>
         </div>
+        <div className={styles.profileColumns}>
+          <div className={styles.profileColumn}>
+            <span className={styles.profileHeader}>Profile data</span>
+            <div className={styles.profileColumnData}>
+              <Input
+                label="Username"
+                className="fancyInput"
+                name="username"
+                placeholder=""
+                value={props.user.username}
+              />
+              <Input
+                inputType="email"
+                label="Email"
+                className="fancyInput"
+                name="email"
+                placeholder=""
+                value={props.user.email}
+              />
+              <Input
+                inputType="password"
+                label="Password"
+                className="fancyInput"
+                name="password"
+                value={props.user.password}
+              />
+            </div>
+          </div>
+        </div>
       </>
     );
 }
