@@ -16,6 +16,7 @@ export default function Profile(props) {
       <>
         <PageHead title="Bananza - Edit Profile" />
         <Nav />
+        <span className={styles.hint}><i class="fa-solid fa-circle-exclamation"></i> Click any data to edit it!</span>
         <div
           className={styles.profileBox}
           style={{ background: `url(cover.jpg)` }}
@@ -60,7 +61,8 @@ export default function Profile(props) {
                 label="Password"
                 className="fancyInput"
                 name="password"
-                value={props.user.password}
+                value={null}
+                placeholderText="New password"
               />
             </div>
           </div>
@@ -85,6 +87,9 @@ export default function Profile(props) {
               </div>
             </div>
           )}
+          <div className={styles.profileColumn} id="#submitColumn">
+            <button>Submit</button>
+          </div>
         </div>
       </>
     );

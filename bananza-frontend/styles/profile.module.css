@@ -84,7 +84,6 @@
 }
 .profileColumnData label{
     background:var(--dblack);
-    border-radius:10px;
     display:inline;
     border-left:2px solid white;
     padding:2px;
@@ -96,4 +95,16 @@
     margin-left:10px;
     background: rgb(0,0,0,.5);
     box-shadow: var(--shadow);
+}
+.hint{
+    position: absolute;
+    right:10px;
+    bottom:10px;
+    background: var(--dblack);
+    color:white;
+    padding:5px;
+}
+.profileColumns > div:nth-last-child(1){
+    display: flex;
+    align-items: center;
 }
