@@ -10,4 +10,37 @@ export default function Profile(props) {
     useEffect(() => {
       router.push("/");
     }, []);
+  else
+    return (
+      <>
+        <PageHead title="Bananza - Edit Profile" />
+        <Nav />
+        <div
+          className={styles.profileBox}
+          style={{ background: `url(${props.user.cover_picture_link})` }}
+        >
+          <span className={styles.updateCoverButton}>Change</span>
+          <div className={styles.profileAvatarBox}>
+            <img src={props.user.profilePicture} />
+            <div className={styles.updateAvatarOverlay}>
+              <span className={styles.updateAvatarButton}>Change</span>
+            </div>
+          </div>
+          <div className={styles.profileUsernameBox}>
+            <Input
+              className="fancyInput"
+              name="channelName"
+              placeholder=""
+              value={props.user.channelName}
+            />
+            <Input
+              className="fancyInput"
+              name="channeldescription"
+              placeholder=""
+              value={props.user.channelDescription}
+            />
+          </div>
+        </div>
+      </>
+    );
 }
