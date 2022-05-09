@@ -14,14 +14,14 @@ import {
   validateExists,
 } from "/libs/validation/validation.js";
 import { NotificationManager } from "react-notifications";
+import Router from "next/router";
 
 let fileOnChange = (e) => {
   setCVFile(e.target.files[0]);
 };
 
-export default function Home() {
+export default function Home(props) {
   let [cvfile, setCVFile] = useState(null);
-  let [userState, setUserState] = useState(0);
   let [activeForm, setActiveForm] = useState(0);
 
   let [loginFormData, setLoginFormData] = useState({
@@ -77,8 +77,8 @@ export default function Home() {
       }).then((response) => {
         response.json().then((parsedJSON) => {
           if (response.status == 200) {
-            localStorage.setItem('token', parsedJSON.access_token);``
-        setUserState(1);
+            localStorage.setItem('token', parsedJSON.access_token);
+            Router.reload();
           } else {
         NotificationManager.error("Login failed");
       }
@@ -270,7 +270,7 @@ export default function Home() {
   return (
     <>
       <PageHead pageTitle="Bananza - Homepage"></PageHead>
-      {!userState && (
+      {!props.user && (
         <div className={`${styles.guestcontainer}`}>
           <div className={styles.biglogo}>
             <img src="/logo.png" />
@@ -395,7 +395,7 @@ export default function Home() {
           </div>
         </div>
       )}
-      {!!userState && (
+      {props.user && (
         <>
           <Nav />
           <VideoList videos={videos} header="Top five videos of today" />
