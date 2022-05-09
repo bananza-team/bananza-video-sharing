@@ -69,6 +69,27 @@ export default function Profile(props) {
               />
             </div>
           </div>
+          {props.user.type == "manager" && (
+            <div className={styles.profileColumn}>
+              <span className={styles.profileHeader}>Manager data</span>
+              <div className={styles.profileColumnData}>
+                <Input
+                  label="Name"
+                  className="fancyInput"
+                  name="name"
+                  placeholder=""
+                  value={props.user.name}
+                />
+                <Input
+                  label="Surname"
+                  className="fancyInput"
+                  name="surname"
+                  placeholder=""
+                  value={props.user.surname}
+                />
+              </div>
+            </div>
+          )}
         </div>
       </>
     );
