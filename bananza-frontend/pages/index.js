@@ -45,7 +45,7 @@ export default function Home(props) {
     phone: "",
   });
 
-  function login (event) {
+  function login(event) {
     event.preventDefault();
     console.log(loginFormData);
 
@@ -65,32 +65,30 @@ export default function Home(props) {
     );
 
     if (response.status) {
-
       let formData = new FormData();
       formData.append("username", loginFormData.username);
       formData.append("password", loginFormData.password);
       formData.append("grant_type", "password");
 
       fetch("//localhost:8000/auth/login", {
-        method:"POST",
-        body:formData
+        method: "POST",
+        body: formData,
       }).then((response) => {
         response.json().then((parsedJSON) => {
           if (response.status == 200) {
-            localStorage.setItem('token', parsedJSON.access_token);
+            localStorage.setItem("token", parsedJSON.access_token);
             Router.reload();
           } else {
-        NotificationManager.error("Login failed");
-      }
-    })
-  })
-
+            NotificationManager.error("Login failed");
+          }
+        });
+      });
     } else {
       response.messages.forEach((message) => {
         NotificationManager.error(message);
       });
-      }
-  };
+    }
+  }
 
   let register = (event) => {
     event.preventDefault();
@@ -171,10 +169,10 @@ export default function Home(props) {
             NotificationManager.info("Registration was succesful!");
             window.f = registerFormData.cv_link;
 
-            if (!registerFormData.applyManager){
-              setUserState(1);
+            if (!registerFormData.applyManager) {
+              setActiveForm(0);
               return;
-            };
+            }
             let file = new FormData();
             file.append("cv_file", cvfile);
             console.log(file);
@@ -189,7 +187,7 @@ export default function Home(props) {
               .catch(() => {
                 NotificationManager.error("Error uploading CV");
               });
-            setUserState(1);
+            setActiveForm(0);
             return;
           }
 
@@ -366,7 +364,11 @@ export default function Home(props) {
                 )}
                 {!activeForm && (
                   <span id="login-form">
-                    <form onSubmit={login} onChange={updateLoginData} autoComplete="off">
+                    <form
+                      onSubmit={login}
+                      onChange={updateLoginData}
+                      autoComplete="off"
+                    >
                       <div className="formFields">
                         <div className={styles.formColumn}>
                           <Input
