@@ -7,9 +7,7 @@ import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
-import {
-  getCurrentUser,
-} from "../libs/users/currentuser";
+import getCurrentUser from "../libs/users/currentuser";
 
 function MyApp({ Component, pageProps }) {
   pageProps.user = getCurrentUser();
