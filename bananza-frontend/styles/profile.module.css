@@ -1,0 +1,16 @@
+
+.updateAvatarButton, .updateCoverButton{
+    position: absolute;
+    color:white;
+    padding:5px;
+    box-shadow:var(--shadow);
+    cursor:pointer;
+    background:var(--orange);
+}
+.updateAvatarButton:hover, .updateCoverButton:hover{
+    background: black;
+}
+.updateCoverButton{
+    right: 0px;
+    opacity: 0;
+}
