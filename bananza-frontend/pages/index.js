@@ -11,17 +11,24 @@ import {
   validateMail,
   validatePhone,
   addValidation,
+  validateExists,
 } from "/libs/validation/validation.js";
 import { NotificationManager } from "react-notifications";
+import Router from "next/router";
 
 let fileOnChange = (e) => {
   setCVFile(e.target.files[0]);
 };
 
-export default function Home() {
+export default function Home(props) {
   let [cvfile, setCVFile] = useState(null);
-  let [userState, setUserState] = useState(0);
   let [activeForm, setActiveForm] = useState(0);
+
+  let [loginFormData, setLoginFormData] = useState({
+    username: "",
+    password: "",
+  });
+
   let [registerFormData, setRegisterFormData] = useState({
     username: "",
     email: "",
@@ -38,10 +45,50 @@ export default function Home() {
     phone: "",
   });
 
-  let login = (event) => {
+  function login(event) {
     event.preventDefault();
-    setUserState(1);
-  };
+    console.log(loginFormData);
+
+    let response = {
+      status: true,
+      messages: [],
+    };
+    response = addValidation(
+      response,
+      ["Username", loginFormData.username],
+      validateExists
+    );
+    response = addValidation(
+      response,
+      ["Password", loginFormData.password],
+      validateExists
+    );
+
+    if (response.status) {
+      let formData = new FormData();
+      formData.append("username", loginFormData.username);
+      formData.append("password", loginFormData.password);
+      formData.append("grant_type", "password");
+
+      fetch("//localhost:8000/auth/login", {
+        method: "POST",
+        body: formData,
+      }).then((response) => {
+        response.json().then((parsedJSON) => {
+          if (response.status == 200) {
+            localStorage.setItem("token", parsedJSON.access_token);
+            Router.reload();
+          } else {
+            NotificationManager.error("Login failed");
+          }
+        });
+      });
+    } else {
+      response.messages.forEach((message) => {
+        NotificationManager.error(message);
+      });
+    }
+  }
 
   let register = (event) => {
     event.preventDefault();
@@ -82,9 +129,9 @@ export default function Home() {
         ["Phone number", data.phone],
         validatePhone
       );
-      window.f=registerFormData;
+      window.f = registerFormData;
       response = addValidation(response, ["CV File", cvfile], (data) => {
-        window.data=data;
+        window.data = data;
         return {
           status: data[1] != undefined,
           messages: ["CV File must be uploaded"],
@@ -92,17 +139,19 @@ export default function Home() {
       });
       response = addValidation(response, ["CV File", cvfile], (data) => {
         return {
-          status: data[1]?data[1].name.split(".").pop().toLowerCase() == "pdf":false,
+          status: data[1]
+            ? data[1].name.split(".").pop().toLowerCase() == "pdf"
+            : false,
           messages: ["CV File must be a PDF file"],
         };
-        });
-      response = addValidation(response, ["CV File", cvfile], (data)=>{
+      });
+      response = addValidation(response, ["CV File", cvfile], (data) => {
         return {
-          status: data[1]?data[1].size!=0:false,
-          messages:["CV File can't be empty"],
-        }
-      })
-      }
+          status: data[1] ? data[1].size != 0 : false,
+          messages: ["CV File can't be empty"],
+        };
+      });
+    }
 
     delete data.applyManager;
 
@@ -118,22 +167,27 @@ export default function Home() {
         response.json().then((parsedJSON) => {
           if (response.status == 200) {
             NotificationManager.info("Registration was succesful!");
-            window.f=registerFormData.cv_link;
-            
-            if(!registerFormData.applyManager) return;
-            let file=new FormData();
+            window.f = registerFormData.cv_link;
+
+            if (!registerFormData.applyManager) {
+              setActiveForm(0);
+              return;
+            }
+            let file = new FormData();
             file.append("cv_file", cvfile);
             console.log(file);
             fetch("//localhost:8000/application/" + parsedJSON.id, {
               method: "POST",
-              body:file,
-            }).then(response =>{
-              const error = (data && data.message) || response.status;
-              if(!response.ok) return Promise.reject(error);
-            }).catch(()=>{
-              NotificationManager.error("Error uploading CV");
-            });
-            setUserState(1);
+              body: file,
+            })
+              .then((response) => {
+                const error = (data && data.message) || response.status;
+                if (!response.ok) return Promise.reject(error);
+              })
+              .catch(() => {
+                NotificationManager.error("Error uploading CV");
+              });
+            setActiveForm(0);
             return;
           }
 
@@ -177,6 +231,13 @@ export default function Home() {
     });
   };
 
+  let updateLoginData = (e) => {
+    setLoginFormData({
+      ...loginFormData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   let videos = [
     {
       thumbnail: "test.png",
@@ -207,7 +268,7 @@ export default function Home() {
   return (
     <>
       <PageHead pageTitle="Bananza - Homepage"></PageHead>
-      {!userState && (
+      {!props.user && (
         <div className={`${styles.guestcontainer}`}>
           <div className={styles.biglogo}>
             <img src="/logo.png" />
@@ -303,7 +364,11 @@ export default function Home() {
                 )}
                 {!activeForm && (
                   <span id="login-form">
-                    <form onSubmit={login}>
+                    <form
+                      onSubmit={login}
+                      onChange={updateLoginData}
+                      autoComplete="off"
+                    >
                       <div className="formFields">
                         <div className={styles.formColumn}>
                           <Input
@@ -317,6 +382,7 @@ export default function Home() {
                             placeholderText="Your password"
                             label="Password"
                             inputType="password"
+                            value=""
                           />
                         </div>
                       </div>
@@ -331,7 +397,7 @@ export default function Home() {
           </div>
         </div>
       )}
-      {!!userState && (
+      {props.user && (
         <>
           <Nav />
           <VideoList videos={videos} header="Top five videos of today" />

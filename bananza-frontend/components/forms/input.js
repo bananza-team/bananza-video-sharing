@@ -16,6 +16,7 @@ export default function input(props) {
           value={value}
           className={props.className}
           onChange={defaultChange}
+          autoComplete="new-password"
         ></input>
       </label>
     </span>

@@ -131,6 +131,7 @@ nav{
 nav a{
   display:inline-table;
   padding:5px;
+  cursor: pointer;
 }
 nav a:after{
   content: "";
