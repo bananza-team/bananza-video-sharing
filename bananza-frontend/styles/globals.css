@@ -170,13 +170,12 @@ nav .rightNav{
   border-color:transparent;
   width:100%;
 }
-.fancyInput:focus{
-  background: rgb(255,255,255,0.8);
-  box-shadow: var(--shadow);
-}
-
 .notification-container{
   padding:10px;
+}
+
+.notification{
+  box-shadow: var(--shadow) !important;
 }
 
 .loader-container{
