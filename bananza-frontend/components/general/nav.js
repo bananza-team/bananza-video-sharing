@@ -1,4 +1,11 @@
 import Link from "next/link";
+import Router from "next/router";
+
+let logout = (event) =>{
+  event.preventDefault();
+  delete localStorage.token;
+  Router.reload();
+}
 
 export default function Nav() {
   return (
@@ -15,9 +22,7 @@ export default function Nav() {
         </Link>
       </span>
       <span className="rightNav">
-        <Link href="/logout">
-          <a>Logout</a>
-        </Link>
+          <a onClick={logout}>Logout</a>
       </span>
     </nav>
   );
