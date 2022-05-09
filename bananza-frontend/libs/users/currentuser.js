@@ -5,10 +5,10 @@ export default function getCurrentUser() {
 
   useEffect(() => {
     let token = localStorage.token;
-    (() => {
+    ((token) => {
       fetch("//localhost:8000/user/current", {
-        header: {
-          Authorization: `Bearer ${token}`,
+        headers: {
+          "Authorization": "Bearer "+token,
         },
       }).then((response) =>
         response.json().then((parsedJSON) => {
@@ -17,7 +17,7 @@ export default function getCurrentUser() {
           }
         })
       );
-    })();
+    })(token);
   }, []);
 
   return user;
