@@ -18,7 +18,7 @@ export default function Profile(props) {
         <Nav />
         <div
           className={styles.profileBox}
-          style={{ background: `url(${props.user.cover_picture_link})` }}
+          style={{ background: `url(cover.jpg)` }}
         >
           <span className={styles.updateCoverButton}>Change</span>
           <div className={styles.profileAvatarBox}>
