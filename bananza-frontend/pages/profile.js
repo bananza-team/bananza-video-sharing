@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 export default function Profile(props) {
   let router = useRouter();
+  console.log(props.user);
   if (!props.user)
     useEffect(() => {
       router.push("/");
@@ -21,7 +22,7 @@ export default function Profile(props) {
         >
           <span className={styles.updateCoverButton}>Change</span>
           <div className={styles.profileAvatarBox}>
-            <img src={props.user.profilePicture} />
+            <img src="default.png" />
             <div className={styles.updateAvatarOverlay}>
               <span className={styles.updateAvatarButton}>Change</span>
             </div>
