@@ -64,7 +64,7 @@ export default function Profile(props) {
               />
             </div>
           </div>
-          {props.user.type == "manager" && (
+          {props.user.name.length != 0 && (
             <div className={styles.profileColumn}>
               <span className={styles.profileHeader}>Manager data</span>
               <div className={styles.profileColumnData}>
