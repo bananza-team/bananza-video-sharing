@@ -49,7 +49,7 @@ export default function Profile(props) {
             <span onClick={() => updateMenu(1)}>Videos</span>
           </div>
         <div className={styles.profileColumns}>
-          {!menu && <div className={styles.profileColumn}>
+          {!menu && <><div className={styles.profileColumn}>
             <span className={styles.profileHeader}>Profile data</span>
             <div className={styles.profileColumnData}>
               <Input
@@ -77,9 +77,11 @@ export default function Profile(props) {
               />
             </div>
           </div>
+          </>
           }
 
           {props.user.name.length != 0 && !menu && (
+            <>
             <div className={styles.profileColumn}>
               <span className={styles.profileHeader}>Manager data</span>
               <div className={styles.profileColumnData}>
@@ -99,13 +101,15 @@ export default function Profile(props) {
                 />
               </div>
             </div>
-          )}
-          {!menu && <div className={styles.profileColumn} id="#submitColumn">
-            <button>Submit</button>
-          </div>
-          }
+            </>
+            )}
           {!!menu && <>videos</>}
         </div>
+        {!menu &&
+        <div className={styles.submitButton}>
+            <button>Submit</button>
+            </div>
+}
       </>
     );
 }

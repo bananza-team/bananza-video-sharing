@@ -61,8 +61,10 @@
     opacity:1;
 }
 .profileColumns{
-    display:flex;
-    width:100%;
+    margin:20px;
+    margin-top:0px;
+    display: flex;
+    justify-content: center;
 }
 .profileColumn{
     padding:10px;
@@ -74,6 +76,7 @@
     margin-right:0px;
     display: flex;
     flex-direction: column;
+
 }
 .profileHeader{
     color:white;
@@ -97,16 +100,24 @@
     box-shadow: var(--shadow);
 }
 .hint{
-    position: absolute;
+    position: fixed;
     right:10px;
     bottom:10px;
     background: var(--dblack);
     color:white;
     padding:5px;
 }
-.profileColumns > div:nth-last-child(1){
+.submitButton{
     display: flex;
     align-items: center;
+    justify-content: center;
+    margin: 0 !important;
+    pointer-events: none;
+}
+.submitButton button{
+    pointer-events:all;
+    margin-bottom:20px;
+    margin-top:-10px;
 }
 .tabmenu{
     display: flex;
