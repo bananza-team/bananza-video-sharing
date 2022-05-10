@@ -11,7 +11,7 @@ We'll use _Poetry_ as a package and environment manager.
 2. cd bananza-video-sharing/bananza-backend/
 3. poetry install
 4. cd src
-5. poetry run uvicorn bananza_backend.fastapi:app --host 0 --port 8000 --reload
+5. poetry run uvicorn bananza_backend.fastapi:app --host localhost --port 8000 --reload
 
 ---
 
