@@ -70,10 +70,10 @@
     padding-bottom:0px;
     color:white;
     margin:10px;
+    margin-top:38px;
     margin-right:0px;
-}
-.profileColumnData{
-    margin-top:15px;
+    display: flex;
+    flex-direction: column;
 }
 .profileHeader{
     color:white;
@@ -109,22 +109,18 @@
     align-items: center;
 }
 .tabmenu{
-    display:flex;
-    padding:0px !important;
-    flex-direction: column;
-    background: var(--dblack);
+    display: flex;
     justify-content: center;
+    position: absolute;
+    background: rgb(255,255,255,0.1);
+    width:100%;
 }
 .tabmenu span{
-    padding:20px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:20px;
-    height:50%;
+    color:white;
     cursor: pointer;
+    padding:10px;
 }
+.tabmenu span:hover,
 .activeMenu{
-    background: rgb(0,0,0,0.5);
-    box-shadow: var(--shadow);
+    background: rgb(0,0,0,0.2);
 }

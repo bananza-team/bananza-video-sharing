@@ -2,9 +2,16 @@ import PageHead from "/components/general/pageHead";
 import Nav from "/components/general/nav";
 import styles from "../styles/profile.module.css";
 import Input from "/components/forms/input";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 export default function Profile(props) {
+
+  let [menu, setMenu] = useState(0);
+
+  let updateMenu = (id)=>{
+      setMenu(id);
+  }
+
   let router = useRouter();
   console.log(props.user);
   if (!props.user)
@@ -37,12 +44,12 @@ export default function Profile(props) {
             />
           </div>
         </div>
-        <div className={styles.profileColumns}>
-          <div className={`${styles.profileColumn} ${styles.tabmenu}`}>
-            <span className={styles.activeMenu}>Profile</span>
-            <span>Videos</span>
+        <div className={styles.tabmenu}>
+            <span onClick={() => updateMenu(0)}>Profile</span>
+            <span onClick={() => updateMenu(1)}>Videos</span>
           </div>
-          <div className={styles.profileColumn}>
+        <div className={styles.profileColumns}>
+          {!menu && <div className={styles.profileColumn}>
             <span className={styles.profileHeader}>Profile data</span>
             <div className={styles.profileColumnData}>
               <Input
@@ -70,7 +77,9 @@ export default function Profile(props) {
               />
             </div>
           </div>
-          {props.user.name.length != 0 && (
+          }
+
+          {props.user.name.length != 0 && !menu && (
             <div className={styles.profileColumn}>
               <span className={styles.profileHeader}>Manager data</span>
               <div className={styles.profileColumnData}>
@@ -91,9 +100,11 @@ export default function Profile(props) {
               </div>
             </div>
           )}
-          <div className={styles.profileColumn} id="#submitColumn">
+          {!menu && <div className={styles.profileColumn} id="#submitColumn">
             <button>Submit</button>
           </div>
+          }
+          {!!menu && <>videos</>}
         </div>
       </>
     );
