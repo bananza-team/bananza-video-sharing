@@ -112,14 +112,15 @@ input{
 }
 label{
 margin-bottom:2px;
+color: orange;
+font-weight: 600;
+
 }
 
 /* Navigation */
 nav{
   background:url("/index.jpg");
   color:white;
-  display:flex;
-  align-items:center;
   box-shadow: var(--shadow);
   width:100%;
   position:sticky;
@@ -128,10 +129,24 @@ nav{
   background-size:contain !important;
   z-index: 10;
 }
+nav div{
+  display:flex;
+  align-items:center;
+  background:rgb(0,0,0,0.4);
+  box-shadow: var(--shadow);
+}
 nav a{
   display:inline-table;
   padding:5px;
   cursor: pointer;
+  font-size:30px;
+  font-weight:lighter;
+  letter-spacing:1px;
+  background:rgb(255,255,255,0.05);
+  margin-left:10px;
+  border-left:2px solid orange;
+  border-radius: 10px 0 10px 0;
+  box-shadow: var(--shadow);
 }
 nav a:after{
   content: "";
