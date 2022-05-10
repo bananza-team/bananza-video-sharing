@@ -49,6 +49,19 @@ class UserRepo:
             raise EntityNotFound(message=f"User with id {user_id} not found")
         return found_user
 
+    def get_public_by_id(self, user_id: int) -> UserModel:
+        found_user = self.db.query(UserModel).with_entities(
+            UserModel.username,
+            UserModel.type,
+            UserModel.description,
+            UserModel.profile_picture_link,
+            UserModel.cover_picture_link,
+            UserModel.is_active
+        ).filter(UserModel.id == user_id).first()
+        if not found_user:
+            raise EntityNotFound(message=f"User with id {user_id} not found")
+        return found_user
+
     def get_by_username(self, username: str) -> UserModel:
         found_user = self.db.query(UserModel).filter(UserModel.username == username).first()
         if not found_user:
