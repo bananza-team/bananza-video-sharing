@@ -3,8 +3,10 @@ This project's goal is a backend service for the video sharing app named Bananza
 referring the platform's users, their channels and videos.
 
 We'll use _Poetry_ as a package and environment manager.
+
 ---
-###Local deployment
+
+### Local deployment
 1. Clone the repo
 2. cd bananza-video-sharing/bananza-backend/
 3. poetry install
