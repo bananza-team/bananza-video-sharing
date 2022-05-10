@@ -38,6 +38,10 @@ export default function Profile(props) {
           </div>
         </div>
         <div className={styles.profileColumns}>
+          <div className={`${styles.profileColumn} ${styles.tabmenu}`}>
+            <span className={styles.activeMenu}>Profile</span>
+            <span>Videos</span>
+          </div>
           <div className={styles.profileColumn}>
             <span className={styles.profileHeader}>Profile data</span>
             <div className={styles.profileColumnData}>
