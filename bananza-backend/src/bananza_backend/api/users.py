@@ -30,6 +30,6 @@ async def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
 
 
 @router.patch("/current/info", summary="Edit user by ID", response_model=User)
-async def edit_user_by_id(id: int, new_details: UserEdit, db: Session = Depends(get_db)):
+async def edit_user_by_id(user_id: int, new_details: UserEdit, db: Session = Depends(get_db)):
     user_repo = UserRepo(db)
-    return user_repo.edit_by_id(id, new_details)
+    return user_repo.edit_by_id(user_id, new_details)
