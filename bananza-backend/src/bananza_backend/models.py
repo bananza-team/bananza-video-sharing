@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from enum import Enum
 from typing import List, Optional
-from typing import Any
+
 
 class UserTypeEnum(str, Enum):
     creator = "creator"
@@ -32,6 +32,17 @@ class UserBase(UserPublic):
 
 class UserCreate(UserBase):
     password: Optional[str] = Field(description="Password, introduced at register, unhashed")
+
+
+class UserEdit(BaseModel):
+    username: Optional[str] = Field(description="New username that the user wants, has to be unique")
+    email: Optional[str] = Field(description="New unused email that the user wants")
+    description: Optional[str] = Field(description="A new description for the user's profile")
+    name: Optional[str] = Field(description="Name of the manager, that he wishes to change")
+    surname: Optional[str] = Field(description="Surname of the manager, that he wishes to change")
+    phone: Optional[str] = Field(description="Phone number that the manager wishes to change")
+    new_password: Optional[str] = Field(description="New password that the user wishes to have")
+    old_password: Optional[str] = Field(description="Old password of the user, used to validate the change")
 
 
 class User(UserBase):
