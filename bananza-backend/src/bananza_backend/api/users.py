@@ -3,7 +3,7 @@ from bananza_backend.db.sql_db import get_db
 from bananza_backend.services.users.repository import UserRepo
 from bananza_backend.services.authentication.handler import AuthHandler, oauth2_scheme
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, UploadFile, File
 from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/user", tags=["User management"])
@@ -26,7 +26,16 @@ async def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
     return UserRepo(db).get_public_by_id(user_id)
 
 
-@router.patch("/current/info", summary="Edit user by ID", response_model=User)
+@router.patch("/current/info", summary="Edit current user's info", response_model=User)
 async def edit_current_user(new_details: UserEdit, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
-    user = AuthHandler(db).get_current_user_by_token(token)
-    return UserRepo(db).edit(user, new_details)
+    current_user = AuthHandler(db).get_current_user_by_token(token)
+    return UserRepo(db).edit(current_user, new_details)
+
+
+@router.patch("/current/profile_picture", summary="Edit current user's profile picture", response_model=User)
+async def edit_current_user_profile_pic(profile_pic: UploadFile = File(...), db: Session = Depends(get_db),
+                                        token: str = Depends(oauth2_scheme)):
+    current_user = AuthHandler(db).get_current_user_by_token(token)
+    updated_user = await UserRepo(db).edit_profile_picture(current_user, profile_pic)
+    return updated_user
+
