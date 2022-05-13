@@ -1,9 +1,8 @@
 from bananza_backend.db.sql_models import UserModel
-from bananza_backend.db.sql_db import get_db
-from bananza_backend.models import UserCreate, User, UserTypeEnum
-from bananza_backend.exceptions import EntityNotFound, EntityAlreadyExists
+from bananza_backend.models import UserCreate, UserEdit, UserTypeEnum
+from bananza_backend.exceptions import EntityNotFound, EntityAlreadyExists, InvalidCredentials
+from passlib.context import CryptContext
 
-import sqlite3
 from loguru import logger
 from sqlalchemy.orm import Session
 import bcrypt
@@ -51,6 +50,7 @@ class UserRepo:
 
     def get_public_by_id(self, user_id: int) -> UserModel:
         found_user = self.db.query(UserModel).with_entities(
+            UserModel.id,
             UserModel.username,
             UserModel.type,
             UserModel.description,
@@ -74,34 +74,21 @@ class UserRepo:
             raise EntityNotFound(message=f"User with email '{email}' not found")
         return found_user
 
-    # this will supposedly be used when parsing the JWT token of the "current user", returning a User object or his ID
-    def edit_by_id(self, user_id: int, new_user_details: UserCreate) -> UserModel:
-        db_user = self.get_by_id(user_id)
+    def edit(self, user: UserModel, new_user_details: UserEdit) -> UserModel:
+        if not self.__verify_password(new_user_details.old_password, user.hashed_password):
+            raise InvalidCredentials(details=f"The old password introduced is incorrect.")
 
-        if new_user_details.username != db_user.username:
-            self.__check_username_unicity(new_user_details.username)
-
-        if new_user_details.email != db_user.email:
-            self.__check_email_unicity(new_user_details.email)
+        self.__check_user_unicity(new_user_details, excepted_user=user)
 
         for key, value in new_user_details:
-            if hasattr(db_user, key):
-                setattr(db_user, key, value)
-            if key == 'password':
-                setattr(db_user, 'hashed_password', self.__hash_password(new_user_details.password))
+            if hasattr(user, key):
+                setattr(user, key, value)
+            if key == 'new_password':
+                setattr(user, 'hashed_password', self.__hash_password(new_user_details.new_password))
 
-        # db_user.update({
-        #     'username': new_user_details.username,
-        #     'hashed_password': self.__hash_password(new_user_details.password),
-        #     'email': new_user_details.email,
-        #     'description': new_user_details.description,
-        #     'profile_picture_link': new_user_details.profile_picture_link,
-        #     'cover_picture_link': new_user_details.cover_picture_link
-        # }
-        # )
         self.db.commit()
-        self.db.refresh(db_user)
-        return db_user
+        self.db.refresh(user)
+        return user
 
     def get_all(self):
         pass
@@ -123,7 +110,18 @@ class UserRepo:
         )
         return hashed_password
 
-    def __check_user_unicity(self, user):
+    def __verify_password(self, plain_password, hashed_password):
+        pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+        return pwd_context.verify(plain_password, hashed_password)
+
+    def __check_user_unicity(self, user, excepted_user: UserModel = None):
+        if excepted_user:
+            if excepted_user.username != user.username:
+                self.__check_username_unicity(user.username)
+            if excepted_user.email != user.email:
+                self.__check_email_unicity(user.email)
+            return
+
         self.__check_username_unicity(user.username)
         self.__check_email_unicity(user.email)
 
