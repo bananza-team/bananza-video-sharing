@@ -117,6 +117,28 @@ class UserRepo:
         except Exception as e:
             raise FileUploadFailed(message="Couldn't update profile pic", details=str(e))
 
+    async def edit_cover_picture(self, user: UserModel, new_cover_pic: File):
+        try:
+            cover_pic_contents = await new_cover_pic.read()
+
+            if not cover_pic_contents:
+                raise FileUploadFailed(message="Couldn't update cover pic", details=f"No cover picture given.")
+
+            date_right_now = datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
+            cover_pic_generated_name = f"cover-pic-{user.username}-{date_right_now}.jpeg"
+
+            cover_pic_saved_path = path.join(self.cover_pic_folder_path, cover_pic_generated_name)
+            with open(cover_pic_saved_path, 'wb') as out_file:
+                out_file.write(cover_pic_contents)
+
+            user.cover_picture_link = cover_pic_saved_path
+            self.db.commit()
+            self.db.refresh(user)
+            return user
+
+        except Exception as e:
+            raise FileUploadFailed(message="Couldn't update cover pic", details=str(e))
+
     def get_all(self):
         pass
 
