@@ -1,16 +1,21 @@
 from bananza_backend.db.sql_models import UserModel
 from bananza_backend.models import UserCreate, UserEdit, UserTypeEnum
-from bananza_backend.exceptions import EntityNotFound, EntityAlreadyExists, InvalidCredentials
+from bananza_backend.exceptions import EntityNotFound, EntityAlreadyExists, InvalidCredentials, FileUploadFailed
 from passlib.context import CryptContext
 
 from loguru import logger
 from sqlalchemy.orm import Session
+from fastapi import File
 import bcrypt
+from datetime import datetime
+from os import path
 
 
 class UserRepo:
     def __init__(self, database_session: Session):
         self.db = database_session
+        self.profile_pic_folder_path = '../resources/pictures/profile_pic'
+        self.cover_pic_folder_path = '../resources/pictures/cover_pic'
 
     def add(self, user: UserCreate) -> UserModel:
         self.__check_user_unicity(user)
@@ -89,6 +94,28 @@ class UserRepo:
         self.db.commit()
         self.db.refresh(user)
         return user
+
+    async def edit_profile_picture(self, user: UserModel, new_profile_pic: File):
+        try:
+            profile_pic_contents = await new_profile_pic.read()
+
+            if not profile_pic_contents:
+                raise FileUploadFailed(message="Couldn't update profile pic", details=f"No profile picture given.")
+
+            date_right_now = datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
+            profile_pic_generated_name = f"profile-pic-{user.username}-{date_right_now}.jpeg"
+
+            profile_pic_saved_path = path.join(self.profile_pic_folder_path, profile_pic_generated_name)
+            with open(profile_pic_saved_path, 'wb') as out_file:
+                out_file.write(profile_pic_contents)
+
+            user.profile_picture_link = profile_pic_saved_path
+            self.db.commit()
+            self.db.refresh(user)
+            return user
+
+        except Exception as e:
+            raise FileUploadFailed(message="Couldn't update profile pic", details=str(e))
 
     def get_all(self):
         pass
