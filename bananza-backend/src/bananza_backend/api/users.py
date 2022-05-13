@@ -39,3 +39,10 @@ async def edit_current_user_profile_pic(profile_pic: UploadFile = File(...), db:
     updated_user = await UserRepo(db).edit_profile_picture(current_user, profile_pic)
     return updated_user
 
+
+@router.patch("/current/cover_picture", summary="Edit current user's cover picture", response_model=User)
+async def edit_current_user_cover_pic(cover_pic: UploadFile = File(...), db: Session = Depends(get_db),
+                                      token: str = Depends(oauth2_scheme)):
+    current_user = AuthHandler(db).get_current_user_by_token(token)
+    updated_user = await UserRepo(db).edit_cover_picture(current_user, cover_pic)
+    return updated_user
