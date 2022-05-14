@@ -98,6 +98,22 @@ class VideoModel(BaseModel):
         "UserModel",
         back_populates="videos"
     )
+    title = Column(
+        String,
+        nullable=False
+    )
+    description = Column(
+        String,
+        nullable=True
+    )
+    resource_link = Column(
+        String,
+        nullable=False
+    )
+    thumbnail_image_link = Column(
+        String,
+        nullable=False
+    )
 
 
 class ManagerApplicationsModel(BaseModel):
