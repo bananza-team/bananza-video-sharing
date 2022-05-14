@@ -116,11 +116,13 @@ export default function Profile(props) {
           className={styles.profileBox}
           style={{ background: `url(cover.jpg)` }}
         >
-          <span className={styles.updateCoverButton}>Change</span>
+          <input type="file" id="cover-upload" hidden/>
+          <label className={styles.updateCoverButton} for="cover-upload">Change</label>
           <div className={styles.profileAvatarBox}>
             <img src="default.png" />
             <div className={styles.updateAvatarOverlay}>
-              <span className={styles.updateAvatarButton}>Change</span>
+              <input type="file" id="avatar-upload" hidden/>
+              <label className={styles.updateAvatarButton} for="avatar-upload">Change</label>
             </div>
           </div>
           <div className={styles.profileUsernameBox}>
