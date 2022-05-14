@@ -136,8 +136,31 @@ export default function Profile(props) {
     response.messages.forEach(message => {
       NotificationManager.error(message);
     });
+
+    if(!response.status) return;
+
     let body = new FormData();
-    
+    body.append("profile_pic", file);
+    fetch("//localhost:8000/user/current/profile_picture", {
+      method:"PATCH",
+      headers: {
+        Authorization: "Bearer " + localStorage.token,
+      },
+      body:body
+    }).then(response => response.json().then(parsedJSON=>{
+      if(response.status == 200){
+        NotificationManager.info("Profile picture updated");
+        updateAvatar(URL.createObjectURL(file));
+      } else {
+        if(response.status == 401){
+          NotificationManager.error("Not authenticated");
+          setTimeout(Router.reload, 1000);
+        } else {
+          NotificationManager.error("Unknown error. Refreshing the page may help");
+        }
+      }
+    }))
+
   }
 
   let router = useRouter();
