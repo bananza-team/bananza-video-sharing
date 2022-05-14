@@ -72,7 +72,7 @@ export default function Upload(props) {
         let xhr = new XMLHttpRequest();
 
         xhr.upload.onprogress = (event)=>{
-            setProgress(event.loaded/event.total);
+            setProgress(parseInt(event.loaded/event.total*100));
         }
 
         xhr.open('POST', "/upload-file");
