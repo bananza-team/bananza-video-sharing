@@ -60,7 +60,7 @@
 }
 .profileColumns{
     margin:20px;
-    margin-top:0px;
+    margin-top:40px;
     display: flex;
     justify-content: center;
 }
@@ -69,9 +69,9 @@
     padding-right:0px;
     padding-bottom:0px;
     color:white;
-    margin:10px;
-    margin-top:38px;
-    margin-right:0px;
+    margin:40px;
+    margin-left:20px;
+    margin-right:20px;
     display: flex;
     flex-direction: column;
 
