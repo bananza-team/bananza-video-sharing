@@ -102,35 +102,37 @@ export default function Profile(props) {
 
   let [avatar, updateAvatar] =
    useState("//localhost:8000"+props.user.profile_picture_link.replace("..", ""));
+  let [cover, updateCover] =
+   useState("//localhost:8000"+props.user.cover_picture_link.replace("..", "").replace("\\", "/"));
 
-  let uploadAvatar = (e)=>{
-    
+  let uploadPicture = (apiLink, name, stateUpdate, field_name)=>{
+    return (e)=>{
     let file= e.target.files[0];
     let response = {
       status:true,
       messages:[],
     }
 
-    response = addValidation(response, ["Avatar", file], (data)=>{
+    response = addValidation(response, [name, file], (data)=>{
       return {
       status:data[1] != undefined,
-      message:"Avatar file must be uploade",
+      message:name+" file must be uploaded",
       }
     }) // this validation may not be necessary
 
-    response = addValidation(response, ["Avatar", file], (data)=>{
+    response = addValidation(response, [name, file], (data)=>{
       return {
         status: data[1]
         ? /jpg|jpeg|png|gif/.test(data[1].name.split(".").pop().toLowerCase())
         : false,
-      messages: ["The avatar must be an image(jpg, jpeg, png or gif)"],
+      messages: ["The "+name+" must be an image(jpg, jpeg, png or gif)"],
       }
     })
 
-    response = addValidation(response, ["Avatar", file], (data)=>{
+    response = addValidation(response, [name, file], (data)=>{
       return {
         status: data[1] ? data[1].size != 0 : false,
-        messages: ["Avatar file can't be empty"],
+        messages: [name+" file can't be empty"],
       }
     })
 
@@ -141,8 +143,8 @@ export default function Profile(props) {
     if(!response.status) return;
 
     let body = new FormData();
-    body.append("profile_pic", file);
-    fetch("//localhost:8000/user/current/profile_picture", {
+    body.append(field_name, file);
+    fetch(apiLink, {
       method:"PATCH",
       headers: {
         Authorization: "Bearer " + localStorage.token,
@@ -150,8 +152,8 @@ export default function Profile(props) {
       body:body
     }).then(response => response.json().then(parsedJSON=>{
       if(response.status == 200){
-        NotificationManager.info("Profile picture updated");
-        updateAvatar(URL.createObjectURL(file));
+        NotificationManager.info(name+" updated");
+        stateUpdate(URL.createObjectURL(file));
       } else {
         if(response.status == 401){
           NotificationManager.error("Not authenticated");
@@ -163,6 +165,7 @@ export default function Profile(props) {
     }))
 
   }
+}
 
   let router = useRouter();
   if (!props.user)
@@ -178,14 +181,18 @@ export default function Profile(props) {
         <span className={styles.hint}><i class="fa-solid fa-circle-exclamation"></i> Click any data to edit it!</span>
         <div
           className={styles.profileBox}
-          style={{ background: `url(cover.jpg)` }}
+          style={{backgroundImage: `url(${cover})`}}
         >
-          <input type="file" id="cover-upload" hidden/>
+          <input type="file" id="cover-upload" hidden onChange={
+            uploadPicture("//localhost:8000/user/current/cover_picture", "Cover picture", updateCover, "cover_pic")
+          }/>
           <label className={styles.updateCoverButton} for="cover-upload">Change</label>
           <div className={styles.profileAvatarBox}>
             <img src={avatar} />
             <div className={styles.updateAvatarOverlay}>
-              <input type="file" id="avatar-upload" hidden onChange={uploadAvatar}/>
+              <input type="file" id="avatar-upload" hidden onChange={
+                uploadPicture("//localhost:8000/user/current/profile_picture", "Avatar", updateAvatar, "profile_pic")
+                }/>
               <label className={styles.updateAvatarButton} for="avatar-upload">Change</label>
             </div>
           </div>
