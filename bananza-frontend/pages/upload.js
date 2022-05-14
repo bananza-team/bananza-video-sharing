@@ -68,11 +68,13 @@ export default function Upload(props) {
 
         response.messages.forEach(message=>NotificationManager.error(message));
         
-        
+        if(!response.status) return;
+
         let xhr = new XMLHttpRequest();
 
         xhr.upload.onprogress = (event)=>{
             setProgress(parseInt(event.loaded/event.total*100));
+            setProgressStyleString("--progress: "+progress+"%");
         }
 
         xhr.open('POST', "/upload-file");
@@ -107,6 +109,12 @@ export default function Upload(props) {
                 Video file
                 <input name="video"
                     onChange={(e)=>{setVideo(e.target.files[0])}} id="video" type="file" />
+                {progress>=0 && <>
+                <div className={styles.progress}>
+                <span className={styles.progressBar} style={{"--progress":`${progress}`+"%"}}></span>
+                <span className={styles.progressText}>Uploading - {parseInt(progress)}%</span>
+                </div>
+                </>}
               </label>
             </div>
             <div className={styles.formColumn}>
