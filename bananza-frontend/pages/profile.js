@@ -100,6 +100,46 @@ export default function Profile(props) {
 
   }
 
+  let [avatar, updateAvatar]=useState(props.user.profile_picture_link);
+
+  let uploadAvatar = (e)=>{
+    
+    let file= e.target.files[0];
+    let response = {
+      status:true,
+      messages:[],
+    }
+
+    response = addValidation(response, ["Avatar", file], (data)=>{
+      return {
+      status:data[1] != undefined,
+      message:"Avatar file must be uploade",
+      }
+    }) // this validation may not be necessary
+
+    response = addValidation(response, ["Avatar", file], (data)=>{
+      return {
+        status: data[1]
+        ? /jpg|jpeg|png|gif/.test(data[1].name.split(".").pop().toLowerCase())
+        : false,
+      messages: ["The avatar must be an image(jpg, jpeg, png or gif)"],
+      }
+    })
+
+    response = addValidation(response, ["Avatar", file], (data)=>{
+      return {
+        status: data[1] ? data[1].size != 0 : false,
+        messages: ["Avatar file can't be empty"],
+      }
+    })
+
+    response.messages.forEach(message => {
+      NotificationManager.error(message);
+    });
+    let body = new FormData();
+    
+  }
+
   let router = useRouter();
   if (!props.user)
     useEffect(() => {
@@ -121,7 +161,7 @@ export default function Profile(props) {
           <div className={styles.profileAvatarBox}>
             <img src="default.png" />
             <div className={styles.updateAvatarOverlay}>
-              <input type="file" id="avatar-upload" hidden/>
+              <input type="file" id="avatar-upload" hidden onChange={uploadAvatar}/>
               <label className={styles.updateAvatarButton} for="avatar-upload">Change</label>
             </div>
           </div>
