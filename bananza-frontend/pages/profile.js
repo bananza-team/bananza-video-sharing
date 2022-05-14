@@ -61,7 +61,15 @@ export default function Profile(props) {
 
     if(!response.status) return;
 
-    
+    let data = profileData;
+    if(!data.password.length) data.password=data.currentPassword;
+
+    fetch("//localhost:8000/user/current/info", {
+      method:"PATCH",
+      data:JSON.stringify(data)
+    }).then(response.json().then((parsedJSON)=>{
+      
+    }))
 
   }
 
