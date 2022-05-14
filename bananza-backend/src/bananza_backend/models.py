@@ -9,14 +9,18 @@ class UserTypeEnum(str, Enum):
     admin = "admin"
 
 
-class UserBase(BaseModel):
+class UserPublic(BaseModel):
     username: Optional[str] = Field(description="Username, introduced at register")
-    email: Optional[str] = Field(description="Email, introduced at register")
     type: Optional[UserTypeEnum] = Field(description="Type of user, deciding his rights (creator, manager, admin)")
     description: Optional[str] = Field(description="Description which appears on the user's profile")
     profile_picture_link: Optional[str] = Field(description="Profile pic which appears on the user's profile")
     cover_picture_link: Optional[str] = Field(description="Cover picture which appears on the user's profile")
-    is_active: Optional[bool] = Field(description="User's active status, False if he's suspended/he deleted his account")
+    is_active: Optional[bool] = Field(
+        description="User's active status, False if he's suspended/he deleted his account")
+
+
+class UserBase(UserPublic):
+    email: Optional[str] = Field(description="Email, introduced at register")
     cv_link: Optional[str] = Field(description="CV link, existent only if user applies for management position",
                                    default="")
     name: Optional[str] = Field(description="Name, existent only if user applies for management position", default="")
@@ -28,6 +32,17 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: Optional[str] = Field(description="Password, introduced at register, unhashed")
+
+
+class UserEdit(BaseModel):
+    username: Optional[str] = Field(description="New username that the user wants, has to be unique")
+    email: Optional[str] = Field(description="New unused email that the user wants")
+    description: Optional[str] = Field(description="A new description for the user's profile")
+    name: Optional[str] = Field(description="Name of the manager, that he wishes to change")
+    surname: Optional[str] = Field(description="Surname of the manager, that he wishes to change")
+    phone: Optional[str] = Field(description="Phone number that the manager wishes to change")
+    new_password: Optional[str] = Field(description="New password that the user wishes to have")
+    old_password: Optional[str] = Field(description="Old password of the user, used to validate the change")
 
 
 class User(UserBase):

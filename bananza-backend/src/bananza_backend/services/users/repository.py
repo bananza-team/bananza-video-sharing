@@ -1,17 +1,21 @@
 from bananza_backend.db.sql_models import UserModel
-from bananza_backend.db.sql_db import get_db
-from bananza_backend.models import UserCreate, User, UserTypeEnum
-from bananza_backend.exceptions import EntityNotFound, EntityAlreadyExists
+from bananza_backend.models import UserCreate, UserEdit, UserTypeEnum
+from bananza_backend.exceptions import EntityNotFound, EntityAlreadyExists, InvalidCredentials, FileUploadFailed
+from passlib.context import CryptContext
 
-import sqlite3
 from loguru import logger
 from sqlalchemy.orm import Session
+from fastapi import File
 import bcrypt
+from datetime import datetime
+from os import path
 
 
 class UserRepo:
     def __init__(self, database_session: Session):
         self.db = database_session
+        self.profile_pic_folder_path = '../resources/pictures/profile_pic'
+        self.cover_pic_folder_path = '../resources/pictures/cover_pic'
 
     def add(self, user: UserCreate) -> UserModel:
         self.__check_user_unicity(user)
@@ -49,6 +53,20 @@ class UserRepo:
             raise EntityNotFound(message=f"User with id {user_id} not found")
         return found_user
 
+    def get_public_by_id(self, user_id: int) -> UserModel:
+        found_user = self.db.query(UserModel).with_entities(
+            UserModel.id,
+            UserModel.username,
+            UserModel.type,
+            UserModel.description,
+            UserModel.profile_picture_link,
+            UserModel.cover_picture_link,
+            UserModel.is_active
+        ).filter(UserModel.id == user_id).first()
+        if not found_user:
+            raise EntityNotFound(message=f"User with id {user_id} not found")
+        return found_user
+
     def get_by_username(self, username: str) -> UserModel:
         found_user = self.db.query(UserModel).filter(UserModel.username == username).first()
         if not found_user:
@@ -61,34 +79,65 @@ class UserRepo:
             raise EntityNotFound(message=f"User with email '{email}' not found")
         return found_user
 
-    # this will supposedly be used when parsing the JWT token of the "current user", returning a User object or his ID
-    def edit_by_id(self, user_id: int, new_user_details: UserCreate) -> UserModel:
-        db_user = self.get_by_id(user_id)
+    def edit(self, user: UserModel, new_user_details: UserEdit) -> UserModel:
+        if not self.__verify_password(new_user_details.old_password, user.hashed_password):
+            raise InvalidCredentials(details=f"The old password introduced is incorrect.")
 
-        if new_user_details.username != db_user.username:
-            self.__check_username_unicity(new_user_details.username)
-
-        if new_user_details.email != db_user.email:
-            self.__check_email_unicity(new_user_details.email)
+        self.__check_user_unicity(new_user_details, excepted_user=user)
 
         for key, value in new_user_details:
-            if hasattr(db_user, key):
-                setattr(db_user, key, value)
-            if key == 'password':
-                setattr(db_user, 'hashed_password', self.__hash_password(new_user_details.password))
+            if hasattr(user, key):
+                setattr(user, key, value)
+            if key == 'new_password':
+                setattr(user, 'hashed_password', self.__hash_password(new_user_details.new_password))
 
-        # db_user.update({
-        #     'username': new_user_details.username,
-        #     'hashed_password': self.__hash_password(new_user_details.password),
-        #     'email': new_user_details.email,
-        #     'description': new_user_details.description,
-        #     'profile_picture_link': new_user_details.profile_picture_link,
-        #     'cover_picture_link': new_user_details.cover_picture_link
-        # }
-        # )
         self.db.commit()
-        self.db.refresh(db_user)
-        return db_user
+        self.db.refresh(user)
+        return user
+
+    async def edit_profile_picture(self, user: UserModel, new_profile_pic: File):
+        try:
+            profile_pic_contents = await new_profile_pic.read()
+
+            if not profile_pic_contents:
+                raise FileUploadFailed(message="Couldn't update profile pic", details=f"No profile picture given.")
+
+            date_right_now = datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
+            profile_pic_generated_name = f"profile-pic-{user.username}-{date_right_now}.jpeg"
+
+            profile_pic_saved_path = path.join(self.profile_pic_folder_path, profile_pic_generated_name)
+            with open(profile_pic_saved_path, 'wb') as out_file:
+                out_file.write(profile_pic_contents)
+
+            user.profile_picture_link = profile_pic_saved_path
+            self.db.commit()
+            self.db.refresh(user)
+            return user
+
+        except Exception as e:
+            raise FileUploadFailed(message="Couldn't update profile pic", details=str(e))
+
+    async def edit_cover_picture(self, user: UserModel, new_cover_pic: File):
+        try:
+            cover_pic_contents = await new_cover_pic.read()
+
+            if not cover_pic_contents:
+                raise FileUploadFailed(message="Couldn't update cover pic", details=f"No cover picture given.")
+
+            date_right_now = datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
+            cover_pic_generated_name = f"cover-pic-{user.username}-{date_right_now}.jpeg"
+
+            cover_pic_saved_path = path.join(self.cover_pic_folder_path, cover_pic_generated_name)
+            with open(cover_pic_saved_path, 'wb') as out_file:
+                out_file.write(cover_pic_contents)
+
+            user.cover_picture_link = cover_pic_saved_path
+            self.db.commit()
+            self.db.refresh(user)
+            return user
+
+        except Exception as e:
+            raise FileUploadFailed(message="Couldn't update cover pic", details=str(e))
 
     def get_all(self):
         pass
@@ -110,7 +159,18 @@ class UserRepo:
         )
         return hashed_password
 
-    def __check_user_unicity(self, user):
+    def __verify_password(self, plain_password, hashed_password):
+        pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+        return pwd_context.verify(plain_password, hashed_password)
+
+    def __check_user_unicity(self, user, excepted_user: UserModel = None):
+        if excepted_user:
+            if excepted_user.username != user.username:
+                self.__check_username_unicity(user.username)
+            if excepted_user.email != user.email:
+                self.__check_email_unicity(user.email)
+            return
+
         self.__check_username_unicity(user.username)
         self.__check_email_unicity(user.email)
 

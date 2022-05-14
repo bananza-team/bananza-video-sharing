@@ -24,7 +24,7 @@ class AuthHandler:
         self.users_repo = UserRepo(database_session)
         self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-    def get_current_user_by_token(self, token: str):
+    def get_current_user_by_token(self, token: str) -> UserModel:
         token_data = AuthHandler.decode_user_token(token)
         user_id: int = token_data['id']
 

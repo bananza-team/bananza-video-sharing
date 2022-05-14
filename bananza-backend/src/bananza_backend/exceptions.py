@@ -39,3 +39,7 @@ class InvalidCredentials(GeneralException):
 
 class InactiveUser(GeneralException):
     pass
+
+
+class FileUploadFailed(GeneralException):
+    pass
