@@ -66,6 +66,30 @@ export default function Upload(props) {
             }
         })
 
+        response = addValidation(response, ["Thumbnail", thumbnail], (data)=>{
+            return {
+                status:data[1]!=undefined,
+                messages:["Thumbnail file must be uploaded"],
+            }
+        })
+
+        response = addValidation(response, ["Thumbnail", thumbnail], (data)=>{
+            return {
+                status: data[1]
+                ? /jpg|jpeg|png|gif/.test(data[1].name.split(".").pop().toLowerCase())
+                : false,
+                messages:["The thumbnail must be an image(jpg/jpeg/png/gif extension)"],
+            }
+        })
+        
+        response = addValidation(response, ["Thumbnail", thumbnail], (data)=>{
+            return {
+                status:data[1] ? data[1].size != 0 : false,
+                messages:["Thumbnail file can't be empty"]
+            }
+        })
+
+
         response.messages.forEach(message=>NotificationManager.error(message));
         
         if(!response.status) return;
