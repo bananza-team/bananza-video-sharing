@@ -120,6 +120,7 @@
 .tabmenu{
     display: flex;
     justify-content: center;
+    align-items: center;
     position: absolute;
     background: rgb(255,255,255,0.1);
     width:100%;
@@ -132,4 +133,13 @@
 .tabmenu span:hover,
 .activeMenu{
     background: rgb(0,0,0,0.2);
+}
+.separator{
+    content:"";
+    width:10px;
+    height:10px;
+    border-radius:100%;
+    background:white;
+    box-shadow:var(--shadow);
+    margin:5px;
 }
