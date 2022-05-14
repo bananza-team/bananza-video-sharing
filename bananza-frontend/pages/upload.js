@@ -89,17 +89,17 @@ export default function Upload(props) {
               />
             </div>
             <div className={styles.formColumn}>
-              <label for="thumbnail">
-                Video thumbnail
-                <input name="thumbnail" 
-                    onChange={(e)=>{setThumbnail(e.target.files[0])}} id="thumbnail" type="file" />
-              </label>
-            </div>
-            <div className={styles.formColumn}>
               <label for="video">
                 Video file
                 <input name="video"
                     onChange={(e)=>{setVideo(e.target.files[0])}} id="video" type="file" />
+              </label>
+            </div>
+            <div className={styles.formColumn}>
+              <label for="thumbnail">
+                Video thumbnail
+                <input name="thumbnail" 
+                    onChange={(e)=>{setThumbnail(e.target.files[0])}} id="thumbnail" type="file" />
               </label>
             </div>
           </div>
