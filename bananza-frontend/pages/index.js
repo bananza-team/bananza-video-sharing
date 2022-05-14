@@ -35,7 +35,7 @@ export default function Home(props) {
     password: "",
     type: "creator",
     description: "Your channel's description",
-    profile_picture_link: "default.png",
+    profile_picture_link: "../resources/pictures/profile_pic/default.png",
     cover_picture_link: "default.png",
     applyManager: false,
     is_active: true,

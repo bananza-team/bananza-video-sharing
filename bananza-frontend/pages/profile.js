@@ -100,8 +100,8 @@ export default function Profile(props) {
 
   }
 
-  let [avatar, updateAvatar]=
-  useState("//localhost:8000"+props.user.profile_picture_link.replace("..", ""));
+  let [avatar, updateAvatar] =
+   useState("//localhost:8000"+props.user.profile_picture_link.replace("..", ""));
 
   let uploadAvatar = (e)=>{
     
