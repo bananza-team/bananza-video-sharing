@@ -1,4 +1,4 @@
-from bananza_backend.api import users, manager_applications, auth
+from bananza_backend.api import users, manager_applications, auth, videos
 from bananza_backend.exceptions import *
 
 from fastapi import FastAPI
@@ -28,6 +28,7 @@ app.add_middleware(
 app.include_router(users.router)
 app.include_router(manager_applications.router)
 app.include_router(auth.router)
+app.include_router(videos.router)
 
 
 @app.exception_handler(EntityNotFound)
