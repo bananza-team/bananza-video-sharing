@@ -18,7 +18,7 @@ export default function Profile(props) {
 
   let [menu, setMenu] = useState(0);
   let [profileData, setProfileData] = useState({
-    ...props.user, "password":""
+    ...props.user, "password":"", "currentPassword":""
   });
 
   let updateMenu = (id)=>{
@@ -44,6 +44,7 @@ export default function Profile(props) {
     }
     response = addValidation(response, ["Username", profileData.username], basicLength);
     response = addValidation(response, ["Email", profileData.email], validateMail);
+    response = addValidation(response, ["Current Password", profileData.currentPassword], validateExists);
     if(profileData.password.length) 
       response = addValidation(response, ["Password", profileData.password], basicLength);
     response = addValidation(response, ["Description", profileData.description], basicLength);
@@ -59,6 +60,8 @@ export default function Profile(props) {
     })
 
     if(!response.status) return;
+
+    
 
   }
 
@@ -117,9 +120,11 @@ export default function Profile(props) {
                 placeholder=""
                 value={props.user.email}
               />
+              <Input inputType="password" label="Current password"
+              name="currentPassword" value={null} placeholderText="Current Password" className="fancyInput"/>
               <Input
                 inputType="password"
-                label="Password"
+                label="New Password"
                 className="fancyInput"
                 name="password"
                 value={null}
