@@ -37,4 +37,10 @@ let addValidation = (response, data, validator) => {
   return response;
 };
 
-export { validateLength, validateMail, validatePhone, addValidation, validateExists };
+let createLengthValidator = (min, max) =>{
+  return (data)=>{
+    return validateLength(min, max, data);
+  }
+}
+
+export { validateLength, validateMail, validatePhone, addValidation, validateExists, createLengthValidator};

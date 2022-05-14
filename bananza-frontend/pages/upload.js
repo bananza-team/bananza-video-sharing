@@ -3,6 +3,16 @@ import Nav from "/components/general/nav";
 import Input from "/components/forms/input";
 import styles from "../styles/upload.module.css";
 import React, { useEffect, useState } from "react";
+import {
+  validateLength,
+  validateMail,
+  validatePhone,
+  addValidation,
+  validateExists,
+} from "/libs/validation/validation.js";
+import { NotificationManager } from "react-notifications";
+import { createLengthValidator } from "../libs/validation/validation";
+
 
 export default function Upload(props) {
 
@@ -24,6 +34,16 @@ export default function Upload(props) {
 
     let upload = (e)=>{
         e.preventDefault();
+
+        let response = {
+            state: true,
+            messages: []
+        }
+        
+        response = addValidation(response, ["Video title", videoData.title], createLengthValidator(3, 20));
+
+        response.messages.forEach(message=>NotificationManager.error(message));
+
     }
 
   return (
