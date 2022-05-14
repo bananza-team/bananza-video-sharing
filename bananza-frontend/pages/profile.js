@@ -94,7 +94,7 @@ export default function Profile(props) {
       else if(response.status == 401) NotificationManager.error(parsedJSON.message, parsedJSON.details);
       else if(response.status == 200){
         NotificationManager.info("Your profile was succesfully updated");
-        setTimeout(Router.reload(), 2000);
+        setTimeout(Router.reload, 1000);
       } else NotificationManager.error(parsedJSON.message?parsedJSON.message:"Unknown network error");
     }))
 
