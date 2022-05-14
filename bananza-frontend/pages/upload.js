@@ -32,6 +32,7 @@ export default function Upload(props) {
 
     let [video, setVideo] = useState(null);
     let [thumbnail, setThumbnail] = useState(null);
+    let [progress, setProgress] = useState(-1);
 
     let upload = (e)=>{
         e.preventDefault();
@@ -66,6 +67,18 @@ export default function Upload(props) {
         })
 
         response.messages.forEach(message=>NotificationManager.error(message));
+        
+        
+        let xhr = new XMLHttpRequest();
+
+        xhr.upload.onprogress = (event)=>{
+            setProgress(event.loaded/event.total);
+        }
+
+        xhr.open('POST', "/upload-file");
+        let data=new FormData();
+        data.append("file", video);
+        xhr.send(data);
 
     }
 
