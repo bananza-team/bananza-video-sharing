@@ -7,13 +7,19 @@ import { useRouter } from "next/router";
 export default function Profile(props) {
 
   let [menu, setMenu] = useState(0);
+  let [profileData, setProfileData] = useState(props.user);
 
   let updateMenu = (id)=>{
       setMenu(id);
   }
 
+  let updateProfileData = (e) =>{
+      setProfileData({
+        ...profileData, [e.target.name]: e.target.value,
+      })
+  }
+
   let router = useRouter();
-  console.log(props.user);
   if (!props.user)
     useEffect(() => {
       router.push("/");
@@ -23,6 +29,7 @@ export default function Profile(props) {
       <>
         <PageHead title="Bananza - Edit Profile" />
         <Nav />
+        <form onSubmit={submit} onChange={updateProfileData} className="styleLessForm">
         <span className={styles.hint}><i class="fa-solid fa-circle-exclamation"></i> Click any data to edit it!</span>
         <div
           className={styles.profileBox}
@@ -110,6 +117,7 @@ export default function Profile(props) {
             <button>Submit</button>
             </div>
 }
+      </form>
       </>
     );
 }
