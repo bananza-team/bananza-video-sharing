@@ -100,7 +100,8 @@ export default function Profile(props) {
 
   }
 
-  let [avatar, updateAvatar]=useState(props.user.profile_picture_link);
+  let [avatar, updateAvatar]=
+  useState("//localhost:8000"+props.user.profile_picture_link.replace("..", ""));
 
   let uploadAvatar = (e)=>{
     
@@ -182,7 +183,7 @@ export default function Profile(props) {
           <input type="file" id="cover-upload" hidden/>
           <label className={styles.updateCoverButton} for="cover-upload">Change</label>
           <div className={styles.profileAvatarBox}>
-            <img src="default.png" />
+            <img src={avatar} />
             <div className={styles.updateAvatarOverlay}>
               <input type="file" id="avatar-upload" hidden onChange={uploadAvatar}/>
               <label className={styles.updateAvatarButton} for="avatar-upload">Change</label>
