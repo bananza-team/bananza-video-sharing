@@ -4,10 +4,22 @@ import styles from "../styles/profile.module.css";
 import Input from "/components/forms/input";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import {
+  validateLength,
+  validateMail,
+  validatePhone,
+  addValidation,
+  validateExists,
+} from "/libs/validation/validation.js";
+import { NotificationManager } from "react-notifications";
 export default function Profile(props) {
 
+  props.user.isManager = props.user.name.length != 0;
+
   let [menu, setMenu] = useState(0);
-  let [profileData, setProfileData] = useState(props.user);
+  let [profileData, setProfileData] = useState({
+    ...props.user, "password":""
+  });
 
   let updateMenu = (id)=>{
       setMenu(id);
@@ -17,6 +29,37 @@ export default function Profile(props) {
       setProfileData({
         ...profileData, [e.target.name]: e.target.value,
       })
+  }
+
+  let submit = (e)=>{
+    e.preventDefault();
+    
+    let basicLength = (data) => {
+      return validateLength(3, 20, data);
+    };
+    
+    let response = {
+      status:true,
+      messages:[],
+    }
+    response = addValidation(response, ["Username", profileData.username], basicLength);
+    response = addValidation(response, ["Email", profileData.email], validateMail);
+    if(profileData.password.length) 
+      response = addValidation(response, ["Password", profileData.password], basicLength);
+    response = addValidation(response, ["Description", profileData.description], basicLength);
+
+    if(props.user.isManager){
+      response = addValidation(response, ["Name", profileData.name], basicLength);
+      response = addValidation(response, ["Surname", profileData.surname], basicLength);
+      response = addValidation(response, ["Phone", profileData.phone], validatePhone);
+    }
+
+    response.messages.forEach(message => {
+      NotificationManager.error(message);
+    })
+
+    if(!response.status) return;
+
   }
 
   let router = useRouter();
@@ -45,7 +88,7 @@ export default function Profile(props) {
           <div className={styles.profileUsernameBox}>
             <Input
               className="fancyInput"
-              name="channeldescription"
+              name="description"
               placeholder=""
               value={props.user.description}
             />
@@ -106,6 +149,7 @@ export default function Profile(props) {
                   placeholder=""
                   value={props.user.surname}
                 />
+                <Input label="Phone" className="fancyInput" name="phone" placeholder="" value={props.user.phone}/>
               </div>
             </div>
             </>
