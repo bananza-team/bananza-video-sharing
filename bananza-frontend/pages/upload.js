@@ -98,7 +98,6 @@ export default function Upload(props) {
 
         xhr.upload.onprogress = (event)=>{
             setProgress(parseInt(event.loaded/event.total*100));
-            setProgressStyleString("--progress: "+progress+"%");
         }
 
         xhr.open('POST', "/upload-file");
