@@ -207,6 +207,7 @@ export default function Profile(props) {
         </div>
         <div className={styles.tabmenu}>
             <span onClick={() => updateMenu(0)}>Profile</span>
+            <div className={styles.separator}></div>
             <span onClick={() => updateMenu(1)}>Videos</span>
           </div>
         <div className={styles.profileColumns}>
