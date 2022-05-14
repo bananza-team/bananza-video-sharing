@@ -11,6 +11,10 @@
     border-color:white;
 }
 
+.uploadForm input[type="file"]{
+    border-color:transparent;
+}
+
 .formWrap{
     box-shadow: var(--shadow);
 }
@@ -31,4 +35,27 @@
 }
 .submitButton{
     margin-top:30px;
+}
+
+.progress{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.progressBar{
+    content:"";
+    height: 4px;
+    width: 100%;
+    background: #f2f2f2;
+    display:table;
+    box-shadow: var(--shadow);
+}
+.progressBar:before{
+    content:"";
+    height: 4px;
+    width:var(--progress);
+    background: yellowgreen;
+    display:table;
 }
