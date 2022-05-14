@@ -34,13 +34,35 @@ export default function Upload(props) {
 
     let upload = (e)=>{
         e.preventDefault();
+        console.log(video);
 
         let response = {
-            state: true,
+            status: true,
             messages: []
         }
         
         response = addValidation(response, ["Video title", videoData.title], createLengthValidator(3, 20));
+        response = addValidation(response, ["Video description", videoData.description], createLengthValidator(3, 40));
+        response = addValidation(response, ["Video", video], (data)=>{
+            return {
+                status:data[1]!=undefined,
+                message:"Video file must be uploaded",
+            }
+        })
+        response = addValidation(response, ["Video", video], (data)=>{
+            return {
+                status: data[1]
+                ? /mp4|mov|avi/.test(data[1].name.split(".").pop().toLowerCase())
+                : false,
+                message:"The video must be a video file(mp4/mov/avi extension)",
+            }
+        })
+        response = addValidation(response, ["Video", video], (data)=>{
+            return {
+                status:data[1] ? data[1].size != 0 : false,
+                message:"Video file can't be empty"
+            }
+        })
 
         response.messages.forEach(message=>NotificationManager.error(message));
 
@@ -75,7 +97,7 @@ export default function Upload(props) {
             </div>
             <div className={styles.formColumn}>
               <label for="video">
-                Video title
+                Video file
                 <input name="video"
                     onChange={(e)=>{setVideo(e.target.files[0])}} id="video" type="file" />
               </label>
