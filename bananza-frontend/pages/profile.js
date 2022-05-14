@@ -4,6 +4,7 @@ import styles from "../styles/profile.module.css";
 import Input from "/components/forms/input";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Router from "next/router";
 import {
   validateLength,
   validateMail,
@@ -18,7 +19,7 @@ export default function Profile(props) {
 
   let [menu, setMenu] = useState(0);
   let [profileData, setProfileData] = useState({
-    ...props.user, "password":"", "currentPassword":""
+    ...props.user, "new_password":"", "old_password":""
   });
 
   let updateMenu = (id)=>{
@@ -37,6 +38,9 @@ export default function Profile(props) {
     let basicLength = (data) => {
       return validateLength(3, 20, data);
     };
+    let extendedLength = (data)=>{
+      return validateLength(3, 40, data);
+    }
     
     let response = {
       status:true,
@@ -44,10 +48,10 @@ export default function Profile(props) {
     }
     response = addValidation(response, ["Username", profileData.username], basicLength);
     response = addValidation(response, ["Email", profileData.email], validateMail);
-    response = addValidation(response, ["Current Password", profileData.currentPassword], validateExists);
-    if(profileData.password.length) 
-      response = addValidation(response, ["Password", profileData.password], basicLength);
-    response = addValidation(response, ["Description", profileData.description], basicLength);
+    response = addValidation(response, ["Current Password", profileData.old_password], validateExists);
+    if(profileData.new_password.length) 
+      response = addValidation(response, ["New Password", profileData.new_password], basicLength);
+    response = addValidation(response, ["Description", profileData.description], extendedLength);
 
     if(props.user.isManager){
       response = addValidation(response, ["Name", profileData.name], basicLength);
@@ -62,13 +66,32 @@ export default function Profile(props) {
     if(!response.status) return;
 
     let data = profileData;
-    if(!data.password.length) data.password=data.currentPassword;
+    delete data.cover_picture_link;
+    delete data.profile_picture_link;
+    delete data.isManager;
+    delete data.is_active;
+    delete data.type;
+    delete data.cv_link;
+    delete data.id;
+
+    if(!data.new_password.length) data.new_password=data.old_password; // keep the old password if the new one wasn't filled in
+    console.log(data);
 
     fetch("//localhost:8000/user/current/info", {
       method:"PATCH",
-      data:JSON.stringify(data)
-    }).then(response.json().then((parsedJSON)=>{
-      
+      body:JSON.stringify(data),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.token,
+      },
+    }).then(response => response.json().then((parsedJSON)=>{
+      if(response.status == 422) NotificationManager.error(parsedJSON.detail[0].msg);
+      else if(response.status == 401) NotificationManager.error(parsedJSON.message, parsedJSON.details);
+      else if(response.status == 200){
+        NotificationManager.info("Your profile was succesfully updated");
+        setTimeout(Router.reload(), 2000);
+      } else NotificationManager.error(parsedJSON.message?parsedJSON.message:"Unknown network error");
     }))
 
   }
@@ -129,12 +152,12 @@ export default function Profile(props) {
                 value={props.user.email}
               />
               <Input inputType="password" label="Current password"
-              name="currentPassword" value={null} placeholderText="Current Password" className="fancyInput"/>
+              name="old_password" value={null} placeholderText="Current Password" className="fancyInput"/>
               <Input
                 inputType="password"
                 label="New Password"
                 className="fancyInput"
-                name="password"
+                name="new_password"
                 value={null}
                 placeholderText="New password"
               />
