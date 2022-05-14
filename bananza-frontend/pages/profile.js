@@ -15,6 +15,10 @@ import {
 import { NotificationManager } from "react-notifications";
 export default function Profile(props) {
 
+  if(!props.user){
+    Router.push("/");
+    return;
+  }
   props.user.isManager = props.user.name.length != 0;
 
   let [menu, setMenu] = useState(0);
