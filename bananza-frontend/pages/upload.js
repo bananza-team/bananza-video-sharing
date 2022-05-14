@@ -12,6 +12,7 @@ import {
 } from "/libs/validation/validation.js";
 import { NotificationManager } from "react-notifications";
 import { createLengthValidator } from "../libs/validation/validation";
+import { responseSymbol } from "next/dist/server/web/spec-compliant/fetch-event";
 
 
 export default function Upload(props) {
@@ -46,7 +47,7 @@ export default function Upload(props) {
         response = addValidation(response, ["Video", video], (data)=>{
             return {
                 status:data[1]!=undefined,
-                message:"Video file must be uploaded",
+                messages:["Video file must be uploaded"],
             }
         })
         response = addValidation(response, ["Video", video], (data)=>{
@@ -54,13 +55,13 @@ export default function Upload(props) {
                 status: data[1]
                 ? /mp4|mov|avi/.test(data[1].name.split(".").pop().toLowerCase())
                 : false,
-                message:"The video must be a video file(mp4/mov/avi extension)",
+                messages:["The video must be a video file(mp4/mov/avi extension)"],
             }
         })
         response = addValidation(response, ["Video", video], (data)=>{
             return {
                 status:data[1] ? data[1].size != 0 : false,
-                message:"Video file can't be empty"
+                messages:["Video file can't be empty"]
             }
         })
 
