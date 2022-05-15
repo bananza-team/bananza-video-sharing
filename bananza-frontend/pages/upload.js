@@ -17,6 +17,11 @@ import Router from "next/router";
 
 export default function Upload(props) {
 
+    if(!props.user){
+      Router.push("/");
+      return;
+    }
+
     let [uploading, setUploading] = useState(0);
 
     let [videoData, setVideoData] = useState({
