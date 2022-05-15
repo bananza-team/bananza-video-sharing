@@ -1,0 +1,14 @@
+.videoListHeader{
+    padding:10px;
+    font-size:25px;
+    display: flex;
+    margin:10px;
+}
+.videoListContainer>div{
+    margin:20px;
+    margin-top:0px;
+    margin-bottom:30px;
+}
+.notFound{
+    margin:20px;
+}
