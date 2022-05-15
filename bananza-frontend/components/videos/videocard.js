@@ -5,7 +5,7 @@ export default function VideoCard(props){
             <div className={styles.videoData}>
             <span className={styles.videoTitle}>{props.video.title}</span>
             <span className="video-description">{props.video.description}</span>
-            <span className="video-channel">{props.video.channel}</span>
+            <span className="video-channel">{props.video.username}</span>
         </div>
         </div>
     )
