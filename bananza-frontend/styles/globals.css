@@ -232,3 +232,17 @@ nav .rightNav{
 .searchBox input{
   border-color:transparent;
 }
+
+.searchContainer{
+  width:100%;
+  height:calc(100% - 106.733px);
+  display:flex;
+  position:fixed;
+  background:#1f1f1f;
+  z-index:10;
+  color:white;
+  overflow:auto;
+}
+nav{
+  z-index: 100;
+}
