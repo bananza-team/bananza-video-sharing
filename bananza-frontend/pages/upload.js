@@ -100,6 +100,22 @@ export default function Upload(props) {
             setProgress(parseInt(event.loaded/event.total*100));
         }
 
+        xhr.upload.onload = ()=>{
+          NotificationManager.info("Video upload complete!");
+        }
+
+        xhr.upload.onerror = ()=>{
+          NotificationManager.error("Video upload failed");
+        }
+        
+        xhr.upload.onabort = ()=>{
+          NotificationManager.error("Video upload was aborted");
+        }
+
+        xhr.onerror = (error)=>{
+          NotificationManager.error(error);
+        }
+
         xhr.open('POST', "//localhost:8000/video/?"+new URLSearchParams(videoData));
         xhr.setRequestHeader('Authorization','Bearer '+localStorage.token);
         let data=new FormData();
