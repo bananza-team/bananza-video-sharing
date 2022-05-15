@@ -100,9 +100,11 @@ export default function Upload(props) {
             setProgress(parseInt(event.loaded/event.total*100));
         }
 
-        xhr.open('POST', "/upload-file");
+        xhr.open('POST', "//localhost:8000/video/?"+new URLSearchParams(videoData));
+        xhr.setRequestHeader('Authorization','Bearer '+localStorage.token);
         let data=new FormData();
-        data.append("file", video);
+        data.append("video_file", video);
+        data.append("thumbnail_file", thumbnail);
         xhr.send(data);
 
     }
