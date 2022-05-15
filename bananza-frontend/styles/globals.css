@@ -221,3 +221,14 @@ nav .rightNav{
     transform:rotate(0deg);
   }
 }
+
+/* Search box */
+.searchBox{
+  background:rgb(0,0,0,0.5);
+}
+.searchBox:focus-within{
+  box-shadow: var(--shadow);
+}
+.searchBox input{
+  border-color:transparent;
+}
