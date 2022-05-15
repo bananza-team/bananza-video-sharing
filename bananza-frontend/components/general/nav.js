@@ -26,6 +26,10 @@ export default function Nav() {
           </Link>
         </span>
         <span className="rightNav">
+          <span className="searchBox">
+          <input type="search" placeholder="Search for videos" />
+          <i class="fa-solid fa-magnifying-glass"></i>
+          </span>
           <a onClick={logout}>Logout</a>
         </span>
       </div>
