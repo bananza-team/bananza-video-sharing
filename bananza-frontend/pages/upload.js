@@ -14,8 +14,9 @@ import { NotificationManager } from "react-notifications";
 import { createLengthValidator } from "../libs/validation/validation";
 import { responseSymbol } from "next/dist/server/web/spec-compliant/fetch-event";
 
-
 export default function Upload(props) {
+
+    let [uploading, setUploading] = useState(0);
 
     let [videoData, setVideoData] = useState({
         title:"",
@@ -35,7 +36,12 @@ export default function Upload(props) {
     let [progress, setProgress] = useState(-1);
 
     let upload = (e)=>{
+      
         e.preventDefault();
+
+        if(uploading) return;
+        setUploading(1);
+
         console.log(video);
 
         let response = {
@@ -92,7 +98,10 @@ export default function Upload(props) {
 
         response.messages.forEach(message=>NotificationManager.error(message));
         
-        if(!response.status) return;
+        if(!response.status){
+          setUploading(0);
+          return;
+        }
 
         let xhr = new XMLHttpRequest();
 
@@ -102,14 +111,21 @@ export default function Upload(props) {
 
         xhr.upload.onload = ()=>{
           NotificationManager.info("Video upload complete!");
+          setProgress(-1);
         }
 
         xhr.upload.onerror = ()=>{
           NotificationManager.error("Video upload failed");
+          setProgress(-1);
         }
         
         xhr.upload.onabort = ()=>{
           NotificationManager.error("Video upload was aborted");
+        }
+
+        xhr.onload = ()=>{
+          setUploading(0);
+          setProgress(-1);
         }
 
         xhr.onerror = (error)=>{
