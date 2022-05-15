@@ -13,6 +13,7 @@ import {
 import { NotificationManager } from "react-notifications";
 import { createLengthValidator } from "../libs/validation/validation";
 import { responseSymbol } from "next/dist/server/web/spec-compliant/fetch-event";
+import Router from "next/router";
 
 export default function Upload(props) {
 
@@ -126,6 +127,12 @@ export default function Upload(props) {
         xhr.onload = ()=>{
           setUploading(0);
           setProgress(-1);
+
+          if(xhr.status == 401){
+            NotificationManager.error("You are not authenticated");
+            setTimeout(Router.reload, 1000);
+          }
+
         }
 
         xhr.onerror = (error)=>{
