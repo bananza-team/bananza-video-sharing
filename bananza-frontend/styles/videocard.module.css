@@ -1,6 +1,6 @@
 .videoCard{
     height:200px;
-    margin:10px;
+    margin:20px;
     margin-right:0px;
     margin-bottom:0;
     background-position: center !important;
@@ -18,7 +18,7 @@
     box-shadow: var(--shadow);
     position:absolute;
     bottom:0;
-    width:calc(20% - 10px);
+    width:calc(20% - 20px);
 }
 .videoTitle{
     font-size:30px;
