@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Router from "next/router";
+import React, { useState } from "react";
 
 let logout = (event) => {
   event.preventDefault();
@@ -8,7 +9,19 @@ let logout = (event) => {
 };
 
 export default function Nav() {
+
+  let [searching, setSearching] = useState(0);
+
+  let searchChange = (e)=>{
+    if(!e.target.value.length){
+      setSearching(0);
+      return;
+    }
+    setSearching(1);
+  }
+
   return (
+    <>
     <nav>
       <div className="nav-wrap">
         <span className="navLogo">
@@ -27,12 +40,18 @@ export default function Nav() {
         </span>
         <span className="rightNav">
           <span className="searchBox">
-          <input type="search" placeholder="Search for videos" />
+          <input onChange={searchChange} type="search" placeholder="Search for videos" />
           <i class="fa-solid fa-magnifying-glass"></i>
           </span>
           <a onClick={logout}>Logout</a>
         </span>
       </div>
     </nav>
+    {!!searching && (
+    <div className="searchContainer">
+      
+    </div>
+    )}
+    </>
   );
 }
