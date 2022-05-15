@@ -11,6 +11,7 @@ import {
   validatePhone,
   addValidation,
   validateExists,
+  createLengthValidator
 } from "/libs/validation/validation.js";
 import { NotificationManager } from "react-notifications";
 export default function Profile(props) {
@@ -39,13 +40,9 @@ export default function Profile(props) {
   let submit = (e)=>{
     e.preventDefault();
     
-    let basicLength = (data) => {
-      return validateLength(3, 20, data);
-    };
-    let extendedLength = (data)=>{
-      return validateLength(3, 40, data);
-    }
-    
+    let basicLength = createLengthValidator(3, 20);
+    let extendedLength = createLengthValidator(3, 40);
+
     let response = {
       status:true,
       messages:[],

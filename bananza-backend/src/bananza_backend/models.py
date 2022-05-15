@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from enum import Enum
 from typing import List, Optional
+from datetime import datetime
 
 
 class UserTypeEnum(str, Enum):
@@ -65,3 +66,19 @@ class ManagerApplication(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+
+class VideoCreate(BaseModel):
+    title: Optional[str] = Field(description="Title of the video",
+                                 default=f"Video upload {datetime.now().strftime('%d-%m-%Y-%H-%M-%S')}")
+    description: Optional[str] = Field(description="Description of the video")
+
+
+class Video(VideoCreate):
+    class Config:
+        orm_mode = True
+    owner_id: Optional[int] = Field(description="ID of the user owning this video")
+    id: Optional[int] = Field(description="Automatically generated video ID")
+    resource_link: Optional[str] = Field(description="Link of the video, automatically generated upon upload")
+    thumbnail_image_link: Optional[str] = Field(description="Thumbnail of the video, uploaded by user")
+

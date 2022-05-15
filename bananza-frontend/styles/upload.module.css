@@ -1,0 +1,61 @@
+.uploadForm{
+    display: flex;
+    margin-top:50px;
+    justify-content: center;
+    align-items: center;
+}
+.uploadForm input{
+    border-color:gray;
+}
+.uploadForm input:focus{
+    border-color:white;
+}
+
+.uploadForm input[type="file"]{
+    border-color:transparent;
+}
+
+.formWrap{
+    box-shadow: var(--shadow);
+}
+
+.formColumn{
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.formColumn:nth-child(2n+1){
+    background: var(--dblack);
+} 
+.formColumn:nth-child(2n){
+    background: #1f1f1f;
+}
+.submitButton{
+    margin-top:30px;
+}
+
+.progress{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.progressBar{
+    content:"";
+    height: 4px;
+    width: 100%;
+    background: #f2f2f2;
+    display:table;
+    box-shadow: var(--shadow);
+}
+.progressBar:before{
+    content:"";
+    height: 4px;
+    width:var(--progress);
+    background: yellowgreen;
+    display:table;
+}

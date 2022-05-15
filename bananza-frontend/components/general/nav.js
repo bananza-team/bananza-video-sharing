@@ -21,6 +21,9 @@ export default function Nav() {
           <Link href="/profile">
             <a>Profile</a>
           </Link>
+          <Link href="/upload">
+            <a>Upload</a>
+          </Link>
         </span>
         <span className="rightNav">
           <a onClick={logout}>Logout</a>
