@@ -4,6 +4,8 @@ import styles from "/styles/video.module.css";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Router from "next/router";
+import "video-react/dist/video-react.css"; // import css
+import { Player } from "video-react";
 
 export default function Video(props) {
   return (
@@ -12,6 +14,10 @@ export default function Video(props) {
       <Nav />
       <div className={styles.videoPage}>
         <div className={styles.videoPageLeft}>
+          <Player
+            playsInline
+            src="//localhost:8000/resources/video/video-15-05-2022-02-09-07-507d7f68-3aab-4d64-acaf-9c10665547fb.mp4"
+          />
           <div className={styles.videoData}>
             <div className={styles.videoInfo}>
               <span className={styles.videoTitle}>Cool video title</span>
