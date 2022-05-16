@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Router from "next/router";
 import React, { useState } from "react";
-import VideoList from "/components/videos/videolist";
+import VideoListWide from "/components/videos/videolistwide";
 
 let logout = (event) => {
   event.preventDefault();
@@ -35,7 +35,7 @@ export default function Nav() {
     {
       thumbnail: "test.png",
       title: "lots of snow in the sea",
-      description: "description goes brr",
+      description: "dddddddddddddddddddddddddddddddddddddddd",
       username: "Claudiu",
       key: 0,
     },
@@ -47,7 +47,6 @@ export default function Nav() {
       key: 1,
     },
   ];
-  videos[2] = videos[3] = videos[4] = videos[0];
 
   return (
     <>
@@ -78,7 +77,7 @@ export default function Nav() {
     </nav>
     {!!searching && (
     <div className="searchContainer">
-      <VideoList videos={renderedVideos} header="Search results" />
+      <VideoListWide type="wide" videos={renderedVideos} header="Search results" />
     </div>
     )}
     </>
