@@ -250,3 +250,9 @@ nav .rightNav{
 nav{
   z-index: 100;
 }
+.searchBack{
+  position: absolute;
+  right:20px;
+  top:25px;
+  cursor:pointer;
+}

@@ -16,6 +16,10 @@ export default function Nav() {
   let [searching, setSearching] = useState(0);
   let [renderedVideos, setRenderedVideos] = useState([]);
 
+  let goBack = ()=>{
+    setSearching(0);
+  }
+
   let searchChange = (e)=>{
     if(!e.target.value.length){
       setSearching(0);
@@ -68,7 +72,7 @@ export default function Nav() {
         </span>
         <span className="rightNav">
           <span className="searchBox">
-          <input onChange={searchChange} type="search" placeholder="Search for videos" />
+          <input onChange={searchChange} onClick={searchChange} type="search" placeholder="Search for videos" />
           <i class="fa-solid fa-magnifying-glass"></i>
           </span>
           <a onClick={logout}>Logout</a>
@@ -77,6 +81,7 @@ export default function Nav() {
     </nav>
     {!!searching && (
     <div className="searchContainer">
+      <span className="searchBack" onClick={goBack}>Back</span>
       <VideoListWide type="wide" videos={renderedVideos} header="Search results" />
     </div>
     )}
