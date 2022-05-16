@@ -7,6 +7,16 @@ import Router from "next/router";
 import "video-react/dist/video-react.css"; // import css
 import { Player } from "video-react";
 
+let comments=[{
+    author:"Claudiu",
+    comment:"comment text",
+    key:0,
+}, {
+    author:"mario",
+    comment:"lots of lines lots of lines lots of lines lots of lines lots of lines lots of lines lots of lines",
+    key:1,
+}]
+
 export default function Video(props) {
   return (
     <>
@@ -36,7 +46,21 @@ export default function Video(props) {
             </div>
           </div>
         </div>
-        <div className={styles.videoPageRight}>comments go brr</div>
+        <div className={styles.videoPageRight}>
+            <div className={styles.commentArea}>
+                <textarea placeholder="Speak your mind!"></textarea>
+                <button>Comment</button>
+            </div>
+            <hr></hr>
+            <div className={styles.commentsArea}>
+                {comments.map((comment, key)=>(
+                    <div className={styles.comment} key={key}>
+                    <span className={styles.commentAuthor}>{comment.author}</span>
+                    <span className={styles.commentText}>{comment.comment}</span>
+                    </div>
+                ))}
+            </div>
+        </div>
       </div>
     </>
   );
