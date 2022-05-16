@@ -1,0 +1,63 @@
+.videoPage{
+    display: flex;
+    height:calc(100% - 106.733px);
+    justify-content: center;
+    align-items: center;
+    color:white;
+}
+.videoPage>div{
+    width:50%;
+    height:100%;
+    padding:20px;
+}
+
+.videoPageLeft{
+    box-shadow: var(--shadow);
+}
+.videoPageRight{
+    background:var(--dblack);
+}
+
+.videoPage video{
+    height: 80%;
+    width:auto;
+    max-width: 100%;
+    box-shadow: var(--shadow);
+}
+.videoTitle{
+    font-size:25px;
+}
+.videoDescription{
+    font-size:18px;
+    color: gray;
+}
+.videoData{
+    display: flex;
+    position: relative;
+    padding:10px;
+}
+.videoData>div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.videoDataRight{
+    position:absolute;
+    right:0;
+}
+.likeContainer{
+    display: flex;
+}
+.likeContainer>span{
+    padding:10px;
+}
+.authorBox{
+  padding-left:10px;
+}
+.authorBox{
+    color:gray;
+}
+.authorBox span{
+    font-size:23px;
+    color:white;
+}
