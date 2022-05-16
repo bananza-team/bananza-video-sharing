@@ -4,6 +4,7 @@
     justify-content: center;
     align-items: center;
     color:white;
+    overflow: hidden;   
 }
 .videoPage>div{
     width:50%;
@@ -11,11 +12,16 @@
     padding:20px;
 }
 
+.videoPage video *{
+    transition-timing-function: linear !important;
+}
+
 .videoPageLeft{
     box-shadow: var(--shadow);
 }
 .videoPageRight{
     background:var(--dblack);
+    overflow: auto;
 }
 
 .videoPage video{
@@ -53,6 +59,8 @@
 }
 .authorBox{
   padding-left:10px;
+    display: flex;
+    align-items: center;
 }
 .authorBox{
     color:gray;
@@ -60,6 +68,8 @@
 .authorBox span{
     font-size:23px;
     color:white;
+    font-weight: bold;
+    padding-left:5px;
 }
 
 .commentArea textarea{
@@ -80,11 +90,11 @@
 }
 .comment{
     display: flex;
-    margin-top:20px;
     align-items: flex-start;
+    padding:5px;
 }
 .commentAuthor{
-    background:orange;
+    background:#3f3f3f;
     height:30px;
     padding:5px;
     border-radius:5px;
