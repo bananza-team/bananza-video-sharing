@@ -61,3 +61,35 @@
     font-size:23px;
     color:white;
 }
+
+.commentArea textarea{
+    background:#2f2f2f;
+    border:none;
+    width:100%;
+    height:100px;
+    color:white;
+    box-shadow:var(--shadow);
+    resize:none;
+}
+.commentArea button{
+    margin-top:10px;
+    padding:10px;
+}
+.commentArea *{
+    padding:5px;
+}
+.comment{
+    display: flex;
+    margin-top:20px;
+    align-items: flex-start;
+}
+.commentAuthor{
+    background:orange;
+    height:30px;
+    padding:5px;
+    border-radius:5px;
+}
+.commentText{
+    padding:10px;
+    padding-top:3px;
+}
