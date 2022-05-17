@@ -1,6 +1,6 @@
 import PageHead from "/components/general/pageHead";
 import Nav from "/components/general/nav";
-import Input from "/components/forms/input";
+import VideoListWide from "/components/videos/videolistwide";
 import styles from "/styles/user.module.css";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -13,8 +13,9 @@ export default function User() {
   useEffect(()=>{
     fetch("//localhost:8000/user/"+id).then((response) =>
       response.json().then((parsedJSON) => {
-          if(response.status == 200)
-          setUData(parsedJSON);
+          if(response.status == 200){
+              setUData(parsedJSON);
+          }
           else router.push("/");
       })
     )}, []);
@@ -34,7 +35,14 @@ let [fetching, setFetching] = useState(1);
     <>
       <PageHead title="Bananza - User Profile" />
       <Nav />
-      {uData.username}
+      <div className={styles.userData} style={{backgroundImage: `url(//localhost:8000/${uData.cover_picture_link})`}}>
+        <span className={styles.userAvatar}>
+            <img src={`//localhost:8000/${uData.profile_picture_link}`}/>
+        </span>
+        <span className={styles.username}>{uData.username}</span>
+        <span className={styles.description}>{uData.description}</span>
+      </div>
+      <VideoListWide videos={uData.videos}/>
     </>
   );
 }
