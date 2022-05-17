@@ -39,8 +39,10 @@ let [fetching, setFetching] = useState(1);
         <span className={styles.userAvatar}>
             <img src={`//localhost:8000/${uData.profile_picture_link}`}/>
         </span>
-        <span className={styles.username}>{uData.username}</span>
-        <span className={styles.description}>{uData.description}</span>
+        <span className={styles.userInfo}>
+            <span className={styles.username}>{uData.username}</span>
+            <span className={styles.description}>{uData.description}</span>
+        </span>
       </div>
       <VideoListWide videos={uData.videos}/>
     </>
