@@ -14,6 +14,21 @@ let videos = [];
 
 export default function Nav() {
 
+  useEffect(()=>{
+    fetch("//localhost:8000/video/all", {
+      headers:{
+        Authorization:"Bearer "+localStorage.token,
+      }
+    }).then(response => response.json().then((parsedJSON)=>{
+      if(response.status != 200){
+        NotificationManager.error("Could not load videos");
+      } else {
+        videos=parsedJSON;
+        updateRenderedVideos();
+      }
+    }))
+}, []);
+
   let [searching, setSearching] = useState(0);
   let [renderedVideos, setRenderedVideos] = useState([]);
   let [keyword, setKeyword] = useState("");
@@ -39,6 +54,7 @@ export default function Nav() {
 
     let keyword = e.target.value;
     setKeyword(keyword);
+    updateRenderedVideos();
   }
 
   return (
@@ -71,7 +87,7 @@ export default function Nav() {
     {!!searching && (
     <div className="searchContainer">
       <span className="searchBack" onClick={goBack}>Back</span>
-      <VideoListWide type="wide" videos={renderedVideos} header="Search results" />
+      <VideoListWide displayPoster="1" type="wide" videos={renderedVideos} header="Search results" />
     </div>
     )}
     </>
