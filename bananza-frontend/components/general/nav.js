@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Router from "next/router";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import VideoListWide from "/components/videos/videolistwide";
 
 let logout = (event) => {
@@ -10,14 +10,24 @@ let logout = (event) => {
 };
 
 let matchedVideos = [];
+let videos = [];
 
 export default function Nav() {
 
   let [searching, setSearching] = useState(0);
   let [renderedVideos, setRenderedVideos] = useState([]);
+  let [keyword, setKeyword] = useState("");
 
   let goBack = ()=>{
     setSearching(0);
+  }
+
+  let updateRenderedVideos = () =>{
+    matchedVideos=[];
+    videos.forEach(video =>{
+      if(video.title.includes(keyword) || video.description.includes(keyword)) matchedVideos.push(video);
+    })
+    setRenderedVideos(matchedVideos);
   }
 
   let searchChange = (e)=>{
@@ -28,29 +38,8 @@ export default function Nav() {
     setSearching(1);
 
     let keyword = e.target.value;
-    matchedVideos=[];
-    videos.forEach(video =>{
-      if(video.title.includes(keyword) || video.description.includes(keyword)) matchedVideos.push(video);
-    })
-    setRenderedVideos(matchedVideos);
+    setKeyword(keyword);
   }
-
-  let videos = [
-    {
-      thumbnail: "test.png",
-      title: "lots of snow in the sea",
-      description: "dddddddddddddddddddddddddddddddddddddddd",
-      username: "Claudiu",
-      key: 0,
-    },
-    {
-      thumbnail: "test.png",
-      title: "the climate is changing",
-      description: "visit our lovely channel",
-      username: "Mircea",
-      key: 1,
-    },
-  ];
 
   return (
     <>
