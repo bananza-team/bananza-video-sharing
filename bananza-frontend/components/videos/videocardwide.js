@@ -8,7 +8,8 @@ export default function VideoCard(props){
         <span className={styles.videoTitle}>{props.video.title}</span>
         <span className={styles.videoDescription}>{props.video.description}</span>
         </span>
-        {props.username && <span className={styles.postedBy}><span>posted by</span> {props.username}</span>}
+        {/* <Link> can't be used because when {id} changes it doesn't trigger a page change, so the search box doesn't have the chance to disappear */}
+        {props.video.owner_id && props.displayPoster && <span className={styles.postedBy}><a href={`/user/${props.video.owner_id}`}>View poster profile</a></span>}
         </div>
         </div>
     )
