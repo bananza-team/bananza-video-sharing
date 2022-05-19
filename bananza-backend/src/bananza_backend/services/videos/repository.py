@@ -54,6 +54,9 @@ class VideoRepo:
 
         return new_video
 
+    async def get_all(self):
+        return self.db.query(VideoModel).all()
+
     async def __upload_generic_file_on_disk(self, file: File, file_type: str, extension: str,
                                             folder_save_path, random_identifier: str, general_static_file_link: str):
         try:
