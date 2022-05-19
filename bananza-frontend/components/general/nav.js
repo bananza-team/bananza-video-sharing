@@ -1,7 +1,8 @@
 import Link from "next/link";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 import VideoListWide from "/components/videos/videolistwide";
+import { NotificationManager } from "react-notifications";
 
 let logout = (event) => {
   event.preventDefault();
@@ -21,7 +22,7 @@ export default function Nav() {
       }
     }).then(response => response.json().then((parsedJSON)=>{
       if(response.status != 200){
-        NotificationManager.error("Could not load videos");
+        NotificationManager.error("Login token expired. Please refresh the page");
       } else {
         videos=parsedJSON;
         updateRenderedVideos();
