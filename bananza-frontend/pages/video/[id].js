@@ -19,21 +19,38 @@ let comments=[{
 
 export default function Video(props) {
 
+    let [videoData, setVideoData] = useState(null);
+    let router = useRouter();
+    let {id} = router.query;
+    useEffect(()=>{
+        fetch("//localhost:8000/video/"+id, {
+            headers:{
+                Authorization:"Bearer "+localStorage.token
+            }
+        }).then(response=>response.json().then(parsedJSON=>{
+            if(response.status != 200 || parsedJSON == null) router.push("/");
+            else {
+                setVideoData(parsedJSON);
+            }
+        }))
+    }, []);
+
   return (
     <>
       <PageHead title="Bananza - Video" />
       <Nav />
+      {!!videoData &&
       <div className={styles.videoPage}>
         <div className={styles.videoPageLeft}>
           <Player
             playsInline
-            src="//localhost:8000/resources/video/video-15-05-2022-02-09-07-507d7f68-3aab-4d64-acaf-9c10665547fb.mp4"
+            src={`//localhost:8000${videoData.resource_link}`}
           />
           <div className={styles.videoData}>
             <div className={styles.videoInfo}>
-              <span className={styles.videoTitle}>Cool video title</span>
+              <span className={styles.videoTitle}>{videoData.title}</span>
               <span className={styles.videoDescription}>
-                Awesome description
+                {videoData.description}
               </span>
             </div>
             <div className={styles.videoDataRight}>
@@ -63,6 +80,7 @@ export default function Video(props) {
             </div>
         </div>
       </div>
+    }
     </>
   );
 }
