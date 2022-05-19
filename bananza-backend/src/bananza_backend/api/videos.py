@@ -20,3 +20,10 @@ async def upload_video(video_details: VideoCreate = Depends(), video_file: Uploa
                                      video_file=video_file, thumbnail_file=thumbnail_file)
 
     return new_video
+
+
+@router.get("/all", summary="Get a list of all videos from db")
+async def get_all_videos(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
+    AuthHandler(db).get_current_user_by_token(token)
+    all_videos = await VideoRepo(db).get_all()
+    return all_videos
