@@ -81,3 +81,16 @@ class ManagerApplication(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+
+class CommentPoster(BaseModel):
+    id: Optional[int] = Field(description="Id of the user that left the comment")
+    username: Optional[str] = Field(description="Username of the user that left the comment, displayed on it")
+    profile_picture_link: Optional[str] = Field(description="Profile pic which will be shown in comment")
+
+
+class Comment(BaseModel):
+    id: Optional[int] = Field(description="Automatically generated comment ID")
+    user_id: Optional[int] = Field(description="ID of the user that left this comment")
+    content: Optional[str] = Field(description="Content of the comment made by the user")
+    poster: Optional[CommentPoster] = Field(description="User that left this comment")
