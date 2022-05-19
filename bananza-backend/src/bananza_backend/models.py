@@ -88,9 +88,38 @@ class CommentPoster(BaseModel):
     username: Optional[str] = Field(description="Username of the user that left the comment, displayed on it")
     profile_picture_link: Optional[str] = Field(description="Profile pic which will be shown in comment")
 
+    class Config:
+        orm_mode = True
 
-class Comment(BaseModel):
+
+class CommentCreate(BaseModel):
+    content: Optional[str] = Field(description="Content of the comment made by the user")
+    video_id: Optional[int] = Field(description="ID of the video containing the comment")
+
+
+class Comment(CommentCreate):
     id: Optional[int] = Field(description="Automatically generated comment ID")
     user_id: Optional[int] = Field(description="ID of the user that left this comment")
-    content: Optional[str] = Field(description="Content of the comment made by the user")
     poster: Optional[CommentPoster] = Field(description="User that left this comment")
+
+    class Config:
+        orm_mode = True
+
+
+class ReactionStateEnum(str, Enum):
+    like = "like"
+    neutral = "neutral"
+    dislike = "dislike"
+
+
+class ReactionCreate(BaseModel):
+    state: Optional[ReactionStateEnum] = Field(description="Reaction state gave by the user")
+    video_id: Optional[int] = Field(description="ID of the video that holds this reaction")
+
+
+class Reaction(ReactionCreate):
+    id: Optional[int] = Field(description="Automatically generated reaction ID")
+    user_id: Optional[int] = Field(description="ID of the user that owns this reaction")
+
+    class Config:
+        orm_mode = True
