@@ -27,3 +27,10 @@ async def get_all_videos(db: Session = Depends(get_db), token: str = Depends(oau
     AuthHandler(db).get_current_user_by_token(token)
     all_videos = await VideoRepo(db).get_all()
     return all_videos
+
+
+@router.get("/{id}", summary="Get video details of a particular video")
+async def get_video_by_id(video_id: str, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
+    AuthHandler(db).get_current_user_by_token(token)
+    video = await VideoRepo(db).get_by_id(video_id)
+    return video
