@@ -7,6 +7,7 @@ import Router from "next/router";
 import "video-react/dist/video-react.css"; // import css
 import { Player } from "video-react";
 import { NotificationManager } from "react-notifications";
+import Link from "next/link";
 
 let comments=[{
     author:"Claudiu",
@@ -79,7 +80,8 @@ export default function Video(props) {
               <div className={styles.authorBox}>
                 {!!videoData && !!videoData.posterName && 
                 <>
-                    posted by <span>Claudiu<img src={`//localhost:8000${videoData.profilePic}`}/></span>
+                    posted by <span>
+                    <Link href={`/user/${videoData.owner_id}`}>Claudiu</Link></span><img className={styles.profilePic} src={`//localhost:8000${videoData.profilePic}`}/>
                 </>
                 }
               </div>
