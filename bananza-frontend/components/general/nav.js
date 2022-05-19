@@ -46,6 +46,8 @@ export default function Nav() {
     setRenderedVideos(matchedVideos);
   }
 
+  useEffect(updateRenderedVideos, [keyword]);
+
   let searchChange = (e)=>{
     if(!e.target.value.length){
       setSearching(0);
@@ -55,7 +57,6 @@ export default function Nav() {
 
     let keyword = e.target.value;
     setKeyword(keyword);
-    updateRenderedVideos();
   }
 
   let goBackWhenClickingAway = (e)=>{ 
