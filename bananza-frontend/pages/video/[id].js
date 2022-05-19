@@ -18,6 +18,7 @@ let comments=[{
 }]
 
 export default function Video(props) {
+
   return (
     <>
       <PageHead title="Bananza - Video" />
