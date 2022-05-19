@@ -246,7 +246,9 @@ export default function Home(props) {
         Authorization:"Bearer "+localStorage.token
       }
     }).then(response=>response.json().then(parsedJSON=>{
-      setVideos(parsedJSON.slice(-5));
+      try{
+        setVideos(parsedJSON.slice(-5));
+      } catch(e){};
     }))
   }, []);
 
