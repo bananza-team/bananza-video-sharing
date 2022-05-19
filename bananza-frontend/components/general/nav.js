@@ -58,6 +58,12 @@ export default function Nav() {
     updateRenderedVideos();
   }
 
+  let goBackWhenClickingAway = (e)=>{ 
+    // when the user navigates to another page, close the search box
+    console.log(e);
+    if(e.target.nodeName == "A") goBack();
+  }
+
   return (
     <>
     <nav>
@@ -86,7 +92,7 @@ export default function Nav() {
       </div>
     </nav>
     {!!searching && (
-    <div className="searchContainer">
+    <div className="searchContainer" onClick={goBackWhenClickingAway} >
       <span className="searchBack" onClick={goBack}>Back</span>
       <VideoListWide displayPoster="1" type="wide" videos={renderedVideos} header="Search results" />
     </div>
