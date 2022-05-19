@@ -80,6 +80,14 @@ class UserModel(BaseModel):
         back_populates="user",
         uselist=False
     )
+    comments = relationship(
+        "CommentModel",
+        back_populates="user"
+    )
+    reactions = relationship(
+        "ReactionModel",
+        back_populates="user"
+    )
 
 
 class VideoModel(BaseModel):
@@ -114,6 +122,46 @@ class VideoModel(BaseModel):
         String,
         nullable=False
     )
+    comments = relationship(
+        "CommentModel",
+        back_populates="video"
+    )
+    reactions = relationship(
+        "ReactionModel",
+        back_populates="video"
+    )
+
+
+class CommentModel(BaseModel):
+    __tablename__ = "comments"
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True,
+        autoincrement=True
+    )
+    video_id = Column(
+        Integer,
+        ForeignKey("videos.id")
+    )
+    user_id = Column(
+        Integer,
+        ForeignKey("users.id")
+    )
+    video = relationship(
+        "VideoModel",
+        back_populates="comments"
+    )
+    user = relationship(
+        "UserModel",
+        back_populates="comments"
+    )
+    content = Column(
+        String,
+        nullable=False
+    )
+
+
 
 
 class ManagerApplicationsModel(BaseModel):
