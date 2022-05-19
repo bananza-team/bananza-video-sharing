@@ -162,6 +162,43 @@ class CommentModel(BaseModel):
     )
 
 
+class ReactionModel(BaseModel):
+    __tablename__ = "reactions"
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True,
+        autoincrement=True
+    )
+    video_id = Column(
+        Integer,
+        ForeignKey("videos.id")
+    )
+    user_id = Column(
+        Integer,
+        ForeignKey("users.id")
+    )
+    video = relationship(
+        "VideoModel",
+        back_populates="reactions"
+    )
+    user = relationship(
+        "UserModel",
+        back_populates="reactions"
+    )
+
+    state = Column(
+        Enum(
+            "like",
+            "neutral",
+            "dislike",
+            name="reaction_state_enum",
+            create_type=False
+        ),
+        default="neutral",
+        index=True,
+        nullable=False
+    )
 
 
 class ManagerApplicationsModel(BaseModel):
