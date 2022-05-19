@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import Router from "next/router";
 import "video-react/dist/video-react.css"; // import css
 import { Player } from "video-react";
+import { NotificationManager } from "react-notifications";
 
 let comments=[{
     author:"Claudiu",
@@ -35,6 +36,23 @@ export default function Video(props) {
         }))
     }, []);
 
+    useEffect(()=>{
+        if(videoData == null || videoData.posterName) return;
+        fetch("//localhost:8000/user/"+videoData.owner_id, {
+            headers:{
+                Authorization:"Bearer "+localStorage.token,
+            }
+        }).then(response => response.json().then(parsedJSON=>{
+            if(response.status == 200){
+                setVideoData({
+                    ...videoData, 
+                    posterName:parsedJSON.username,
+                    profilePic:parsedJSON.profile_picture_link.replace("../", "/"),
+                })
+            }
+        }))
+    }, [videoData]);
+
   return (
     <>
       <PageHead title="Bananza - Video" />
@@ -59,7 +77,11 @@ export default function Video(props) {
                 <span><i class="fa-solid fa-thumbs-down"></i> 12 Dislikes</span>
               </div>
               <div className={styles.authorBox}>
-                posted by <span>Claudiu</span>
+                {!!videoData && !!videoData.posterName && 
+                <>
+                    posted by <span>Claudiu<img src={`//localhost:8000${videoData.profilePic}`}/></span>
+                </>
+                }
               </div>
             </div>
           </div>
