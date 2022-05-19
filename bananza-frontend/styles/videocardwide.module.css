@@ -11,11 +11,11 @@
 .videoData{
     display: flex;
     align-items: center;
-    background:var(--black);
+    background:#3f3f3f;
     width:100%;
 }
 .video:nth-child(2n+1) .videoData{
-    background:var(--dblack) !important;
+    background:#4f4f4f !important;
 }
 .videoTitle{
     font-size:25px;

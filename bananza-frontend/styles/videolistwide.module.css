@@ -3,6 +3,7 @@
     font-size:25px;
     display: flex;
     margin:10px;
+    color:white;
 }
 .videoListContainer>div{
     margin:20px;
