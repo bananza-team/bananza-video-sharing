@@ -1,7 +1,7 @@
 import PageHead from "/components/general/pageHead";
 import styles from "../styles/Home.module.css";
 import Input from "/components/forms/input";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Checkbox from "/components/forms/checkbox";
 import Nav from "/components/general/nav";
 import VideoList from "/components/videos/videolist";
@@ -238,32 +238,21 @@ export default function Home(props) {
     });
   };
 
-  let videos = [
-    {
-      thumbnail: "test.png",
-      title: "video title",
-      description: "video description",
-      channel: "channel name",
-      key: 0,
-    },
-    {
-      thumbnail: "test.png",
-      title: "video title2",
-      description: "video description2",
-      channel: "channel name2",
-      key: 1,
-    },
-  ];
-  videos[2] = videos[3] = videos[4] = videos[0];
+  let [videos, setVideos] = useState(null);
 
-  let reports = [
-    {
-      video: videos[0],
-      reportReason: "misleading title",
-      key: 0,
-    },
-  ];
-  reports[1] = reports[2] = reports[3] = reports[4] = reports[0];
+  useEffect(()=>{
+    fetch("//localhost:8000/video/all", {
+      headers:{
+        Authorization:"Bearer "+localStorage.token
+      }
+    }).then(response=>response.json().then(parsedJSON=>{
+      try{
+        setVideos(parsedJSON.slice(-5));
+      } catch(e){};
+    }))
+  }, []);
+
+  let reports = [];
 
   return (
     <>
@@ -400,7 +389,9 @@ export default function Home(props) {
       {props.user && (
         <>
           <Nav />
-          <VideoList videos={videos} header="Top five videos of today" />
+          {!!videos && 
+          <VideoList videos={videos} header="Latest videos" />
+          }
           <LatestReports reports={reports} />
         </>
       )}

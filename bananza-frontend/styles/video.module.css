@@ -1,0 +1,112 @@
+.videoPage{
+    display: flex;
+    height:calc(100% - 106.733px);
+    justify-content: center;
+    align-items: center;
+    color:white;
+    overflow: hidden;   
+}
+.videoPage>div{
+    width:50%;
+    height:100%;
+    padding:20px;
+}
+
+.videoPage video *{
+    transition-timing-function: linear !important;
+}
+
+.videoPageLeft{
+    box-shadow: var(--shadow);
+}
+.videoPageRight{
+    background:var(--dblack);
+    overflow: auto;
+}
+
+.videoPage video{
+    height: 80%;
+    width:auto;
+    max-width: 100%;
+    box-shadow: var(--shadow);
+}
+.videoTitle{
+    font-size:25px;
+}
+.videoDescription{
+    font-size:18px;
+    color: gray;
+}
+.videoData{
+    display: flex;
+    position: relative;
+    padding:10px;
+}
+.videoData>div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.videoDataRight{
+    position:absolute;
+    right:0;
+}
+.likeContainer{
+    display: flex;
+}
+.likeContainer>span{
+    padding:10px;
+}
+.authorBox{
+  padding-left:10px;
+    display: flex;
+    align-items: center;
+}
+.authorBox{
+    color:gray;
+}
+.authorBox span{
+    font-size:23px;
+    color:white;
+    font-weight: bold;
+    padding-left:5px;
+}
+
+.commentArea textarea{
+    background:#2f2f2f;
+    border:none;
+    width:100%;
+    height:100px;
+    color:white;
+    box-shadow:var(--shadow);
+    resize:none;
+}
+.commentArea button{
+    margin-top:10px;
+    padding:10px;
+}
+.commentArea *{
+    padding:5px;
+}
+.comment{
+    display: flex;
+    align-items: flex-start;
+    padding:5px;
+}
+.commentAuthor{
+    background:#3f3f3f;
+    height:30px;
+    padding:5px;
+    border-radius:5px;
+}
+.commentText{
+    padding:10px;
+    padding-top:3px;
+}
+.profilePic{
+    width:50px;
+    height:50px;
+    margin:5px;
+    box-shadow:var(--shadow);
+    border-radius:100%;
+}

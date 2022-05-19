@@ -221,3 +221,38 @@ nav .rightNav{
     transform:rotate(0deg);
   }
 }
+
+/* Search box */
+.searchBox{
+  background:rgb(0,0,0,0.5);
+}
+.searchBox:focus-within{
+  box-shadow: var(--shadow);
+}
+.searchBox input{
+  border-color:transparent;
+}
+
+.searchContainer{
+  width:100%;
+  height:calc(100% - 106.733px);
+  display:flex;
+  position:fixed;
+  background:#1f1f1f;
+  z-index:10;
+  color:white;
+  overflow:auto;
+}
+.searchContainer>div{
+  width:100%;
+  height:100%;
+}
+nav{
+  z-index: 100;
+}
+.searchBack{
+  position: absolute;
+  right:20px;
+  top:25px;
+  cursor:pointer;
+}

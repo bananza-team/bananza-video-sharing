@@ -1,5 +1,5 @@
 from bananza_backend.db.sql_models import UserModel
-from bananza_backend.models import UserCreate, UserEdit, UserTypeEnum
+from bananza_backend.models import UserCreate, UserEdit, UserTypeEnum, UserPublic
 from bananza_backend.exceptions import EntityNotFound, EntityAlreadyExists, InvalidCredentials, FileUploadFailed
 from passlib.context import CryptContext
 
@@ -53,19 +53,23 @@ class UserRepo:
             raise EntityNotFound(message=f"User with id {user_id} not found")
         return found_user
 
-    def get_public_by_id(self, user_id: int) -> UserModel:
-        found_user = self.db.query(UserModel).with_entities(
-            UserModel.id,
-            UserModel.username,
-            UserModel.type,
-            UserModel.description,
-            UserModel.profile_picture_link,
-            UserModel.cover_picture_link,
-            UserModel.is_active
-        ).filter(UserModel.id == user_id).first()
-        if not found_user:
+    def get_public_by_id(self, user_id: int) -> UserPublic:
+        user_with_all_info = self.get_by_id(user_id)
+
+        if not user_with_all_info:
             raise EntityNotFound(message=f"User with id {user_id} not found")
-        return found_user
+
+        user_dto = UserPublic(
+            username=user_with_all_info.username,
+            type=user_with_all_info.type,
+            description=user_with_all_info.description,
+            profile_picture_link=user_with_all_info.profile_picture_link,
+            cover_picture_link=user_with_all_info.cover_picture_link,
+            is_active=user_with_all_info.is_active,
+            videos=user_with_all_info.videos
+        )
+
+        return user_dto
 
     def get_by_username(self, username: str) -> UserModel:
         found_user = self.db.query(UserModel).filter(UserModel.username == username).first()

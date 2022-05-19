@@ -4,6 +4,7 @@ import styles from "../styles/profile.module.css";
 import Input from "/components/forms/input";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import VideoListWide from "/components/videos/videolistwide";
 import Router from "next/router";
 import {
   validateLength,
@@ -265,8 +266,8 @@ export default function Profile(props) {
             </div>
             </>
             )}
-          {!!menu && <>videos</>}
         </div>
+        {!!menu && <VideoListWide header="Your videos" videos={props.user.videos}/>}
         {!menu &&
         <div className={styles.submitButton}>
             <button>Submit</button>

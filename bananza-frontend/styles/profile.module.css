@@ -69,12 +69,16 @@
     padding-right:0px;
     padding-bottom:0px;
     color:white;
-    margin:40px;
+    margin:20px;
     margin-left:20px;
     margin-right:20px;
     display: flex;
     flex-direction: column;
 
+}
+.profileColumn span{
+    display: table;
+    margin:5px !important;
 }
 .profileHeader{
     color:white;
