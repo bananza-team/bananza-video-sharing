@@ -38,6 +38,7 @@ export default function Video(props) {
             videoDataAux.comments.unshift(parsedJSON); // push at the top
             setVideoData(videoDataAux);
             setComment("");
+            NotificationManager.info("Comment succesfully added!");
           } else {
             NotificationManager.error("Comment couldn't be posted. You may not be logged in anymore. Please save your comment and refresh the page");
           }
