@@ -176,7 +176,13 @@ export default function Video(props) {
                 <i class="fa-solid fa-bars"></i>
                 </div>
                 <div className={styles.menu}>
-                  <span>Flag</span>
+                  <span className={styles.flagMenuItem}>
+                    <span className={styles.flagButton}>Flag</span>
+                    <div className={styles.flagReasons}>
+                      <span>Spam</span>
+                      <span>Infringes on my copyright</span>
+                      <span>Fake news</span>
+                    </div></span>
                 </div>
               </div>
               <div className={styles.authorBox}>
