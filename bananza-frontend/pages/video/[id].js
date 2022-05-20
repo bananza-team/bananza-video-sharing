@@ -42,7 +42,24 @@ export default function Video(props) {
     }
 
     let updateReactionState = newState =>{
-
+      fetch("//localhost:8000/video/interact/react", {
+        method:"PATCH",
+        body:JSON.stringify({
+          state:newState == -1?"dislike":newState == 0?"neutral":"like",
+          video_id:parseInt(id),
+        }),
+        headers:{
+          Authorization:"Bearer "+localStorage.token,
+          'accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }).then(response => response.json().then(parsedJSON=>{
+        if(response.status == 200){
+          setReactionState(newState);
+        } else {
+          NotificationManager.error("Reaction unsuccesful");
+        }
+      }))
     }
     
     useEffect(()=>{
@@ -54,6 +71,8 @@ export default function Video(props) {
       }).then(response => response.json().then(parsedJSON=>{
         if(response.status == 200){
           setReactions(parsedJSON);
+          let rawState = parsedJSON.current_user_reaction;
+          setReactionState(rawState == "dislikes"?-1:rawState == "neutral"?0:1);
         }
         else NotificationManager.error("Like/dislike counters could not be loaded. Your session may have expired");
       }))
