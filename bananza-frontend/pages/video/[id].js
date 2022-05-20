@@ -8,6 +8,7 @@ import "video-react/dist/video-react.css"; // import css
 import { Player } from "video-react";
 import { NotificationManager } from "react-notifications";
 import Link from "next/link";
+import { copyTextToClipboard } from "../../libs/clipboard";
 
 export default function Video(props) {
 
@@ -80,6 +81,11 @@ export default function Video(props) {
         }))
     }, [videoData]);
 
+    let share = (e)=>{
+      copyTextToClipboard("localhost:3000"+router.asPath);
+      NotificationManager.info("Video link has been copied to your clipboard!");
+    }
+
   return (
     <>
       <PageHead title="Bananza - Video" />
@@ -100,6 +106,7 @@ export default function Video(props) {
             </div>
             <div className={styles.videoDataRight}>
               <div className={styles.likeContainer}>
+              <span className={styles.shareButton} onClick={share}>Share</span>
                 <span><i class="fa-solid fa-thumbs-up"></i> 25 Likes</span>
                 <span><i class="fa-solid fa-thumbs-down"></i> 12 Dislikes</span>
               </div>

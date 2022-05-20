@@ -61,6 +61,7 @@
   padding-left:10px;
     display: flex;
     align-items: center;
+    justify-content: end;
 }
 .authorBox{
     color:gray;
@@ -126,4 +127,10 @@
 }
 .commentAuthor>a{
     position: relative;
+}
+.shareButton{
+    background: rgb(199, 121, 11);
+    color:white;
+    border-radius: 10px;
+    cursor:pointer;
 }
