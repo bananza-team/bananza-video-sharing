@@ -21,6 +21,15 @@ let comments=[{
 
 export default function Video(props) {
 
+    let [comment, setComment]=useState("");
+    
+    let updateComment = (e)=>{
+      setComment(e.target.value);
+    }
+
+    let sendComment = ()=>{
+    }
+
     let [videoData, setVideoData] = useState(null);
     let router = useRouter();
     let {id} = router.query;
@@ -90,8 +99,8 @@ export default function Video(props) {
         </div>
         <div className={styles.videoPageRight}>
             <div className={styles.commentArea}>
-                <textarea placeholder="Speak your mind!"></textarea>
-                <button>Comment</button>
+                <textarea onChange={updateComment} placeholder="Speak your mind!"></textarea>
+                <button onClick={sendComment}>Comment</button>
             </div>
             <hr></hr>
             <div className={styles.commentsArea}>
