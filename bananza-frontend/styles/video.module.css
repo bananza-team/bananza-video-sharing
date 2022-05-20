@@ -91,6 +91,7 @@
 .comment{
     display: flex;
     align-items: flex-start;
+    flex-direction: column;
     padding:5px;
 }
 .commentAuthor{
@@ -102,6 +103,7 @@
 .commentText{
     padding:10px;
     padding-top:3px;
+    word-break:break-all;
 }
 .profilePic{
     width:50px;
@@ -119,7 +121,9 @@
     top:-5px;
     box-shadow: var(--shadow);
 }
+.commentAuthor{
+    display: flex;
+}
 .commentAuthor>a{
     position: relative;
-    top:-15px;
 }
