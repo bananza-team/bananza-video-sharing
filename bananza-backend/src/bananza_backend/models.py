@@ -4,6 +4,29 @@ from typing import List, Optional
 from datetime import datetime
 
 
+class CommentPoster(BaseModel):
+    id: Optional[int] = Field(description="Id of the user that left the comment")
+    username: Optional[str] = Field(description="Username of the user that left the comment, displayed on it")
+    profile_picture_link: Optional[str] = Field(description="Profile pic which will be shown in comment")
+
+    class Config:
+        orm_mode = True
+
+
+class CommentCreate(BaseModel):
+    content: Optional[str] = Field(description="Content of the comment made by the user")
+    video_id: Optional[int] = Field(description="ID of the video containing the comment")
+
+
+class Comment(CommentCreate):
+    id: Optional[int] = Field(description="Automatically generated comment ID")
+    user_id: Optional[int] = Field(description="ID of the user that left this comment")
+    user: Optional[CommentPoster] = Field(description="User that left this comment")
+
+    class Config:
+        orm_mode = True
+
+
 class VideoCreate(BaseModel):
     title: Optional[str] = Field(description="Title of the video",
                                  default=f"Video upload {datetime.now().strftime('%d-%m-%Y-%H-%M-%S')}")
@@ -17,6 +40,7 @@ class Video(VideoCreate):
     id: Optional[int] = Field(description="Automatically generated video ID")
     resource_link: Optional[str] = Field(description="Link of the video, automatically generated upon upload")
     thumbnail_image_link: Optional[str] = Field(description="Thumbnail of the video, uploaded by user")
+    comments: Optional[List[Comment]] = Field(description="All the comments")
 
 
 class UserTypeEnum(str, Enum):
@@ -81,29 +105,6 @@ class ManagerApplication(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
-
-
-class CommentPoster(BaseModel):
-    id: Optional[int] = Field(description="Id of the user that left the comment")
-    username: Optional[str] = Field(description="Username of the user that left the comment, displayed on it")
-    profile_picture_link: Optional[str] = Field(description="Profile pic which will be shown in comment")
-
-    class Config:
-        orm_mode = True
-
-
-class CommentCreate(BaseModel):
-    content: Optional[str] = Field(description="Content of the comment made by the user")
-    video_id: Optional[int] = Field(description="ID of the video containing the comment")
-
-
-class Comment(CommentCreate):
-    id: Optional[int] = Field(description="Automatically generated comment ID")
-    user_id: Optional[int] = Field(description="ID of the user that left this comment")
-    poster: Optional[CommentPoster] = Field(description="User that left this comment")
-
-    class Config:
-        orm_mode = True
 
 
 class ReactionStateEnum(str, Enum):
