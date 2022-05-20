@@ -17,6 +17,13 @@ async def add_comment(comment: CommentCreate, db: Session = Depends(get_db), tok
     return comment
 
 
+@router.patch("/like", summary="Add a like reaction to a video", response_model=Reaction)
+async def add_like(reaction: ReactionCreate, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
+    user = AuthHandler(db).get_current_user_by_token(token)
+    like_react = ReactionRepo(db).add_like(reaction=reaction, user_id=user.id)
+    return like_react
+
+
 @router.get("/reactions", summary="Get a count of likes and dislikes", response_model=VideoReactionCount)
 async def get_reactions(video_id: int, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
     AuthHandler(db).get_current_user_by_token(token)
