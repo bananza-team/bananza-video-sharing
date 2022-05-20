@@ -1,4 +1,4 @@
-from bananza_backend.models import Video, VideoCreate
+from bananza_backend.models import Video, VideoCreate, VideoForSearch
 from bananza_backend.db.sql_db import get_db
 from bananza_backend.services.videos.repository import VideoRepo
 from bananza_backend.services.authentication.handler import AuthHandler, oauth2_scheme
@@ -24,7 +24,7 @@ async def upload_video(video_details: VideoCreate = Depends(), video_file: Uploa
     return new_video
 
 
-@router.get("/all", summary="Get a list of all videos from db", response_model=List[Video])
+@router.get("/all", summary="Get a list of all videos from db", response_model=List[VideoForSearch])
 async def get_all_videos(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
     AuthHandler(db).get_current_user_by_token(token)
     all_videos = await VideoRepo(db).get_all()
