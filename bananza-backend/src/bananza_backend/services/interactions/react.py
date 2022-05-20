@@ -23,7 +23,27 @@ class ReactionRepo:
             "dislikes": len(dislikes)
         }
 
-    def add_generic_reaction(self, reaction: ReactionCreate, user_id: int) -> Reaction:
+    def add_like(self, reaction: ReactionCreate, user_id: int) -> Reaction:
+        if not reaction.state:
+            raise HTTPException(status_code=403, detail="Reaction must have a state")
+
+        existing_reaction_from_this_user = self.get(user_id)
+
+        if not existing_reaction_from_this_user:
+            return self.__add_generic_reaction(reaction, user_id)
+
+        existing_reaction_state = existing_reaction_from_this_user.state
+
+        if existing_reaction_state == ReactionStateEnum.neutral:
+            existing_reaction_from_this_user.state = ReactionStateEnum.like
+        elif existing_reaction_state == ReactionStateEnum.dislike or existing_reaction_state == ReactionStateEnum.like:
+            existing_reaction_from_this_user.state = ReactionStateEnum.neutral
+
+        self.db.commit()
+        self.db.refresh(existing_reaction_from_this_user)
+        return existing_reaction_from_this_user
+
+    def __add_generic_reaction(self, reaction: ReactionCreate, user_id: int) -> Reaction:
         new_reaction = ReactionModel(
             video_id=reaction.video_id,
             user_id=user_id,
