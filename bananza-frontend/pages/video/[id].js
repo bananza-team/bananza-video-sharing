@@ -28,6 +28,27 @@ export default function Video(props) {
     }
 
     let sendComment = ()=>{
+      if(comment.length<5) NotificationManager.error("Your comment must have at least 5 characters");
+      else {
+        fetch("//localhost:8000/video/interact/comment", {
+          method:"POST",
+          headers:{
+            Authorization:"Bearer " +localStorage.token,
+            'accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body:JSON.stringify({
+            content:comment,
+            video_id:parseInt(id),
+          })
+        }).then(response=>response.json().then(parsedJSON=>{
+          if(response.status == 200){
+
+          } else {
+            NotificationManager.error("Comment couldn't be posted. You may not be logged in anymore. Please save your comment and refresh the page");
+          }
+        }))
+      } 
     }
 
     let [videoData, setVideoData] = useState(null);
