@@ -12,6 +12,11 @@ import { copyTextToClipboard } from "../../libs/clipboard";
 
 export default function Video(props) {
 
+    if(!props.user){
+      useRouter().push("/");
+      return;
+    }
+
     let [comment, setComment]=useState("");
     let [TAValue, setTAValue]=useState("");
     let [reactions, setReactions] = useState({
