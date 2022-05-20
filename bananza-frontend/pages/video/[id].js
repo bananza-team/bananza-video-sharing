@@ -12,6 +12,7 @@ import Link from "next/link";
 export default function Video(props) {
 
     let [comment, setComment]=useState("");
+    let [TAValue, setTAValue]=useState("");
     
     let updateComment = (e)=>{
       setComment(e.target.value);
@@ -36,6 +37,7 @@ export default function Video(props) {
             let videoDataAux = Object.create(videoData);
             videoDataAux.comments.unshift(parsedJSON); // push at the top
             setVideoData(videoDataAux);
+            setComment("");
           } else {
             NotificationManager.error("Comment couldn't be posted. You may not be logged in anymore. Please save your comment and refresh the page");
           }
@@ -113,7 +115,7 @@ export default function Video(props) {
         </div>
         <div className={styles.videoPageRight}>
             <div className={styles.commentArea}>
-                <textarea onChange={updateComment} placeholder="Speak your mind!"></textarea>
+                <textarea value={comment} onChange={updateComment} placeholder="Speak your mind!"></textarea>
                 <button onClick={sendComment}>Comment</button>
             </div>
             <hr></hr>
