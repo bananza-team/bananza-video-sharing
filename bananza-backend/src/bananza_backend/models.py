@@ -127,3 +127,10 @@ class Reaction(ReactionCreate):
 
     class Config:
         orm_mode = True
+
+
+class VideoReactionCount(BaseModel):
+    class Config:
+        orm_mode = True
+    likes: int = Field(description="Number of video likes, computed from the db")
+    dislikes: int = Field(description="Number of video likes, computed from the db")
