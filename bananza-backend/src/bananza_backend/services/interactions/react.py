@@ -10,17 +10,18 @@ class ReactionRepo:
     def __init__(self, database_session: Session):
         self.db = database_session
 
-    def get(self, user_id) -> ReactionModel:
-        return self.db.query(ReactionModel).filter(ReactionModel.user_id == user_id).first()
+    def get(self, user_id: int, video_id: int) -> ReactionModel:
+        return self.db.query(ReactionModel).filter(ReactionModel.user_id.like(user_id),
+                                                   ReactionModel.video_id.like(video_id)).first()
 
-    def get_count_on_video(self, video_id, user_id):
+    def get_count_on_video(self, video_id: int, user_id: int):
         likes = self.db.query(ReactionModel).filter(ReactionModel.video_id.like(video_id),
                                                     ReactionModel.state.like(ReactionStateEnum.like)).all()
         dislikes = self.db.query(ReactionModel).filter(ReactionModel.video_id.like(video_id),
                                                        ReactionModel.state.like(ReactionStateEnum.dislike)).all()
-        existing_reaction = self.get(user_id)
+        existing_reaction = self.get(user_id, video_id)
         if not existing_reaction:
-            existing_reaction = ReactionStateEnum.neutral
+            existing_reaction.state = ReactionStateEnum.neutral
         return {
             "likes": len(likes),
             "dislikes": len(dislikes),
@@ -31,7 +32,7 @@ class ReactionRepo:
         if not reaction.state:
             raise HTTPException(status_code=403, detail="Reaction must have a state")
 
-        existing_reaction_from_this_user = self.get(user_id)
+        existing_reaction_from_this_user = self.get(user_id, reaction.video_id)
 
         if not existing_reaction_from_this_user:
             return self.__add_reaction_in_db(reaction, user_id)
