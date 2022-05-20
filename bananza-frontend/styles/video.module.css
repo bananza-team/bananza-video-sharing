@@ -134,3 +134,37 @@
     border-radius: 10px;
     cursor:pointer;
 }
+
+.menuButton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:10px;
+    cursor: pointer;
+}
+
+.menuButton:hover + .menu, .menu:hover{
+    transform: scale(1);
+}
+
+.menu{
+    position: absolute;
+    right:-15px;
+    display: flex;
+    flex-direction: column;
+    background:#f2f2f2;
+    color:black;
+    box-shadow: var(--shadow);
+    transform: scale(0);
+    transition-duration: .1s;
+    top:calc(-100% - 10px);
+}
+.menu span{
+    padding:10px;
+    cursor: pointer;
+    transition-duration: .1s;
+}
+.menu span:hover{
+    background:gray;
+    color:white;
+}
