@@ -9,16 +9,6 @@ import { Player } from "video-react";
 import { NotificationManager } from "react-notifications";
 import Link from "next/link";
 
-let comments=[{
-    author:"Claudiu",
-    comment:"comment text",
-    key:0,
-}, {
-    author:"mario",
-    comment:"lots of lines lots of lines lots of lines lots of lines lots of lines lots of lines lots of lines",
-    key:1,
-}]
-
 export default function Video(props) {
 
     let [comment, setComment]=useState("");
@@ -125,10 +115,10 @@ export default function Video(props) {
             </div>
             <hr></hr>
             <div className={styles.commentsArea}>
-                {comments.map((comment, key)=>(
+                {videoData.comments.map((comment, key)=>(
                     <div className={styles.comment} key={key}>
-                    <span className={styles.commentAuthor}>{comment.author}</span>
-                    <span className={styles.commentText}>{comment.comment}</span>
+                    <span className={styles.commentAuthor}>{comment.content}</span>
+                    <span className={styles.commentText}><Link href={`/user/${comment.user.id}`}>{comment.user.username}</Link><img class={styles.commentAvatar} src={`//localhost:8000${comment.user.profile_picture_link.replace("../", "/")}`}/></span>
                     </div>
                 ))}
             </div>
