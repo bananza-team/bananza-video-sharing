@@ -18,6 +18,27 @@ export default function Video(props) {
       likes:0,
       dislikes:0,
     })
+    let [reactionState, setReactionState] = useState(0);
+
+    let handleLike = ()=>{
+      let newState;
+      if(reactionState == 0) newState = 1; // if neutral, now like
+      if(reactionState == 1) newState = 0; // if likes, now neutral
+      if(reactionState == -1) newState = 1; // if dislikes, now likes
+       updateReactionState(newState);
+    }
+
+    let handleDislike = ()=>{
+      let newState;
+      if(reactionState == 0) newState = -1;
+      if(reactionState == 1) newState = -1;
+      if(reactionState == -1) newState = 0;
+      updateReactionState(newState);
+    }
+
+    let updateReactionState = newState =>{
+
+    }
     
     useEffect(()=>{
       fetch("//localhost:8000/video/interact/reactions?video_id="+id, {
@@ -26,7 +47,9 @@ export default function Video(props) {
           'accept': 'application/json',
         }
       }).then(response => response.json().then(parsedJSON=>{
-        if(response.status == 200) setReactions(parsedJSON);
+        if(response.status == 200){
+          setReactions(parsedJSON);
+        }
         else NotificationManager.error("Like/dislike counters could not be loaded. Your session may have expired");
       }))
     }, []);
@@ -123,8 +146,8 @@ export default function Video(props) {
             <div className={styles.videoDataRight}>
               <div className={styles.likeContainer}>
               <span className={styles.shareButton} onClick={share}>Share</span>
-                <span><i class="fa-solid fa-thumbs-up"></i> {reactions.likes} Likes</span>
-                <span><i class="fa-solid fa-thumbs-down"></i> {reactions.dislikes} Dislikes</span>
+                <span onClick={handleLike}><i class="fa-solid fa-thumbs-up"></i> {reactions.likes} Likes</span>
+                <span onClick={handleDislike}><i class="fa-solid fa-thumbs-down"></i> {reactions.dislikes} Dislikes</span>
               </div>
               <div className={styles.authorBox}>
                 {!!videoData && !!videoData.posterName && 
