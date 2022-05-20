@@ -26,5 +26,5 @@ async def add_reaction(reaction: ReactionCreate, db: Session = Depends(get_db), 
 
 @router.get("/reactions", summary="Get a count of likes and dislikes", response_model=VideoReactionCount)
 async def get_reactions(video_id: int, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
-    AuthHandler(db).get_current_user_by_token(token)
-    return ReactionRepo(db).get_count_on_video(video_id)
+    user = AuthHandler(db).get_current_user_by_token(token)
+    return ReactionRepo(db).get_count_on_video(video_id, user.id)

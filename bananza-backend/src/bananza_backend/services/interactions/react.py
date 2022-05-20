@@ -13,14 +13,18 @@ class ReactionRepo:
     def get(self, user_id) -> ReactionModel:
         return self.db.query(ReactionModel).filter(ReactionModel.user_id == user_id).first()
 
-    def get_count_on_video(self, video_id):
+    def get_count_on_video(self, video_id, user_id):
         likes = self.db.query(ReactionModel).filter(ReactionModel.video_id.like(video_id),
                                                     ReactionModel.state.like(ReactionStateEnum.like)).all()
         dislikes = self.db.query(ReactionModel).filter(ReactionModel.video_id.like(video_id),
                                                        ReactionModel.state.like(ReactionStateEnum.dislike)).all()
+        existing_reaction = self.get(user_id)
+        if not existing_reaction:
+            existing_reaction = ReactionStateEnum.neutral
         return {
             "likes": len(likes),
-            "dislikes": len(dislikes)
+            "dislikes": len(dislikes),
+            "current_user_reaction": existing_reaction.state
         }
 
     def add_reaction(self, reaction: ReactionCreate, user_id: int) -> Reaction:
