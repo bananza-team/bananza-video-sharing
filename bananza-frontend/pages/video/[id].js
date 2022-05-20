@@ -172,6 +172,12 @@ export default function Video(props) {
               <span className={styles.shareButton} onClick={share}>Share</span>
                 <span onClick={handleLike}><i class="fa-solid fa-thumbs-up"></i> {reactions.likes} Likes</span>
                 <span onClick={handleDislike}><i class="fa-solid fa-thumbs-down"></i> {reactions.dislikes} Dislikes</span>
+                <div className={styles.menuButton}>
+                <i class="fa-solid fa-bars"></i>
+                </div>
+                <div className={styles.menu}>
+                  <span>Flag</span>
+                </div>
               </div>
               <div className={styles.authorBox}>
                 {!!videoData && !!videoData.posterName && 
