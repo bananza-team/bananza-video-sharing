@@ -14,7 +14,23 @@ export default function Video(props) {
 
     let [comment, setComment]=useState("");
     let [TAValue, setTAValue]=useState("");
+    let [reactions, setReactions] = useState({
+      likes:0,
+      dislikes:0,
+    })
     
+    useEffect(()=>{
+      fetch("//localhost:8000/video/interact/reactions?video_id="+id, {
+        headers:{
+          Authorization:"Bearer "+localStorage.token,
+          'accept': 'application/json',
+        }
+      }).then(response => response.json().then(parsedJSON=>{
+        if(response.status == 200) setReactions(parsedJSON);
+        else NotificationManager.error("Like/dislike counters could not be loaded. Your session may have expired");
+      }))
+    }, []);
+
     let updateComment = (e)=>{
       setComment(e.target.value);
     }
@@ -107,8 +123,8 @@ export default function Video(props) {
             <div className={styles.videoDataRight}>
               <div className={styles.likeContainer}>
               <span className={styles.shareButton} onClick={share}>Share</span>
-                <span><i class="fa-solid fa-thumbs-up"></i> 25 Likes</span>
-                <span><i class="fa-solid fa-thumbs-down"></i> 12 Dislikes</span>
+                <span><i class="fa-solid fa-thumbs-up"></i> {reactions.likes} Likes</span>
+                <span><i class="fa-solid fa-thumbs-down"></i> {reactions.dislikes} Dislikes</span>
               </div>
               <div className={styles.authorBox}>
                 {!!videoData && !!videoData.posterName && 
