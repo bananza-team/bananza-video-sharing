@@ -33,7 +33,9 @@ export default function Video(props) {
           })
         }).then(response=>response.json().then(parsedJSON=>{
           if(response.status == 200){
-
+            let videoDataAux = Object.create(videoData);
+            videoDataAux.comments.unshift(parsedJSON); // push at the top
+            setVideoData(videoDataAux);
           } else {
             NotificationManager.error("Comment couldn't be posted. You may not be logged in anymore. Please save your comment and refresh the page");
           }
@@ -52,6 +54,7 @@ export default function Video(props) {
         }).then(response=>response.json().then(parsedJSON=>{
             if(response.status != 200 || parsedJSON == null) router.push("/");
             else {
+                parsedJSON.comments = parsedJSON.comments.reverse();
                 setVideoData(parsedJSON);
             }
         }))
@@ -115,7 +118,7 @@ export default function Video(props) {
             </div>
             <hr></hr>
             <div className={styles.commentsArea}>
-                {videoData.comments.map((comment, key)=>(
+                {videoData.comments.reverse().map((comment, key)=>(
                     <div className={styles.comment} key={key}>
                     <span className={styles.commentAuthor}>
                       <Link href={`/user/${comment.user.id}`}>{comment.user.username}</Link>
