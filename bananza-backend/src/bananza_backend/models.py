@@ -33,13 +33,16 @@ class VideoCreate(BaseModel):
     description: Optional[str] = Field(description="Description of the video")
 
 
-class Video(VideoCreate):
+class VideoForSearch(VideoCreate):
     class Config:
         orm_mode = True
     owner_id: Optional[int] = Field(description="ID of the user owning this video")
     id: Optional[int] = Field(description="Automatically generated video ID")
     resource_link: Optional[str] = Field(description="Link of the video, automatically generated upon upload")
     thumbnail_image_link: Optional[str] = Field(description="Thumbnail of the video, uploaded by user")
+
+
+class Video(VideoForSearch):
     comments: Optional[List[Comment]] = Field(description="All the comments")
 
 
