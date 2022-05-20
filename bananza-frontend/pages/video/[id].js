@@ -117,8 +117,12 @@ export default function Video(props) {
             <div className={styles.commentsArea}>
                 {videoData.comments.map((comment, key)=>(
                     <div className={styles.comment} key={key}>
-                    <span className={styles.commentAuthor}>{comment.content}</span>
-                    <span className={styles.commentText}><Link href={`/user/${comment.user.id}`}>{comment.user.username}</Link><img class={styles.commentAvatar} src={`//localhost:8000${comment.user.profile_picture_link.replace("../", "/")}`}/></span>
+                    <span className={styles.commentAuthor}>
+                      <Link href={`/user/${comment.user.id}`}>{comment.user.username}</Link>
+                      <img class={styles.commentAvatar} src=
+                        {`//localhost:8000${comment.user.profile_picture_link.replace("../", "/")}`}/>
+                        </span>
+                    <span className={styles.commentText}>{comment.content}</span>
                     </div>
                 ))}
             </div>

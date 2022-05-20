@@ -110,3 +110,16 @@
     box-shadow:var(--shadow);
     border-radius:100%;
 }
+.commentAvatar{
+    width:30px;
+    height: 30px;
+    border-radius:100%;
+    position: relative;
+    left:5px;
+    top:-5px;
+    box-shadow: var(--shadow);
+}
+.commentAuthor>a{
+    position: relative;
+    top:-15px;
+}
