@@ -1,5 +1,6 @@
 from bananza_backend.db.sql_models import ReportedVideoModel
-from bananza_backend.models import ReportedVideo, ReportedVideoCreate
+from bananza_backend.models import ReportedVideo, ReportedVideoCreate, User, UserTypeEnum
+from bananza_backend.exceptions import ForbiddenAccess
 
 from sqlalchemy.orm import Session
 from fastapi.exceptions import HTTPException
@@ -13,6 +14,12 @@ class ReportRepo:
     def get_by_user_and_video_id(self, reporter_id: int, video_id: int) -> ReportedVideoModel:
         return self.db.query(ReportedVideoModel).filter(ReportedVideoModel.reporter_id.like(reporter_id),
                                                         ReportedVideoModel.video_id.like(video_id)).first()
+
+    def get_all(self, user_that_queried: User):
+        if user_that_queried.type not in [UserTypeEnum.manager, UserTypeEnum.admin]:
+            raise ForbiddenAccess(message="Access denied to viewing reports",
+                                  details=f"User with id {user_that_queried.id} is not a manager or admin.")
+        return self.db.query(ReportedVideoModel).all()
 
     def add_report(self, report: ReportedVideoCreate, reporter_id: int) -> ReportedVideo:
         existing_report_of_user_on_this_video = self.get_by_user_and_video_id(reporter_id, report.video_id)
