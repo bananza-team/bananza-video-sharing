@@ -30,7 +30,7 @@ export default function Video(props) {
       if(reactionState == 0) newState = 1; // if neutral, now like
       if(reactionState == 1) newState = 0; // if likes, now neutral
       if(reactionState == -1) newState = 1; // if dislikes, now likes
-       updateReactionState(newState);
+       updateReactionState(newState, reactionState, "like");
     }
 
     let handleDislike = ()=>{
@@ -38,14 +38,15 @@ export default function Video(props) {
       if(reactionState == 0) newState = -1;
       if(reactionState == 1) newState = -1;
       if(reactionState == -1) newState = 0;
-      updateReactionState(newState);
+      updateReactionState(newState, reactionState, "dislike");
     }
 
-    let updateReactionState = newState =>{
+    let updateReactionState = (newState, oldState, action) =>{
+      (()=>{})(); // hack for react, otherwise state is incorrectly updated
       fetch("//localhost:8000/video/interact/react", {
         method:"PATCH",
         body:JSON.stringify({
-          state:newState == -1?"dislike":newState == 0?"neutral":"like",
+          state:action,
           video_id:parseInt(id),
         }),
         headers:{
@@ -56,6 +57,12 @@ export default function Video(props) {
       }).then(response => response.json().then(parsedJSON=>{
         if(response.status == 200){
           setReactionState(newState);
+          let likesCorrection = (oldState !=1 && newState == 1)?1:(oldState == 1 && newState !=1)?-1:0;
+          let dislikesCorrection = (oldState == -1 && newState !=-1)?-1:(newState == -1 && oldState !=-1)?1:0;
+          setReactions({
+            likes:reactions.likes+likesCorrection,
+            dislikes:reactions.dislikes+dislikesCorrection,
+          })
         } else {
           NotificationManager.error("Reaction unsuccesful");
         }
@@ -170,8 +177,8 @@ export default function Video(props) {
             <div className={styles.videoDataRight}>
               <div className={styles.likeContainer}>
               <span className={styles.shareButton} onClick={share}>Share</span>
-                <span onClick={handleLike}><i class="fa-solid fa-thumbs-up"></i> {reactions.likes} Likes</span>
-                <span onClick={handleDislike}><i class="fa-solid fa-thumbs-down"></i> {reactions.dislikes} Dislikes</span>
+                <span className={`${reactionState==1?styles.activeReaction:""}`} onClick={handleLike}><i class="fa-solid fa-thumbs-up"></i> {reactions.likes} Likes</span>
+                <span className={`${reactionState==-1?styles.activeReaction:""}`} onClick={handleDislike}><i class="fa-solid fa-thumbs-down"></i> {reactions.dislikes} Dislikes</span>
                 <div className={styles.menuButton}>
                 <i class="fa-solid fa-bars"></i>
                 </div>
