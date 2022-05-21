@@ -44,3 +44,13 @@
 .videoDescription{
     color: rgb(145, 161, 177);
 }
+.deleteButton{
+    background: var(--dblack);
+    padding:5px;
+    border-radius:10px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+}
+.deleteButton:hover{
+    box-shadow: none;
+}
