@@ -84,10 +84,10 @@ class VideoRepo:
         deleter_id = user_that_deletes.id
         deleter_type = user_that_deletes.type
 
-        if not (found_video.id == user_that_deletes.id or deleter_type == UserTypeEnum.manager
-                or deleter_type == UserTypeEnum.admin):
-            raise ForbiddenAccess(message=f"Couldn't delete video {video_id}",
-                                  details=f"User with id {deleter_id} doesn't own video with id {video_id}")
+        if not found_video.owner_id == deleter_id:
+            if not (deleter_type == UserTypeEnum.manager or deleter_type == UserTypeEnum.admin):
+                raise ForbiddenAccess(message=f"Couldn't delete video {video_id}",
+                                      details=f"User with id {deleter_id} doesn't own video with id {video_id}")
 
         try:
             self.db.delete(found_video)
