@@ -2,6 +2,7 @@ import styles from "/styles/videocardwide.module.css"
 import Link from "next/link"
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import NotificationManager from "react-notifications/lib/NotificationManager";
 export default function VideoCard(props){
 
     let deleteVideo = (e)=>{
@@ -12,7 +13,21 @@ export default function VideoCard(props){
                 {
                     label:"Yes",
                     onClick:()=>{
-
+                        fetch("//localhost:8000/video/"+props.video.id, {
+                            method:"DELETE",
+                            headers:{
+                              'accept':'application/json',
+                              Authorization: "Bearer "+localStorage.token,
+                            }
+                          }).then(response=>response.json().then(parsedJSON=>{
+                            if(response.status == 200){
+                              NotificationManager.info("Video deleted succesfully");
+                              window.location.reload();
+                            } else {
+                              if(response.status == 403) NotificationManager.error("You are not authorized to delete this video");
+                              NotificationManager.error("Error occured while deleting video");
+                            }
+                          }))
                     }
                 },
                 {
