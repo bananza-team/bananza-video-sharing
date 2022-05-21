@@ -135,3 +135,28 @@ class VideoReactionCount(BaseModel):
     likes: int = Field(description="Number of video likes, computed from the db")
     dislikes: int = Field(description="Number of video likes, computed from the db")
     current_user_reaction: ReactionStateEnum = Field(description="Reaction of current user")
+
+
+class ReporterUser(BaseModel):
+    class Config:
+        orm_mode = True
+    id: Optional[int] = Field(description="ID of the reporter")
+    username: Optional[str] = Field(description="Username of the reporter")
+    profile_picture_link: Optional[str] = Field(description="Profile pic of the reporter")
+    cover_picture_link: Optional[str] = Field(description="Cover picture of the reporter")
+
+
+class ReportedVideoCreate(BaseModel):
+    reason: Optional[str] = Field(description="Reason for reporting the video")
+    video_id: Optional[int] = Field(description="ID of the reported video")
+
+
+class ReportedVideo(ReportedVideoCreate):
+    class Config:
+        orm_mode = True
+    id: Optional[int] = Field(description="Automatically generated ID of the reported video")
+    answered: Optional[bool] = Field(description="Answered state of the report", default=False)
+
+    reporter_id: Optional[int] = Field(description="ID of the user that reported the video")
+    video: Optional[VideoForSearch] = Field(description="Video object of the video that is reported")
+    reporter: Optional[ReporterUser] = Field(description="User object of the user that reported the video")
