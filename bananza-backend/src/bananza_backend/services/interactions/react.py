@@ -21,7 +21,11 @@ class ReactionRepo:
                                                        ReactionModel.state.like(ReactionStateEnum.dislike)).all()
         existing_reaction = self.get(user_id, video_id)
         if not existing_reaction:
-            existing_reaction.state = ReactionStateEnum.neutral
+            return {
+                "likes": len(likes),
+                "dislikes": len(dislikes),
+                "current_user_reaction": ReactionStateEnum.neutral
+            }
         return {
             "likes": len(likes),
             "dislikes": len(dislikes),
@@ -43,7 +47,16 @@ class ReactionRepo:
         if existing_reaction_state == ReactionStateEnum.neutral:
             existing_reaction_from_this_user.state = new_reaction_state
         else:
-            existing_reaction_from_this_user.state = ReactionStateEnum.neutral
+            if existing_reaction_state == ReactionStateEnum.like:
+                if new_reaction_state == ReactionStateEnum.dislike:
+                    existing_reaction_from_this_user.state = ReactionStateEnum.dislike
+                elif new_reaction_state == ReactionStateEnum.like:
+                    existing_reaction_from_this_user.state = ReactionStateEnum.neutral
+            else:
+                if new_reaction_state == ReactionStateEnum.like:
+                    existing_reaction_from_this_user.state = ReactionStateEnum.like
+                elif new_reaction_state == ReactionStateEnum.dislike:
+                    existing_reaction_from_this_user.state = ReactionStateEnum.neutral
 
         self.db.commit()
         self.db.refresh(existing_reaction_from_this_user)
