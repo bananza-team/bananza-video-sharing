@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {useRouter} from "next/router";
 
 export default function getCurrentUser() {
   let [user, setUser] = useState(null);
@@ -20,7 +21,7 @@ export default function getCurrentUser() {
         })
       );
     })(token);
-  }, []);
+  }, [useRouter().asPath]);
 
   return {
     user: user,
