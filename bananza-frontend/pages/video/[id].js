@@ -120,7 +120,11 @@ export default function Video(props) {
       } 
     }
 
-    let [videoData, setVideoData] = useState(null);
+    let [videoData, setVideoData] = useState({
+      title:"",
+      description:"",
+      comments:[]
+    });
     let router = useRouter();
     let {id} = router.query;
     useEffect(()=>{
@@ -133,6 +137,8 @@ export default function Video(props) {
             else {
                 parsedJSON.comments = parsedJSON.comments.reverse();
                 setVideoData(parsedJSON);
+                setNewTitle(parsedJSON.title);
+                setNewDescription(parsedJSON.description);
             }
         }))
     }, []);
@@ -217,6 +223,12 @@ export default function Video(props) {
     }
 
     let [editing, setEditing] = useState(0);
+    let [newTitle, setNewTitle] = useState("");
+    let [newDescription, setNewDescription] = useState("");
+
+    let editVideo = (e)=>{
+      
+    }
 
   return (
     <>
@@ -300,9 +312,11 @@ export default function Video(props) {
           <span className={styles.editPopupClose} onClick={()=>{setEditing(0)}}><i class="fa-solid fa-xmark"></i></span>
           </span>
         <div className={styles.editPopupForm}>
-          <form>
-            <Input name="title" value={videoData.title} placeholderText="New video title" label="Title"></Input>
-            <Input name="description" value={videoData.description} placeholderText="New video description" label="Description"></Input>
+          <form onSubmit={editVideo()}>
+            <Input name="title" onChange={(e)=>{setNewTitle(e.target.value)}} 
+              value={newTitle} placeholderText="New video title" label="Title"></Input>
+            <Input name="description" onChange={(e)=>{setNewDescription(e.target.value)}} 
+              value={newDescription} placeholderText="New video description" label="Description"></Input>
             <button className={styles.editPopupSubmit}>Submit</button>
           </form>
         </div>
