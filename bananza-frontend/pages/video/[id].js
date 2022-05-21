@@ -220,7 +220,21 @@ export default function Video(props) {
           {
             label:"Yes",
             onClick:()=>{
-
+              fetch("//localhost:8000/video/"+videoData.id, {
+                method:"DELETE",
+                headers:{
+                  'accept':'application/json',
+                  Authorization: "Bearer "+localStorage.token,
+                }
+              }).then(response=>response.json().then(parsedJSON=>{
+                if(response.status == 200){
+                  NotificationManager.info("Video deleted succesfully");
+                  useRouter().push("/");
+                } else {
+                  if(response.status == 403) NotificationManager.error("You are not authorized to delete this video");
+                  NotificationManager.error("Error occured while deleting video");
+                }
+              }))
             }
           }, {
             label:"No",
