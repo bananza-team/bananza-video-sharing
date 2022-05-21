@@ -301,8 +301,8 @@ export default function Video(props) {
           </span>
         <div className={styles.editPopupForm}>
           <form>
-            <Input name="title" placeholderText="New video title" label="Title"></Input>
-            <Input name="description" placeholderText="New video description" label="Description"></Input>
+            <Input name="title" value={videoData.title} placeholderText="New video title" label="Title"></Input>
+            <Input name="description" value={videoData.description} placeholderText="New video description" label="Description"></Input>
             <button className={styles.editPopupSubmit}>Submit</button>
           </form>
         </div>
