@@ -216,6 +216,8 @@ export default function Video(props) {
       })
     }
 
+    let [editing, setEditing] = useState(0);
+
   return (
     <>
       <PageHead title="Bananza - Video" />
@@ -252,7 +254,7 @@ export default function Video(props) {
                     </div></span>
                     {(props.user.id == videoData.owner_id || props.user.type=="manager") &&
                   <>
-                    <span>Edit</span>
+                    <span onClick={()=>{setEditing(1)}}>Edit</span>
                     <span onClick={deleteHandler}>Delete</span>
                   </>
                     }
@@ -290,11 +292,12 @@ export default function Video(props) {
         </div>
       </div>
     }
+    { !!editing &&
     <div className={styles.editPopup}>
       <div className={styles.editPopupInner}>
         <span className={styles.editPopupHeader}>
           <span className={styles.editPopupHeaderText}>Edit your video</span>
-          <span className={styles.editPopupClose}><i class="fa-solid fa-xmark"></i></span>
+          <span className={styles.editPopupClose} onClick={()=>{setEditing(0)}}><i class="fa-solid fa-xmark"></i></span>
           </span>
         <div className={styles.editPopupForm}>
           <form>
@@ -305,6 +308,7 @@ export default function Video(props) {
         </div>
       </div>
     </div>
+  }
     </>
   );
 }

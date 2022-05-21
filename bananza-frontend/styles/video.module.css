@@ -245,6 +245,6 @@
 .editPopupForm{
     padding:10px;
 }
-.editPopupForm form span{
+.editPopupForm form span, .editPopupSubmit{
     margin:10px;
 }
