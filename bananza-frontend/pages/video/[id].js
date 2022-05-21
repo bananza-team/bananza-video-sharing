@@ -285,7 +285,7 @@ export default function Video(props) {
     })
     }
 
-    let deleteComment = (e)=>{
+    let deleteComment = (id)=>{
       confirmAlert({
         title:"Confirm comment deletion",
         message:"Are you sure you want to delete this comment?",
@@ -293,7 +293,6 @@ export default function Video(props) {
           {
             label:"Yes",
             onClick:()=>{
-
             }
           },
           {
@@ -375,7 +374,7 @@ export default function Video(props) {
                               <i class="fa-solid fa-bars"></i>
                             </span>
                              <span className={styles.commentMenuInner}>
-                               <span onClick={deleteComment}>Delete</span>
+                               <span onClick={()=>{deleteComment(comment.id)}}>Delete</span>
                              </span>
                             </span>
                           }
