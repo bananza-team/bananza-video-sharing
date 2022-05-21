@@ -9,6 +9,8 @@ import { Player } from "video-react";
 import { NotificationManager } from "react-notifications";
 import Link from "next/link";
 import { copyTextToClipboard } from "../../libs/clipboard";
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 export default function Video(props) {
 
@@ -156,6 +158,26 @@ export default function Video(props) {
       NotificationManager.info("Video link has been copied to your clipboard!");
     }
 
+    let report = (e)=>{
+      confirmAlert({
+        title:"Confirm video flagging",
+        message:"Are you sure you want to flag this video?",
+        buttons:[
+          {
+            label:"Yes",
+            onClick:()=>{
+
+            }
+          }, {
+            label:"No",
+            onClick:()=>{
+              
+            }
+          }
+        ]
+      })
+    }
+
   return (
     <>
       <PageHead title="Bananza - Video" />
@@ -186,9 +208,9 @@ export default function Video(props) {
                   <span className={styles.flagMenuItem}>
                     <span className={styles.flagButton}>Flag</span>
                     <div className={styles.flagReasons}>
-                      <span>Spam</span>
-                      <span>Infringes on my copyright</span>
-                      <span>Fake news</span>
+                      <span onClick={report}>Spam</span>
+                      <span onClick={report}>Infringes on my copyright</span>
+                      <span onClick={report}>Fake news</span>
                     </div></span>
                 </div>
               </div>

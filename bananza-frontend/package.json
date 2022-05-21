@@ -12,6 +12,7 @@
     "next": "12.1.4",
     "normalize.css": "^8.0.1",
     "react": "18.0.0",
+    "react-confirm-alert": "^3.0.1",
     "react-dom": "18.0.0",
     "react-notifications": "1.7.3",
     "video-react": "^0.15.0"
