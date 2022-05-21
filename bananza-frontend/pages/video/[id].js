@@ -12,6 +12,14 @@ import { copyTextToClipboard } from "../../libs/clipboard";
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import Input from "/components/forms/input";
+import {
+  validateLength,
+  validateMail,
+  validatePhone,
+  addValidation,
+  validateExists,
+  basicLength
+} from "/libs/validation/validation.js";
 
 export default function Video(props) {
 
@@ -137,8 +145,7 @@ export default function Video(props) {
             else {
                 parsedJSON.comments = parsedJSON.comments.reverse();
                 setVideoData(parsedJSON);
-                setNewTitle(parsedJSON.title);
-                setNewDescription(parsedJSON.description);
+                setNewVideoData(parsedJSON);
             }
         }))
     }, []);
@@ -223,11 +230,30 @@ export default function Video(props) {
     }
 
     let [editing, setEditing] = useState(0);
-    let [newTitle, setNewTitle] = useState("");
-    let [newDescription, setNewDescription] = useState("");
+    let [newVideoData, setNewVideoData]= useState(null);
+
+    let basicLength = (data) => {
+      return validateLength(3, 20, data);
+    };
 
     let editVideo = (e)=>{
-      
+      e.preventDefault();
+      let response = {
+        state:true,
+        messages:[],
+      }
+      response = addValidation(response, ["title", newVideoData.title], basicLength);
+      response = addValidation(response, ["description", newVideoData.description], basicLength); 
+
+      response.messages.forEach(message => NotificationManager.error(message));
+      if(!response.status) return;
+    
+    }
+
+    let updateNewInfo = (e)=>{
+      setNewVideoData({
+        ...newVideoData, [e.target.name]:e.target.value
+    })
     }
 
   return (
@@ -312,11 +338,11 @@ export default function Video(props) {
           <span className={styles.editPopupClose} onClick={()=>{setEditing(0)}}><i class="fa-solid fa-xmark"></i></span>
           </span>
         <div className={styles.editPopupForm}>
-          <form onSubmit={editVideo()}>
-            <Input name="title" onChange={(e)=>{setNewTitle(e.target.value)}} 
-              value={newTitle} placeholderText="New video title" label="Title"></Input>
-            <Input name="description" onChange={(e)=>{setNewDescription(e.target.value)}} 
-              value={newDescription} placeholderText="New video description" label="Description"></Input>
+          <form onChange={updateNewInfo} onSubmit={editVideo}>
+            <Input name="title"
+              value={newVideoData.title} placeholderText="New video title" label="Title"></Input>
+            <Input name="description"
+              value={newVideoData.title} placeholderText="New video description" label="Description"></Input>
             <button className={styles.editPopupSubmit}>Submit</button>
           </form>
         </div>
