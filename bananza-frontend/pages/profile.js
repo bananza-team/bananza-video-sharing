@@ -266,7 +266,7 @@ export default function Profile(props) {
             </>
             )}
         </div>
-        {!!menu && <VideoListWide header="Your videos" videos={props.user.videos}/>}
+        {!!menu && <VideoListWide user={props.user} header="Your videos" videos={props.user.videos}/>}
         {!menu &&
         <div className={styles.submitButton}>
             <button>Submit</button>

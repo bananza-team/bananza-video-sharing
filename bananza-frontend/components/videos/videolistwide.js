@@ -7,7 +7,7 @@ export default function VideoList(props){
         <div className={styles.videoListContainer}>
         { !!props.videos.length &&
         props.videos.map((video, key) => (
-           <VideoCardWide displayPoster={props.displayPoster} video={video} key={key}/>
+           <VideoCardWide user={props.user} displayPoster={props.displayPoster} video={video} key={key}/>
         ))
         }
         { !props.videos.length && 

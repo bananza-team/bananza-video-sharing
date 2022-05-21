@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { NotificationManager } from "react-notifications";
 
-export default function User() {
+export default function User(props) {
   let router = useRouter();
   let {id} = router.query;
 
@@ -43,7 +43,7 @@ let [fetching, setFetching] = useState(1);
             <span className={styles.description}>{uData.description}</span>
         </span>
       </div>
-      <VideoListWide videos={uData.videos}/>
+      <VideoListWide user={props.user} videos={uData.videos}/>
     </>
   );
 }

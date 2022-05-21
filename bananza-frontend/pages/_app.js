@@ -19,8 +19,8 @@ function MyApp({ Component, pageProps }) {
       <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
       <Layout>
       {!!user.loading && <Loading/>}  
-      {!user.loading && 
-          <><Nav /><Component {...pageProps} /></>}</Layout>
+      {!user.loading && user &&
+          <><Nav {...pageProps} /><Component {...pageProps} /></>}</Layout>
       <NotificationContainer />
     </>
   );
