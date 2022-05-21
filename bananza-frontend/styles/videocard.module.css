@@ -23,3 +23,11 @@
 .videoTitle{
     font-size:30px;
 }
+.videoData, .videoCard, .videoTitle, .videoDescription{
+    width:100%;
+    overflow: hidden;
+}
+.videoTitle a, .videoDescription a{
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
