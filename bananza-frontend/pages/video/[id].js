@@ -256,6 +256,24 @@ export default function Video(props) {
     })
     }
 
+    let deleteComment = (e)=>{
+      confirmAlert({
+        title:"Confirm comment deletion",
+        message:"Are you sure you want to delete this comment?",
+        buttons:[
+          {
+            label:"Yes",
+            onClick:()=>{
+
+            }
+          },
+          {
+            label:"No"
+          }
+        ]
+      })
+    }
+
   return (
     <>
       <PageHead title="Bananza - Video" />
@@ -328,7 +346,7 @@ export default function Video(props) {
                               <i class="fa-solid fa-bars"></i>
                             </span>
                              <span className={styles.commentMenuInner}>
-                               <span>Delete</span>
+                               <span onClick={deleteComment}>Delete</span>
                              </span>
                             </span>
                           }
