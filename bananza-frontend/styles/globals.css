@@ -256,3 +256,6 @@ nav{
   top:25px;
   cursor:pointer;
 }
+.react-confirm-alert-overlay{
+  z-index:100000000 !important;
+}
