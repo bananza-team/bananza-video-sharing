@@ -232,6 +232,12 @@ export default function Video(props) {
                       <span onClick={report}>Infringes on my copyright</span>
                       <span onClick={report}>Fake news</span>
                     </div></span>
+                    {(props.user.id == videoData.owner_id || props.user.type=="manager") &&
+                  <>
+                    <span>Edit</span>
+                    <span>Delete</span>
+                  </>
+                    }
                 </div>
               </div>
               <div className={styles.authorBox}>
