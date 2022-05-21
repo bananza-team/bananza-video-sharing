@@ -174,7 +174,6 @@ export default function Profile(props) {
     return (
       <>
         <PageHead title="Bananza - Edit Profile" />
-        <Nav />
         <form onSubmit={submit} onChange={updateProfileData} className="styleLessForm">
         <span className={styles.hint}><i class="fa-solid fa-circle-exclamation"></i> Click any data to edit it!</span>
         <div

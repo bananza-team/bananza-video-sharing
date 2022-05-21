@@ -259,7 +259,6 @@ export default function Video(props) {
   return (
     <>
       <PageHead title="Bananza - Video" />
-      <Nav />
       {!!videoData &&
       <div className={styles.videoPage}>
         <div className={styles.videoPageLeft}>

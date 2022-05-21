@@ -388,7 +388,6 @@ export default function Home(props) {
       )}
       {props.user && (
         <>
-          <Nav />
           {!!videos && 
           <VideoList videos={videos} header="Latest videos" />
           }

@@ -156,7 +156,6 @@ export default function Upload(props) {
   return (
     <>
       <PageHead title="Bananza - Edit Profile" />
-      <Nav />
       <form onChange={updateVideoData} onSubmit={upload} className={styles.uploadForm}>
           <h2>Upload video</h2>
         <div className={styles.formWrap}>
