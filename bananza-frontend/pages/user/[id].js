@@ -35,7 +35,7 @@ let [fetching, setFetching] = useState(1);
     <>
       <PageHead title="Bananza - User Profile" />
       <Nav />
-      <div className={styles.userData} style={{backgroundImage: `url(//localhost:8000/${uData.cover_picture_link})`}}>
+      <div className={styles.userData} style={{backgroundImage: `url(//localhost:8000/${uData.cover_picture_link.replace("\\", "/")})`}}>
         <span className={styles.userAvatar}>
             <img src={`//localhost:8000/${uData.profile_picture_link}`}/>
         </span>
