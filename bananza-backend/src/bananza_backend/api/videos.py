@@ -6,7 +6,7 @@ from bananza_backend.services.authentication.handler import AuthHandler, oauth2_
 from fastapi import APIRouter, Depends, File, UploadFile
 from sqlalchemy.orm import Session
 from typing import List
-
+from fastapi.responses import JSONResponse
 
 router = APIRouter(prefix="/video", tags=["Videos"])
 
@@ -22,6 +22,25 @@ async def upload_video(video_details: VideoCreate = Depends(), video_file: Uploa
                                      video_file=video_file, thumbnail_file=thumbnail_file)
 
     return new_video
+
+
+@router.patch("/{video_id}", summary="Edit a video title/description", response_model=Video)
+async def edit_video(video_id: int, video_details: VideoCreate = Depends(), db: Session = Depends(get_db),
+                     token: str = Depends(oauth2_scheme)):
+    current_user = AuthHandler(db).get_current_user_by_token(token)
+    video_repo = VideoRepo(db)
+    new_video = await video_repo.edit_details(video_id=video_id, user_that_edits=current_user,new_details=video_details)
+
+    return new_video
+
+
+@router.delete("/{video_id}", summary="Delete a video")
+async def delete_video(video_id: int, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
+    current_user = AuthHandler(db).get_current_user_by_token(token)
+    video_repo = VideoRepo(db)
+    await video_repo.delete(video_id=video_id, user_that_deletes=current_user)
+
+    return JSONResponse(content={"message": f"Video with id {video_id} deleted successfully"})
 
 
 @router.get("/all", summary="Get a list of all videos from db", response_model=List[VideoForSearch])

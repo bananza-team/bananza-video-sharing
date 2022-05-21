@@ -3,7 +3,6 @@ import Nav from "/components/general/nav";
 import styles from "/styles/video.module.css";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Router from "next/router";
 import "video-react/dist/video-react.css"; // import css
 import { Player } from "video-react";
 import { NotificationManager } from "react-notifications";
@@ -11,6 +10,15 @@ import Link from "next/link";
 import { copyTextToClipboard } from "../../libs/clipboard";
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import Input from "/components/forms/input";
+import {
+  validateLength,
+  validateMail,
+  validatePhone,
+  addValidation,
+  validateExists,
+  basicLength
+} from "/libs/validation/validation.js";
 
 export default function Video(props) {
 
@@ -119,7 +127,11 @@ export default function Video(props) {
       } 
     }
 
-    let [videoData, setVideoData] = useState(null);
+    let [videoData, setVideoData] = useState({
+      title:"",
+      description:"",
+      comments:[]
+    });
     let router = useRouter();
     let {id} = router.query;
     useEffect(()=>{
@@ -132,12 +144,13 @@ export default function Video(props) {
             else {
                 parsedJSON.comments = parsedJSON.comments.reverse();
                 setVideoData(parsedJSON);
+                setNewVideoData(parsedJSON);
             }
         }))
     }, []);
 
     useEffect(()=>{
-        if(videoData == null || videoData.posterName) return;
+        if(videoData.owner_id == undefined || videoData.posterName) return;
         fetch("//localhost:8000/user/"+videoData.owner_id, {
             headers:{
                 Authorization:"Bearer "+localStorage.token,
@@ -197,11 +210,119 @@ export default function Video(props) {
         ]
       })
     }
+    
+    let deleteHandler = (e)=>{
+      confirmAlert({
+        title:"Confirm video deletion",
+        message:"Are you sure you want to delete this video?",
+        buttons:[
+          {
+            label:"Yes",
+            onClick:()=>{
+              fetch("//localhost:8000/video/"+videoData.id, {
+                method:"DELETE",
+                headers:{
+                  'accept':'application/json',
+                  Authorization: "Bearer "+localStorage.token,
+                }
+              }).then(response=>response.json().then(parsedJSON=>{
+                if(response.status == 200){
+                  NotificationManager.info("Video deleted succesfully");
+                  window.location.reload();
+                } else {
+                  if(response.status == 403) NotificationManager.error("You are not authorized to delete this video");
+                  NotificationManager.error("Error occured while deleting video");
+                }
+              }))
+            }
+          }, {
+            label:"No",
+          }
+        ]
+      })
+    }
+
+    let [editing, setEditing] = useState(0);
+    let [newVideoData, setNewVideoData]= useState(null);
+
+    let basicLength = (data) => {
+      return validateLength(3, 40, data);
+    };
+
+    let editVideo = (e)=>{
+      e.preventDefault();
+      let response = {
+        state:true,
+        messages:[],
+      }
+      response = addValidation(response, ["title", newVideoData.title], basicLength);
+      response = addValidation(response, ["description", newVideoData.description], basicLength); 
+
+      response.messages.forEach(message => NotificationManager.error(message));
+    
+      let apiURL = new URL("localhost:8000/video/"+videoData.id+"/");
+      apiURL.searchParams.append("title", newVideoData.title);
+      apiURL.searchParams.append("description", newVideoData.description);
+
+      fetch("//"+apiURL.href, {
+        method:"PATCH",
+        headers:{
+          'accept':'application/json',
+          Authorization:"Bearer "+localStorage.token,
+        }
+      }).then(response => response.json().then(parsedJSON=>{
+        if(response.status == 200){
+          parsedJSON.comments = parsedJSON.comments.reverse();
+          setVideoData(parsedJSON);
+          setEditing(0);
+        } else NotificationManager.error("Could not edit video data");
+      }))
+    }
+
+    let updateNewInfo = (e)=>{
+      setNewVideoData({
+        ...newVideoData, [e.target.name]:e.target.value
+    })
+    }
+
+    let deleteComment = (id)=>{
+      confirmAlert({
+        title:"Confirm comment deletion",
+        message:"Are you sure you want to delete this comment?",
+        buttons:[
+          {
+            label:"Yes",
+            onClick:()=>{
+              fetch("//localhost:8000/video/interact/comment/"+id, {
+                method:"DELETE",
+                headers:{
+                  Authorization:"Bearer "+localStorage.token,
+                  'accept':'application/json'
+                }
+              }).then(response=>response.json().then(parsedJSON=>{
+                if(response.status == 200){
+                  NotificationManager.info("Deletion succesful");
+                  let oldComments = videoData.comments;
+                  let newComments = oldComments.filter(comment => comment.id != id);
+                  let newData = Object.create(videoData);
+                  newData.comments = newComments;
+                  setVideoData(newData);
+                }
+                else if(response.status == 403) NotificationManager.error("You are not authorized to delete this comment");
+                else NotificationManager.error("Unknown error while deleting comment");
+              }))
+            }
+          },
+          {
+            label:"No"
+          }
+        ]
+      })
+    }
 
   return (
     <>
       <PageHead title="Bananza - Video" />
-      <Nav />
       {!!videoData &&
       <div className={styles.videoPage}>
         <div className={styles.videoPageLeft}>
@@ -232,6 +353,12 @@ export default function Video(props) {
                       <span onClick={report}>Infringes on my copyright</span>
                       <span onClick={report}>Fake news</span>
                     </div></span>
+                    {(props.user.id == videoData.owner_id || props.user.type=="manager") &&
+                  <>
+                    <span onClick={()=>{setEditing(1)}}>Edit</span>
+                    <span onClick={deleteHandler}>Delete</span>
+                  </>
+                    }
                 </div>
               </div>
               <div className={styles.authorBox}>
@@ -258,6 +385,17 @@ export default function Video(props) {
                       <Link href={`/user/${comment.user.id}`}>{comment.user.username}</Link>
                       <img class={styles.commentAvatar} src=
                         {`//localhost:8000${comment.user.profile_picture_link.replace("../", "/")}`}/>
+                          {
+                            (props.user.type == "manager" || props.user.id == videoData.owner_id || props.user.id == comment.user_id) &&
+                            <span className={styles.commentMenu}>
+                             <span className={styles.commentMenuButton}>
+                              <i class="fa-solid fa-bars"></i>
+                            </span>
+                             <span className={styles.commentMenuInner}>
+                               <span onClick={()=>{deleteComment(comment.id)}}>Delete</span>
+                             </span>
+                            </span>
+                          }
                         </span>
                     <span className={styles.commentText}>{comment.content}</span>
                     </div>
@@ -266,6 +404,25 @@ export default function Video(props) {
         </div>
       </div>
     }
+    { !!editing &&
+    <div className={styles.editPopup}>
+      <div className={styles.editPopupInner}>
+        <span className={styles.editPopupHeader}>
+          <span className={styles.editPopupHeaderText}>Edit your video</span>
+          <span className={styles.editPopupClose} onClick={()=>{setEditing(0)}}><i class="fa-solid fa-xmark"></i></span>
+          </span>
+        <div className={styles.editPopupForm}>
+          <form onChange={updateNewInfo} onSubmit={editVideo}>
+            <Input name="title"
+              value={newVideoData.title} placeholderText="New video title" label="Title"></Input>
+            <Input name="description"
+              value={newVideoData.description} placeholderText="New video description" label="Description"></Input>
+            <button type="submit" className={styles.editPopupSubmit}>Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  }
     </>
   );
 }

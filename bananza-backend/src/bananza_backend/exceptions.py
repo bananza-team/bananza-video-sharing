@@ -43,3 +43,7 @@ class InactiveUser(GeneralException):
 
 class FileUploadFailed(GeneralException):
     pass
+
+
+class ForbiddenAccess(GeneralException):
+    pass

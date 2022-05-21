@@ -174,7 +174,6 @@ export default function Profile(props) {
     return (
       <>
         <PageHead title="Bananza - Edit Profile" />
-        <Nav />
         <form onSubmit={submit} onChange={updateProfileData} className="styleLessForm">
         <span className={styles.hint}><i class="fa-solid fa-circle-exclamation"></i> Click any data to edit it!</span>
         <div
@@ -267,7 +266,7 @@ export default function Profile(props) {
             </>
             )}
         </div>
-        {!!menu && <VideoListWide header="Your videos" videos={props.user.videos}/>}
+        {!!menu && <VideoListWide user={props.user} header="Your videos" videos={props.user.videos}/>}
         {!menu &&
         <div className={styles.submitButton}>
             <button>Submit</button>

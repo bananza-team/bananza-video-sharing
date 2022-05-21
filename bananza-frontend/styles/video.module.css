@@ -200,3 +200,83 @@
     font-weight: bold;
     color:orange;
 }
+
+/* Editing popup*/
+.editPopup{
+    position: absolute;
+    background: rgb(0,0,0,0.5);
+    width:100%;
+    height:100%;
+    display:flex;
+    top:0;
+    left:0;
+    z-index:10000;
+    justify-content: center;
+    align-items: center;
+}
+.editPopupInner{
+    background:var(--dblack);
+    color:white;
+    padding:20px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+}
+.editPopupHeader{
+    padding:10px;
+    position:relative;
+}
+.editPopupHeaderText{
+    font-size:20px;
+}
+.editPopupClose{
+    position: absolute;
+    right:0;
+    cursor: pointer;
+    padding:5px;
+    top:5px;
+    border-radius:5px;
+}
+.editPopupClose:hover{
+    background:white;
+    color:black;
+    box-shadow:var(--shadow);
+}
+.editPopupForm{
+    padding:10px;
+}
+.editPopupForm form span, .editPopupSubmit{
+    margin:10px;
+}
+
+.commentMenuButton{
+    padding:10px;
+    padding-right:0px;
+    cursor: pointer;
+}
+
+.commentMenuButton:hover + .commentMenuInner, .commentMenuInner:hover{
+    transform: scale(1);
+}
+.commentMenu{
+    position:relative;
+}
+.commentMenuInner{
+    position: absolute;
+    transform:scale(0);
+    transition-duration: .1s;
+    background: white;
+    color:black;
+    box-shadow: var(--shadow);
+    display: flex;
+    left:0px;
+    top:-10px;
+}
+.commentMenuInner span{
+    padding:10px;
+    cursor: pointer;
+}
+.commentMenuInner span:hover{
+    background: var(--black);
+    color:white;
+}

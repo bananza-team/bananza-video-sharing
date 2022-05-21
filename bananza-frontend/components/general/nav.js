@@ -13,7 +13,9 @@ let logout = (event) => {
 let matchedVideos = [];
 let videos = [];
 
-export default function Nav() {
+export default function Nav(props) {
+
+  let [user, setUser]=useState(props.user);
 
   useEffect(()=>{
     fetch("//localhost:8000/video/all", {
@@ -65,6 +67,8 @@ export default function Nav() {
     if(e.target.nodeName == "A") goBack();
   }
 
+  if(user)
+
   return (
     <>
     <nav>
@@ -95,7 +99,7 @@ export default function Nav() {
     {!!searching && (
     <div className="searchContainer" onClick={goBackWhenClickingAway} >
       <span className="searchBack" onClick={goBack}>Back</span>
-      <VideoListWide displayPoster="1" type="wide" videos={renderedVideos} header="Search results" />
+      <VideoListWide user={props.user} displayPoster="1" type="wide" videos={renderedVideos} header="Search results" />
     </div>
     )}
     </>
