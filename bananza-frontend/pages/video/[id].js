@@ -300,7 +300,9 @@ export default function Video(props) {
                   'accept':'application/json'
                 }
               }).then(response=>response.json().then(parsedJSON=>{
-                
+                if(response.status == 200) NotificationManager.info("Deletion succesful");
+                else if(response.status == 403) NotificationManager.error("You are not authorized to delete this comment");
+                else NotificationManager.error("Unknown error while deleting comment");
               }))
             }
           },
