@@ -3,7 +3,6 @@ import Nav from "/components/general/nav";
 import styles from "/styles/video.module.css";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Router from "next/router";
 import "video-react/dist/video-react.css"; // import css
 import { Player } from "video-react";
 import { NotificationManager } from "react-notifications";
@@ -229,7 +228,7 @@ export default function Video(props) {
               }).then(response=>response.json().then(parsedJSON=>{
                 if(response.status == 200){
                   NotificationManager.info("Video deleted succesfully");
-                  useRouter().push("/");
+                  window.location.reload();
                 } else {
                   if(response.status == 403) NotificationManager.error("You are not authorized to delete this video");
                   NotificationManager.error("Error occured while deleting video");
