@@ -179,8 +179,13 @@ export default function Video(props) {
                   video_id:parseInt(id),
                 })
               }).then(response=>response.json().then(parsedJSON=>{
-                if(response.status == 200) NotificationManager.info("Video flagged succesfully. Thank you!");
-                else NotificationManager.error("An error occured while flagging the video. You may not be logged in anymore");
+                if(response.status == 200) 
+                  NotificationManager.info("Video flagged succesfully. Thank you!");
+                else 
+                  if(response.status == 403)
+                    NotificationManager.error("You have already reported this video. A manager will review your report soon!");
+                  else 
+                    NotificationManager.error("An error occured while flagging the video. You may not be logged in anymore");
               }))
             }
           }, {
