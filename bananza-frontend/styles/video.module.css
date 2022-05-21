@@ -192,3 +192,11 @@
 .flagMenuItem:hover > .flagReasons, .flagReasons:hover{
     transform:scale(1) !important;
 }
+.likeContainer>span{
+    cursor: pointer;
+    transition-timing-function: linear !important;
+}
+.activeReaction{
+    font-weight: bold;
+    color:orange;
+}
