@@ -4,7 +4,7 @@ from typing import List
 
 from bananza_backend.db.sql_models import VideoModel
 from bananza_backend.exceptions import FileUploadFailed
-from bananza_backend.models import VideoCreate, Video, VideoForSearch
+from bananza_backend.models import VideoCreate, Video, VideoForSearch, User, UserTypeEnum
 
 from loguru import logger
 from sqlalchemy.orm import Session
@@ -58,8 +58,19 @@ class VideoRepo:
     async def get_all(self) -> List[VideoForSearch]:
         return self.db.query(VideoModel).all()
 
-    async def get_by_id(self, video_id: str):
+    async def get_by_id(self, video_id: int) -> VideoModel:
         return self.db.query(VideoModel).filter(VideoModel.id == video_id).first()
+
+    async def edit_details(self, video_id: int, user_that_edits: User, new_details: VideoCreate):
+        found_video = await self.get_by_id(video_id)
+
+        if found_video.owner_id == user_that_edits.id:
+            found_video.title = new_details.title
+            found_video.description = new_details.description
+            self.db.commit()
+            self.db.refresh(found_video)
+
+        return found_video
 
     async def __upload_generic_file_on_disk(self, file: File, file_type: str, extension: str,
                                             folder_save_path, random_identifier: str, general_static_file_link: str):
