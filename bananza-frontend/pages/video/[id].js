@@ -159,6 +159,7 @@ export default function Video(props) {
     }
 
     let report = (e)=>{
+      let reason = e.target.innerHTML;
       confirmAlert({
         title:"Confirm video flagging",
         message:"Are you sure you want to flag this video?",
@@ -166,7 +167,17 @@ export default function Video(props) {
           {
             label:"Yes",
             onClick:()=>{
-
+              fetch("//localhost:8000/video/interact/report", {
+                headers:{
+                  Authorization:"Bearer "+localStorage.token,
+                },
+                body:JSON.stringify({
+                  reason:reason,
+                  video_id:id,
+                })
+              }).then(response=>response.json().then(parsedJSON=>{
+                
+              }))
             }
           }, {
             label:"No",
