@@ -67,6 +67,8 @@ export default function Nav(props) {
     if(e.target.nodeName == "A") goBack();
   }
 
+  if(user)
+
   return (
     <>
     <nav>
