@@ -11,6 +11,7 @@ import Link from "next/link";
 import { copyTextToClipboard } from "../../libs/clipboard";
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import Input from "/components/forms/input";
 
 export default function Video(props) {
 
@@ -289,6 +290,21 @@ export default function Video(props) {
         </div>
       </div>
     }
+    <div className={styles.editPopup}>
+      <div className={styles.editPopupInner}>
+        <span className={styles.editPopupHeader}>
+          <span className={styles.editPopupHeaderText}>Edit your video</span>
+          <span className={styles.editPopupClose}><i class="fa-solid fa-xmark"></i></span>
+          </span>
+        <div className={styles.editPopupForm}>
+          <form>
+            <Input name="title" placeholderText="New video title" label="Title"></Input>
+            <Input name="description" placeholderText="New video description" label="Description"></Input>
+            <button className={styles.editPopupSubmit}>Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
     </>
   );
 }
