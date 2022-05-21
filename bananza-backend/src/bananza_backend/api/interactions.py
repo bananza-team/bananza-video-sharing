@@ -7,6 +7,7 @@ from bananza_backend.services.interactions.report import ReportRepo
 from bananza_backend.services.authentication.handler import AuthHandler, oauth2_scheme
 
 from fastapi import APIRouter, Depends
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/video/interact", tags=["Video interactions"])
@@ -17,6 +18,13 @@ async def add_comment(comment: CommentCreate, db: Session = Depends(get_db), tok
     user = AuthHandler(db).get_current_user_by_token(token)
     comment = CommentRepo(db).add(comment=comment, user_id=user.id)
     return comment
+
+
+@router.delete("/comment/{comment_id}", summary="Delete a comment")
+async def delete_comment(comment_id: int, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
+    user = AuthHandler(db).get_current_user_by_token(token)
+    CommentRepo(db).delete_by_id(comment_id=comment_id, user_that_deletes=user)
+    return JSONResponse(content={"message": f"Comment with id {comment_id} deleted successfully"})
 
 
 @router.patch("/react", summary="Add a like reaction to a video", response_model=Reaction)
@@ -36,3 +44,4 @@ async def get_reactions(video_id: int, db: Session = Depends(get_db), token: str
 async def add_report(report: ReportedVideoCreate, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
     user = AuthHandler(db).get_current_user_by_token(token)
     return ReportRepo(db).add_report(report=report, reporter_id=user.id)
+
