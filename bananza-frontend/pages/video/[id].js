@@ -293,6 +293,15 @@ export default function Video(props) {
           {
             label:"Yes",
             onClick:()=>{
+              fetch("//localhost:8000/video/interact/comment/"+id, {
+                method:"PATCH",
+                header:{
+                  Authorize:"Bearer "+localStorage.token,
+                  'accept':'application/json'
+                }
+              }).then(response=>response.json().then(parsedJSON=>{
+                
+              }))
             }
           },
           {
