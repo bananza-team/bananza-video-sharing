@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import List
 
 from bananza_backend.db.sql_models import VideoModel
-from bananza_backend.exceptions import FileUploadFailed, EntityNotFound, InvalidCredentials
+from bananza_backend.exceptions import FileUploadFailed, EntityNotFound, ForbiddenAccess
 from bananza_backend.models import VideoCreate, Video, VideoForSearch, User, UserTypeEnum
 
 from loguru import logger
@@ -67,13 +67,35 @@ class VideoRepo:
     async def edit_details(self, video_id: int, user_that_edits: User, new_details: VideoCreate):
         found_video = await self.get_by_id(video_id)
 
-        if found_video.owner_id == user_that_edits.id:
-            found_video.title = new_details.title
-            found_video.description = new_details.description
-            self.db.commit()
-            self.db.refresh(found_video)
+        if not found_video.owner_id == user_that_edits.id:
+            raise ForbiddenAccess(message=f"Couldn't edit video {video_id}",
+                                  details=f"User with id {user_that_edits.id} doesn't own video with id {video_id}")
+
+        found_video.title = new_details.title
+        found_video.description = new_details.description
+        self.db.commit()
+        self.db.refresh(found_video)
 
         return found_video
+
+    async def delete(self, video_id: int, user_that_deletes: User):
+        found_video = await self.get_by_id(video_id)
+
+        deleter_id = user_that_deletes.id
+        deleter_type = user_that_deletes.type
+
+        if not (found_video.id == user_that_deletes.id or deleter_type == UserTypeEnum.manager
+                or deleter_type == UserTypeEnum.admin):
+            raise ForbiddenAccess(message=f"Couldn't delete video {video_id}",
+                                  details=f"User with id {deleter_id} doesn't own video with id {video_id}")
+
+        try:
+            self.db.delete(found_video)
+            self.db.commit()
+            logger.info(f"Video with id {video_id} has been successfully deleted")
+        except Exception as e:
+            logger.error(f"Couldn't delete video with id {video_id}. Reason: {e}")
+            raise HTTPException(status_code=403, detail=f"Couldn't delete video.")
 
     async def __upload_generic_file_on_disk(self, file: File, file_type: str, extension: str,
                                             folder_save_path, random_identifier: str, general_static_file_link: str):
