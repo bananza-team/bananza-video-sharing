@@ -24,6 +24,16 @@ async def upload_video(video_details: VideoCreate = Depends(), video_file: Uploa
     return new_video
 
 
+@router.patch("/{video_id}", summary="Upload a video", response_model=Video)
+async def edit_video(video_id: int, video_details: VideoCreate = Depends(), db: Session = Depends(get_db),
+                     token: str = Depends(oauth2_scheme)):
+    current_user = AuthHandler(db).get_current_user_by_token(token)
+    video_repo = VideoRepo(db)
+    new_video = await video_repo.edit_details(video_id=video_id, user_that_edits=current_user,new_details=video_details)
+
+    return new_video
+
+
 @router.get("/all", summary="Get a list of all videos from db", response_model=List[VideoForSearch])
 async def get_all_videos(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
     AuthHandler(db).get_current_user_by_token(token)
