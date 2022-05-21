@@ -386,7 +386,7 @@ export default function Video(props) {
             <Input name="title"
               value={newVideoData.title} placeholderText="New video title" label="Title"></Input>
             <Input name="description"
-              value={newVideoData.title} placeholderText="New video description" label="Description"></Input>
+              value={newVideoData.description} placeholderText="New video description" label="Description"></Input>
             <button type="submit" className={styles.editPopupSubmit}>Submit</button>
           </form>
         </div>
