@@ -1,9 +1,10 @@
 import uuid
 from datetime import datetime
+from typing import List
 
 from bananza_backend.db.sql_models import VideoModel
 from bananza_backend.exceptions import FileUploadFailed
-from bananza_backend.models import VideoCreate
+from bananza_backend.models import VideoCreate, Video, VideoForSearch
 
 from loguru import logger
 from sqlalchemy.orm import Session
@@ -54,7 +55,7 @@ class VideoRepo:
 
         return new_video
 
-    async def get_all(self):
+    async def get_all(self) -> List[VideoForSearch]:
         return self.db.query(VideoModel).all()
 
     async def get_by_id(self, video_id: str):

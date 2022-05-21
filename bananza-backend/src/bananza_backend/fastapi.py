@@ -1,4 +1,4 @@
-from bananza_backend.api import users, manager_applications, auth, videos
+from bananza_backend.api import users, manager_applications, auth, videos, interactions
 from bananza_backend.exceptions import *
 
 from fastapi import FastAPI
@@ -29,6 +29,7 @@ app.include_router(users.router)
 app.include_router(manager_applications.router)
 app.include_router(auth.router)
 app.include_router(videos.router)
+app.include_router(interactions.router)
 
 
 @app.exception_handler(EntityNotFound)

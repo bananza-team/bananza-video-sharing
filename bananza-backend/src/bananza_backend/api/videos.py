@@ -1,10 +1,12 @@
-from bananza_backend.models import Video, VideoCreate
+from bananza_backend.models import Video, VideoCreate, VideoForSearch
 from bananza_backend.db.sql_db import get_db
 from bananza_backend.services.videos.repository import VideoRepo
 from bananza_backend.services.authentication.handler import AuthHandler, oauth2_scheme
 
 from fastapi import APIRouter, Depends, File, UploadFile
 from sqlalchemy.orm import Session
+from typing import List
+
 
 router = APIRouter(prefix="/video", tags=["Videos"])
 
@@ -22,14 +24,14 @@ async def upload_video(video_details: VideoCreate = Depends(), video_file: Uploa
     return new_video
 
 
-@router.get("/all", summary="Get a list of all videos from db")
+@router.get("/all", summary="Get a list of all videos from db", response_model=List[VideoForSearch])
 async def get_all_videos(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
     AuthHandler(db).get_current_user_by_token(token)
     all_videos = await VideoRepo(db).get_all()
     return all_videos
 
 
-@router.get("/{video_id}", summary="Get video details of a particular video")
+@router.get("/{video_id}", summary="Get video details of a particular video", response_model=Video)
 async def get_video_by_id(video_id: str, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
     AuthHandler(db).get_current_user_by_token(token)
     video = await VideoRepo(db).get_by_id(video_id)

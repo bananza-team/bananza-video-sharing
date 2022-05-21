@@ -88,6 +88,10 @@ class UserModel(BaseModel):
         "ReactionModel",
         back_populates="user"
     )
+    reports = relationship(
+        "ReportedVideoModel",
+        back_populates="reporter"
+    )
 
 
 class VideoModel(BaseModel):
@@ -128,6 +132,10 @@ class VideoModel(BaseModel):
     )
     reactions = relationship(
         "ReactionModel",
+        back_populates="video"
+    )
+    reports = relationship(
+        "ReportedVideoModel",
         back_populates="video"
     )
 
@@ -222,3 +230,39 @@ class ManagerApplicationsModel(BaseModel):
         "UserModel",
         back_populates="manager_application"
     )
+
+
+class ReportedVideoModel(BaseModel):
+    __tablename__ = "reportedVideos"
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True,
+        autoincrement=True
+    )
+    answered = Column(
+        Boolean,
+        index=True,
+        default=False
+    )
+    reporter_id = Column(
+        Integer,
+        ForeignKey("users.id")
+    )
+    reporter = relationship(
+        "UserModel",
+        back_populates="reports"
+    )
+    video_id = Column(
+        Integer,
+        ForeignKey("videos.id")
+    )
+    video = relationship(
+        "VideoModel",
+        back_populates="reports"
+    )
+    reason = Column(
+        String,
+        nullable=False
+    )
+
