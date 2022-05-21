@@ -197,6 +197,23 @@ export default function Video(props) {
         ]
       })
     }
+    
+    let deleteHandler = (e)=>{
+      confirmAlert({
+        title:"Confirm video deletion",
+        message:"Are you sure you want to delete this video?",
+        buttons:[
+          {
+            label:"Yes",
+            onClick:()=>{
+
+            }
+          }, {
+            label:"No",
+          }
+        ]
+      })
+    }
 
   return (
     <>
@@ -235,7 +252,7 @@ export default function Video(props) {
                     {(props.user.id == videoData.owner_id || props.user.type=="manager") &&
                   <>
                     <span>Edit</span>
-                    <span>Delete</span>
+                    <span onClick={deleteHandler}>Delete</span>
                   </>
                     }
                 </div>
