@@ -321,6 +321,17 @@ export default function Video(props) {
                       <Link href={`/user/${comment.user.id}`}>{comment.user.username}</Link>
                       <img class={styles.commentAvatar} src=
                         {`//localhost:8000${comment.user.profile_picture_link.replace("../", "/")}`}/>
+                          {
+                            (props.user.type == "manager" || props.user.id == videoData.owner_id || props.user.id == comment.user_id) &&
+                            <span className={styles.commentMenu}>
+                             <span className={styles.commentMenuButton}>
+                              <i class="fa-solid fa-bars"></i>
+                            </span>
+                             <span className={styles.commentMenuInner}>
+                               <span>Delete</span>
+                             </span>
+                            </span>
+                          }
                         </span>
                     <span className={styles.commentText}>{comment.content}</span>
                     </div>
