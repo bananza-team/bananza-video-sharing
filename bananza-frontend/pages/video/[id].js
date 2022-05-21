@@ -196,7 +196,7 @@ export default function Video(props) {
                 {!!videoData && !!videoData.posterName && 
                 <>
                     posted by <span>
-                    <Link href={`/user/${videoData.owner_id}`}>Claudiu</Link></span><img className={styles.profilePic} src={`//localhost:8000${videoData.profilePic}`}/>
+                    <Link href={`/user/${videoData.owner_id}`}>{videoData.posterName}</Link></span><img className={styles.profilePic} src={`//localhost:8000${videoData.profilePic}`}/>
                 </>
                 }
               </div>
