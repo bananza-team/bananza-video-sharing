@@ -151,7 +151,7 @@ export default function Video(props) {
     }, []);
 
     useEffect(()=>{
-        if(videoData == null || videoData.posterName) return;
+        if(videoData.owner_id == undefined || videoData.posterName) return;
         fetch("//localhost:8000/user/"+videoData.owner_id, {
             headers:{
                 Authorization:"Bearer "+localStorage.token,
@@ -233,7 +233,7 @@ export default function Video(props) {
     let [newVideoData, setNewVideoData]= useState(null);
 
     let basicLength = (data) => {
-      return validateLength(3, 20, data);
+      return validateLength(3, 40, data);
     };
 
     let editVideo = (e)=>{
@@ -246,8 +246,24 @@ export default function Video(props) {
       response = addValidation(response, ["description", newVideoData.description], basicLength); 
 
       response.messages.forEach(message => NotificationManager.error(message));
-      if(!response.status) return;
     
+      let apiURL = new URL("localhost:8000/video/"+videoData.id+"/");
+      apiURL.searchParams.append("title", newVideoData.title);
+      apiURL.searchParams.append("description", newVideoData.description);
+
+      fetch("//"+apiURL.href, {
+        method:"PATCH",
+        headers:{
+          'accept':'application/json',
+          Authorization:"Bearer "+localStorage.token,
+        }
+      }).then(response => response.json().then(parsedJSON=>{
+        if(response.status == 200){
+          parsedJSON.comments = parsedJSON.comments.reverse();
+          setVideoData(parsedJSON);
+          setEditing(0);
+        } else NotificationManager.error("Could not edit video data");
+      }))
     }
 
     let updateNewInfo = (e)=>{
@@ -371,7 +387,7 @@ export default function Video(props) {
               value={newVideoData.title} placeholderText="New video title" label="Title"></Input>
             <Input name="description"
               value={newVideoData.title} placeholderText="New video description" label="Description"></Input>
-            <button className={styles.editPopupSubmit}>Submit</button>
+            <button type="submit" className={styles.editPopupSubmit}>Submit</button>
           </form>
         </div>
       </div>
