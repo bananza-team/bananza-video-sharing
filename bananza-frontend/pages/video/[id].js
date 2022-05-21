@@ -168,15 +168,19 @@ export default function Video(props) {
             label:"Yes",
             onClick:()=>{
               fetch("//localhost:8000/video/interact/report", {
+                method:"POST",
                 headers:{
                   Authorization:"Bearer "+localStorage.token,
+                  'accept': 'application/json',
+                  'Content-Type': 'application/json'
                 },
                 body:JSON.stringify({
                   reason:reason,
-                  video_id:id,
+                  video_id:parseInt(id),
                 })
               }).then(response=>response.json().then(parsedJSON=>{
-                
+                if(response.status == 200) NotificationManager.info("Video flagged succesfully. Thank you!");
+                else NotificationManager.error("An error occured while flagging the video. You may not be logged in anymore");
               }))
             }
           }, {
