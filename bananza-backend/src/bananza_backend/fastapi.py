@@ -84,6 +84,14 @@ async def file_uploading_failed_exception(request: Request, exception: FileUploa
     )
 
 
+@app.exception_handler(ForbiddenAccess)
+async def forbidden_access(request: Request, exception: ForbiddenAccess):
+    return JSONResponse(
+        status_code=403,
+        content={"message": str(exception), "details": exception.details}
+    )
+
+
 @app.exception_handler(Exception)
 async def unexpected_general_handler(request: Request, exception: Exception):
     return JSONResponse(
