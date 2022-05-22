@@ -46,7 +46,7 @@ export default function Application(props){
             </div>
             <div className={styles.applicationUName}>{`${props.application.user.name} ${props.application.user.surname}`}</div>
             <div className={styles.applicationPhone}>{props.application.user.phone}</div>
-            <div className={styles.applicationCV}><a href={`//localhost:8000${props.application.user.cv_link}`}><i class="fa-solid fa-file"></i></a></div>
+            <div className={styles.applicationCV}><a target="_blank" href={`//localhost:8000${props.application.user.cv_link}`}><i class="fa-solid fa-file"></i></a></div>
             <div className={styles.applicationOptions}>
             {!props.application.answered &&
             <>
