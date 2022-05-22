@@ -76,6 +76,18 @@ async def invalid_credentials_exception(request: Request, exception: InvalidCred
     )
 
 
+@app.exception_handler(InactiveUser)
+async def inactive_user_exception(request: Request, exception: InvalidCredentials):
+    return JSONResponse(
+        status_code=405,
+        content={
+            "message": "Inactive user.",
+            "details": exception.details,
+            "headers": {"WWW-Authenticate": "Bearer"}
+        }
+    )
+
+
 @app.exception_handler(FileUploadFailed)
 async def file_uploading_failed_exception(request: Request, exception: FileUploadFailed):
     return JSONResponse(
