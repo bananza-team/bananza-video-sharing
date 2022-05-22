@@ -364,7 +364,7 @@ export default function Video(props) {
               </div>
               <div className={styles.authorBox}>
                 {!!videoData && !!videoData.posterName && props.user.type == "manager" &&
-                    <Suspend/>
+                    <Suspend user={props.user}/>
                 }
                 {!!videoData && !!videoData.posterName && 
                 <>

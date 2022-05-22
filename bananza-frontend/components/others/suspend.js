@@ -5,7 +5,11 @@ export default function Suspend(props){
         marginRight:"10px",
     }
 
+    let suspend = ()=>{
+        let id = props.user.id;
+    }
+
     return (
-        <button style={buttonStyle}>Suspend</button>
+        <button onClick={suspend} style={buttonStyle}>Suspend</button>
     )
 }
