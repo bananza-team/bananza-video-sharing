@@ -174,13 +174,14 @@
     position:absolute;
     display: flex;
     flex-direction: column;
-    right:-220px;
-    top:0px;
+    right:70px;
+    top:-21px;
     background:white;
     z-index:200;
     transform:scale(0) !important;
     transition-duration: .1s;
     box-shadow: var(--shadow);
+    width: 200px;
 }
 .flagReasons>span{
     color:black;
