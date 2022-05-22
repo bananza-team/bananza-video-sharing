@@ -86,6 +86,11 @@ export default function Nav(props) {
           <Link href="/upload">
             <a>Upload</a>
           </Link>
+          {props.user.type == "manager" &&
+            <Link href="/reports">
+              <a>Reports</a>
+            </Link>
+          }
         </span>
         <span className="rightNav">
           <span className="searchBox">
