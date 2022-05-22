@@ -354,7 +354,7 @@ export default function Video(props) {
                       <span onClick={report}>Infringes on my copyright</span>
                       <span onClick={report}>Fake news</span>
                     </div></span>
-                    {(props.user.id == videoData.owner_id || props.user.type=="manager") &&
+                    {(props.user.id == videoData.owner_id || props.user.type!="creator") &&
                   <>
                     <span onClick={()=>{setEditing(1)}}>Edit</span>
                     <span onClick={deleteHandler}>Delete</span>
@@ -390,7 +390,7 @@ export default function Video(props) {
                       <img class={styles.commentAvatar} src=
                         {`//localhost:8000${comment.user.profile_picture_link.replace("../", "/")}`}/>
                           {
-                            (props.user.type == "manager" || props.user.id == videoData.owner_id || props.user.id == comment.user_id) &&
+                            (props.user.type != "creator" || props.user.id == videoData.owner_id || props.user.id == comment.user_id) &&
                             <span className={styles.commentMenu}>
                              <span className={styles.commentMenuButton}>
                               <i class="fa-solid fa-bars"></i>
