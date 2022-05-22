@@ -261,7 +261,7 @@ export default function Home(props) {
     }))
   }, []);
   
-  if(props.user.type != "manager"){
+  if(props.user.type != "creator"){
   useEffect(()=>{
     fetch("//localhost:8000/video/interact/report", {
         headers:{
