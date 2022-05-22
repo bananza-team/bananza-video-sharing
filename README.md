@@ -8,7 +8,7 @@ referring the platform's users, their channels and videos.
 
 **Requirements**:
 - Python
-- Poetry (https://python-poetry.org/docs/)
+- Poetry (https://python-poetry.org/docs/) <br>
 For Linux users:
 ```bash
 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
