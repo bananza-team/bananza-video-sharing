@@ -18,6 +18,7 @@
 
 .videoPageLeft{
     box-shadow: var(--shadow);
+    overflow: auto;
 }
 .videoPageRight{
     background:var(--dblack);
