@@ -21,6 +21,7 @@ For Windows users:
 - Cloned repo
 
 **Steps**
+
 Being in the main repository directory:
 1. cd bananza-backend/
 2. poetry install
@@ -35,6 +36,7 @@ Being in the main repository directory:
 
 
 **Steps**
+
 Being in the main repository directory:
 1. cd bananza-frontend/
 2. npm install
