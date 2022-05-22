@@ -27,6 +27,15 @@ async def accept_user_application(application_id: int, db: Session = Depends(get
     return new_application
 
 
+@router.post("/{application_id}/deny", summary="Reject a manager application", response_model=ManagerApplication)
+async def reject_user_application(application_id: int, db: Session = Depends(get_db),
+                                  token: str = Depends(oauth2_scheme)):
+    current_user = AuthHandler(db).get_current_user_by_token(token)
+    new_application = ManagerApplicationsRepo(db).answer_application(application_id, current_user, accepted=False)
+
+    return new_application
+
+
 @router.get("/all", summary="Get a user application from the db", response_model=List[ManagerApplication])
 async def get_all_mananger_applications(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
     current_user = AuthHandler(db).get_current_user_by_token(token)
