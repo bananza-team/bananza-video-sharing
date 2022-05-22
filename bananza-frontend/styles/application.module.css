@@ -1,0 +1,35 @@
+.application{
+    display: flex;
+    color:white;
+    justify-content: center;
+    align-items: center;
+}
+.application:nth-child(2n){
+    background:var(--dblack);
+}
+.application img{
+    width:25px;
+    height:25px;
+    border-radius:100%;
+    margin-left:10px;
+}
+.applicationUser{
+    width:30%;
+    display: flex;
+    align-items: center;
+}
+.applicationUName{
+    width:30%;
+}
+.applicationPhone{
+    width:30%;
+}
+.applicationCV, .applicationOptions{
+    width:5%;
+}
+.application>div{
+    padding:10px;
+}
+.applicationOptions>i:nth-last-child(1){
+    margin-left:10px;
+}
