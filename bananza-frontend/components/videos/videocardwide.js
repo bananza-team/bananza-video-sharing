@@ -45,7 +45,7 @@ export default function VideoCard(props){
         <span className={styles.videoTitle}><Link href={`/video/${props.video.id}`}>{props.video.title}</Link></span>
         <span className={styles.videoDescription}>{props.video.description}</span>
         </span>
-        { (parseInt(props.user.id) == parseInt(props.video.owner_id) || props.user.type == "manager") && 
+        { (parseInt(props.user.id) == parseInt(props.video.owner_id) || props.user.type != "creator") && 
             <span onClick={deleteVideo} className={styles.deleteButton}>Delete</span>
         }
         {/* <Link> can't be used because when {id} changes it doesn't trigger a page change, so the search box doesn't have the chance to disappear */}
