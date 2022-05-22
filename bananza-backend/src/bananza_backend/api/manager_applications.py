@@ -18,11 +18,20 @@ async def submit_user_application(user_id: int, cv_file: UploadFile = File(...),
     return new_application
 
 
-@router.patch("/{application_id}/accept", summary="Accept a manager application", response_model=ManagerApplication)
+@router.post("/{application_id}/accept", summary="Accept a manager application", response_model=ManagerApplication)
 async def accept_user_application(application_id: int, db: Session = Depends(get_db),
                                   token: str = Depends(oauth2_scheme)):
     current_user = AuthHandler(db).get_current_user_by_token(token)
     new_application = ManagerApplicationsRepo(db).answer_application(application_id, current_user, accepted=True)
+
+    return new_application
+
+
+@router.post("/{application_id}/deny", summary="Reject a manager application", response_model=ManagerApplication)
+async def reject_user_application(application_id: int, db: Session = Depends(get_db),
+                                  token: str = Depends(oauth2_scheme)):
+    current_user = AuthHandler(db).get_current_user_by_token(token)
+    new_application = ManagerApplicationsRepo(db).answer_application(application_id, current_user, accepted=False)
 
     return new_application
 
