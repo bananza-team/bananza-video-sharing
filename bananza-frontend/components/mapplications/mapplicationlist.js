@@ -5,6 +5,10 @@ export default function ApplicationList (props){
     props.applications.forEach((application, key)=>{
         applications.push(<Mapplication application={application} key={key}/>);
     });
+
+    let unanswered = applications.filter(application=>!application.answered);
+    let answered = applications.filter(application=>application.answered);
+
     return (
         <>
         <div className={styles.applistTitle}>Manager Applications</div>
