@@ -5,7 +5,10 @@ const nextConfig = {
     images:{
       layoutRaw:true
     }
-  }
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 }
 
 module.exports = nextConfig
