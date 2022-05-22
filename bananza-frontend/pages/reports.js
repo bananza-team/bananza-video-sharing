@@ -6,6 +6,7 @@ import ReportList from "../components/reports/reportlist";
 export default function Reports(props){
     if(props.user == null || props.user.type == "creator"){
         useRouter().push("/");
+        return;
     }
 
     let [reports, setReports] = useState([]);
