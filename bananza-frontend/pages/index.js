@@ -15,6 +15,7 @@ import {
 } from "/libs/validation/validation.js";
 import { NotificationManager } from "react-notifications";
 import Router, { useRouter } from "next/router";
+import ApplicationList from "../components/mapplications/mapplicationlist";
 
 let fileOnChange = (e) => {
   setCVFile(e.target.files[0]);
@@ -244,6 +245,9 @@ export default function Home(props) {
 
   let [videos, setVideos] = useState(null);
   let [reports, setReports] = useState([]);
+  let [applications, setApplications] = useState([]);
+
+  let [updateReports, setUpdateReports] = useState(true);
 
   if(props.user){
 
@@ -259,7 +263,7 @@ export default function Home(props) {
     }))
   }, []);
   
-  if(props.user.type == "manager"){
+  if(props.user.type != "creator"){
   useEffect(()=>{
     fetch("//localhost:8000/video/interact/report", {
         headers:{
@@ -272,6 +276,22 @@ export default function Home(props) {
     }))
   }, []);
   }
+
+  if(props.user.type == "admin"){
+    useEffect(()=>{
+      fetch("//localhost:8000/application/all", {
+        headers:{
+          Authorization:"Bearer "+localStorage.token,
+          'accept':'application/json'
+        }
+      }).then(response => response.json().then(parsedJSON=>{
+        if(response.status == 200){
+          setApplications(parsedJSON.filter(application => application.user!=null));
+        } else NotificationManager.error("Could not load manager applications");
+      }))
+    }, [updateReports]);
+  }
+
   }
 
   return (
@@ -412,7 +432,16 @@ export default function Home(props) {
           <VideoList videos={videos} header="Latest videos" />
           }
           {props.user.type !="creator" && 
+          <>
+          <hr style={{border:"2px solid var(--dblack)", position:"relative", top:"10px", margin:"30px"}}/>
           <ReportList reports={reports} title="Latest reports"/>
+          </>
+          }
+          {props.user.type == "admin" &&
+          <>
+          <hr style={{border:"2px solid var(--dblack)", position:"relative", top:"10px", margin:"30px"}}/>
+          <ApplicationList onUpdate={{current:updateReports, update:setUpdateReports}} applications={applications}/>
+          </>
           }
         </>
       )}

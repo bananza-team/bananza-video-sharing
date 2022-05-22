@@ -1,0 +1,23 @@
+.applistTitle{
+    font-size:30px;
+    color:white;
+    padding:10px;
+    margin-left:10px;
+}
+.sectionTitle{
+    color:white;
+    margin-left:20px;
+    margin-bottom:10px;
+    display: flex;
+    color:rgb(145, 161, 177);
+}
+.counter{
+    background: #088;
+    color:white;
+    padding:2px;
+    border-radius:100%;
+    box-shadow: var(--shadow);
+    margin-left:5px;
+    padding-left:5px;
+    padding-right:5px;
+}

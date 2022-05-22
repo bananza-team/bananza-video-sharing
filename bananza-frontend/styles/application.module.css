@@ -1,0 +1,41 @@
+.application{
+    display: flex;
+    color:white;
+    justify-content: center;
+    align-items: center;
+}
+.application:nth-child(2n){
+    background:var(--dblack);
+}
+.application img{
+    width:25px;
+    height:25px;
+    border-radius:100%;
+    margin-left:10px;
+}
+.applicationUser{
+    width:30%;
+    display: flex;
+    align-items: center;
+    margin-left:10px;
+}
+.applicationUName{
+    width:30%;
+}
+.applicationPhone{
+    width:20%;
+}
+.applicationCV, .applicationOptions{
+    width:10%;
+}
+.application>div{
+    padding:10px;
+}
+.applicationOptions>i{
+    padding:5px;
+}
+.applicationOptions>i:hover{
+    cursor: pointer;
+    background: white;
+    color:black;
+}

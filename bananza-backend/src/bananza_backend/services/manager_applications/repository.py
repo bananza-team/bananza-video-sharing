@@ -1,11 +1,13 @@
 from bananza_backend.db.sql_models import ManagerApplicationsModel
-from bananza_backend.exceptions import EntityNotFound
+from bananza_backend.exceptions import EntityNotFound, ForbiddenAccess
+from bananza_backend.models import ManagerApplication, User, UserTypeEnum
 from bananza_backend.services.users.repository import UserRepo
 
 from loguru import logger
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from os import path
+from typing import List
 
 
 class ManagerApplicationsRepo:
@@ -58,11 +60,40 @@ class ManagerApplicationsRepo:
 
         return new_application
 
-    def get_by_id(self, application_id) -> ManagerApplicationsModel:
+    def __get_by_id(self, application_id) -> ManagerApplicationsModel:
         found_app = self.db.query(ManagerApplicationsModel).filter(ManagerApplicationsModel.id == application_id).first()
         if not found_app:
             raise EntityNotFound(message=f"Application with id '{application_id}' not found")
         return found_app
+
+    def get_all(self, user_that_queried: User) -> List[ManagerApplication]:
+        if user_that_queried.type != UserTypeEnum.admin:
+            raise ForbiddenAccess(message="Couldn't retrieve the list of manager applications",
+                                  details=f"User with id {user_that_queried.id} is not a platform admin")
+        return self.db.query(ManagerApplicationsModel).all()
+
+    def answer_application(self, application_id: int, user_that_queried: User, accepted: bool) -> ManagerApplication:
+        if user_that_queried.type != UserTypeEnum.admin:
+            raise ForbiddenAccess(message=f"Couldn't review application with id {application_id}",
+                                  details=f"User with id {user_that_queried.id} is not a platform admin")
+
+        application = self.__get_by_id(application_id)
+
+        if application.answered:
+            raise ForbiddenAccess(message=f"Couldn't review application with id {application_id}",
+                                  details=f"Application has already been answered")
+        if accepted is True:
+            application.user.type = UserTypeEnum.manager
+            logger.info(f"User with id {application.user.id}, '{application.user.username}' has been elevated to be a "
+                        f"manager by admin with id {user_that_queried.id}, '{user_that_queried.username}'")
+
+        application.answered = True
+
+        self.db.commit()
+        self.db.refresh(application)
+        self.db.refresh(application.user)
+
+        return application
 
     def __check_user_existence(self, user_id):
         user_repo = UserRepo(self.db)
