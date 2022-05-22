@@ -432,10 +432,16 @@ export default function Home(props) {
           <VideoList videos={videos} header="Latest videos" />
           }
           {props.user.type !="creator" && 
+          <>
+          <hr style={{border:"2px solid var(--dblack)", position:"relative", top:"10px"}}/>
           <ReportList reports={reports} title="Latest reports"/>
+          </>
           }
           {props.user.type == "admin" &&
+          <>
+          <hr style={{border:"2px solid var(--dblack)", position:"relative", top:"10px"}}/>
           <ApplicationList onUpdate={{current:updateReports, update:setUpdateReports}} applications={applications}/>
+          </>
           }
         </>
       )}
