@@ -9,6 +9,7 @@ referring the platform's users, their channels and videos.
 **Requirements**:
 - Python
 - Poetry (https://python-poetry.org/docs/) <br>
+
 For Linux users:
 ```bash
 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
@@ -20,7 +21,8 @@ For Windows users:
 - Cloned repo
 
 **Steps**
-1. cd bananza-video-sharing/bananza-backend/
+Being in the main repository directory:
+1. cd bananza-backend/
 2. poetry install
 3. cd src
 4. poetry run uvicorn bananza_backend.fastapi:app --host localhost --port 8000 --reload
@@ -33,7 +35,8 @@ For Windows users:
 
 
 **Steps**
-1. cd bananza-video-sharing/bananza-frontend/
+Being in the main repository directory:
+1. cd bananza-frontend/
 2. npm install
 3. npm run build
 4. npm run start
