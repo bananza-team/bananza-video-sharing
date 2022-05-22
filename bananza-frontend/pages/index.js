@@ -276,7 +276,16 @@ export default function Home(props) {
 
   if(props.user.type == "admin"){
     useEffect(()=>{
-      
+      fetch("//localhost:8000/application/all", {
+        headers:{
+          Authorization:"Bearer "+localStorage.token,
+          'accept':'application/json'
+        }
+      }).then(response => response.json().then(parsedJSON=>{
+        if(response.status == 200){
+          setApplications(parsedJSON);
+        } else NotificationManager.error("Could not load manager applications");
+      }))
     }, []);
   }
 
