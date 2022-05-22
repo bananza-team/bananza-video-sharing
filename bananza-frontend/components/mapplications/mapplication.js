@@ -21,7 +21,7 @@ export default function Application(props){
                         }).then(response => response.json().then(parsedJSON=>{
                             if(response.status == 200){
                                 NotificationManager.info("Application has been succesfully accepted");
-                                props.onUpdate(false);
+                                props.onUpdate.update(!props.onUpdate.current);
                             } else {
                                 NotificationManager.error("An error occured while trying to accept the application");
                             }
@@ -51,7 +51,7 @@ export default function Application(props){
                         }).then(response => response.json().then(parsedJSON=>{
                             if(response.status == 200){
                                 NotificationManager.info("Application has been succesfully denied");
-                                props.onUpdate(false);
+                                props.onUpdate.update(!props.onUpdate.current);
                             } else {
                                 NotificationManager.error("An error occured while trying to deny the application");
                             }

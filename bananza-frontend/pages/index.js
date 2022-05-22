@@ -435,7 +435,7 @@ export default function Home(props) {
           <ReportList reports={reports} title="Latest reports"/>
           }
           {props.user.type == "admin" &&
-          <ApplicationList onUpdate={setUpdateReports} applications={applications}/>
+          <ApplicationList onUpdate={{current:updateReports, update:setUpdateReports}} applications={applications}/>
           }
         </>
       )}
