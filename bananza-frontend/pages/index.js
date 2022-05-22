@@ -15,7 +15,7 @@ import {
 } from "/libs/validation/validation.js";
 import { NotificationManager } from "react-notifications";
 import Router, { useRouter } from "next/router";
-import ApplicationList from "../components/applications/applicationlist";
+import ApplicationList from "../components/mapplications/mapplicationlist";
 
 let fileOnChange = (e) => {
   setCVFile(e.target.files[0]);
@@ -432,11 +432,8 @@ export default function Home(props) {
           {props.user.type !="creator" && 
           <ReportList reports={reports} title="Latest reports"/>
           }
-          {
-            props.user.type == "admin" &&
-            <>
-              <ApplicationList applications={applications}/>
-            </>
+          {props.user.type == "admin" &&
+          <ApplicationList applications={applications}/>
           }
         </>
       )}
