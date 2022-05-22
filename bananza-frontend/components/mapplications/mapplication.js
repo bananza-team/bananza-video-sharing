@@ -47,8 +47,12 @@ export default function Application(props){
             <div className={styles.applicationPhone}>{props.application.user.phone}</div>
             <div className={styles.applicationCV}><a href={`//localhost:8000${props.application.user.cv_link}`}><i class="fa-solid fa-file"></i></a></div>
             <div className={styles.applicationOptions}>
+            {!props.application.answered &&
+            <>
                 <i class="fa-solid fa-check" onClick={accept}></i>
                 <i class="fa-solid fa-xmark" onClick={deny}></i>
+            </>
+            }
                 </div>
         </div>
     )
