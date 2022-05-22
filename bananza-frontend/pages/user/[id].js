@@ -5,6 +5,7 @@ import styles from "/styles/user.module.css";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { NotificationManager } from "react-notifications";
+import Suspend from "../../components/others/suspend";
 
 export default function User(props) {
   let router = useRouter();
@@ -41,6 +42,7 @@ let [fetching, setFetching] = useState(1);
         <span className={styles.userInfo}>
             <span className={styles.username}>{uData.username}</span>
             <span className={styles.description}>{uData.description}</span>
+            <Suspend user_id={id}/>
         </span>
       </div>
       <VideoListWide user={props.user} videos={uData.videos}/>
