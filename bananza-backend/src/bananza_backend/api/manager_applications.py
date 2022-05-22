@@ -11,9 +11,18 @@ router = APIRouter(prefix="/application", tags=["Manager applications"])
 
 
 @router.post("/{user_id}", summary="Register a user to the db, by his id", response_model=ManagerApplication)
-async def submit_user_application(user_id: str, cv_file: UploadFile = File(...), db: Session = Depends(get_db)):
+async def submit_user_application(user_id: int, cv_file: UploadFile = File(...), db: Session = Depends(get_db)):
     applications_repo = ManagerApplicationsRepo(db)
     new_application = await applications_repo.add(user_id=user_id, cv_file=cv_file)
+
+    return new_application
+
+
+@router.patch("/{application_id}/accept", summary="Accept a manager application", response_model=ManagerApplication)
+async def accept_user_application(application_id: int, db: Session = Depends(get_db),
+                                  token: str = Depends(oauth2_scheme)):
+    current_user = AuthHandler(db).get_current_user_by_token(token)
+    new_application = ManagerApplicationsRepo(db).set_answered_status(application_id, current_user, accepted=True)
 
     return new_application
 
