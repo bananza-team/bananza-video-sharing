@@ -11,6 +11,7 @@ import { copyTextToClipboard } from "../../libs/clipboard";
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import Input from "/components/forms/input";
+import Suspend from "../../components/others/suspend";
 import {
   validateLength,
   validateMail,
@@ -362,6 +363,9 @@ export default function Video(props) {
                 </div>
               </div>
               <div className={styles.authorBox}>
+                {!!videoData && !!videoData.posterName && props.user.type == "manager" &&
+                    <Suspend/>
+                }
                 {!!videoData && !!videoData.posterName && 
                 <>
                     posted by <span>
