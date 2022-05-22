@@ -15,6 +15,8 @@ let videos = [];
 
 export default function Nav(props) {
 
+  if(!props.user) return;
+
   let [user, setUser]=useState(props.user);
 
   useEffect(()=>{

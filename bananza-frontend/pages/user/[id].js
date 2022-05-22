@@ -11,6 +11,8 @@ export default function User(props) {
   let router = useRouter();
   let {id} = router.query;
 
+  if(!props.user) router.push("/");
+
   useEffect(()=>{
     fetch("//localhost:8000/user/"+id).then((response) =>
       response.json().then((parsedJSON) => {
