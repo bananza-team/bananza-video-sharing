@@ -5,6 +5,7 @@ from bananza_backend.services.manager_applications.repository import ManagerAppl
 
 from fastapi import APIRouter, Depends, File, UploadFile
 from sqlalchemy.orm import Session
+from typing import List
 
 router = APIRouter(prefix="/application", tags=["Manager applications"])
 
@@ -15,3 +16,9 @@ async def submit_user_application(user_id: str, cv_file: UploadFile = File(...),
     new_application = await applications_repo.add(user_id=user_id, cv_file=cv_file)
 
     return new_application
+
+
+@router.get("/all", summary="Get a user application from the db", response_model=List[ManagerApplication])
+async def get_all_mananger_applications(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
+    current_user = AuthHandler(db).get_current_user_by_token(token)
+    return ManagerApplicationsRepo(db).get_all(user_that_queried=current_user)
