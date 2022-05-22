@@ -1,11 +1,13 @@
 from bananza_backend.db.sql_models import ManagerApplicationsModel
-from bananza_backend.exceptions import EntityNotFound
+from bananza_backend.exceptions import EntityNotFound, ForbiddenAccess
+from bananza_backend.models import ManagerApplication, User, UserTypeEnum
 from bananza_backend.services.users.repository import UserRepo
 
 from loguru import logger
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from os import path
+from typing import List
 
 
 class ManagerApplicationsRepo:
@@ -63,6 +65,12 @@ class ManagerApplicationsRepo:
         if not found_app:
             raise EntityNotFound(message=f"Application with id '{application_id}' not found")
         return found_app
+
+    def get_all(self, user_that_queried: User) -> List[ManagerApplication]:
+        if user_that_queried.type != UserTypeEnum.admin:
+            raise ForbiddenAccess(message="Couldn't retrieve the list of manager applications",
+                                  details=f"User with id {user_that_queried.id} is not a platform admin")
+        return self.db.query(ManagerApplicationsModel).all()
 
     def __check_user_existence(self, user_id):
         user_repo = UserRepo(self.db)
