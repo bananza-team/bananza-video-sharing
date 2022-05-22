@@ -1,18 +1,15 @@
-.report{
-    background: var(--black);
-    padding:10px;
-    display:flex;
+.reportContainer{
+    display: flex;
+    box-shadow: var(--shadow);
+}
+.reportContainer>div{
+    padding:10px 20px 10px 20px;
+    width: calc(100%/3);
     color:white;
 }
-.report:nth-child(2n){
+.reportContainer:nth-child(2n){
     background: var(--dblack);
 }
-.reportedVideo{
-    width:40%;
-}
-.reportReason{
-    width:40%;
-}
-.reportedChannel{
-    width:20%;
+.reportContainer:nth-child(2n+1){
+    background: #3f3f3f;
 }
