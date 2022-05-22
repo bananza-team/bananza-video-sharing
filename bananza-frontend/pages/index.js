@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import Checkbox from "/components/forms/checkbox";
 import Nav from "/components/general/nav";
 import VideoList from "/components/videos/videolist";
+import ReportList from "../components/reports/reportlist";
 import {
   validateLength,
   validateMail,
@@ -254,6 +255,20 @@ export default function Home(props) {
     }))
   }, []);
 
+  let [reports, setReports] = useState([]);
+  
+  useEffect(()=>{
+    fetch("//localhost:8000/video/interact/report", {
+        headers:{
+            Authorization:"Bearer "+localStorage.token,
+        }
+    }).then(response=>response.json().then(parsedJSON=>{
+        if(response.status == 200){
+            setReports(parsedJSON);
+        } else NotificationManager.error("Reports could not be loaded");
+    }))
+  }, []);
+
   return (
     <>
       <PageHead pageTitle="Bananza - Homepage"></PageHead>
@@ -390,6 +405,9 @@ export default function Home(props) {
         <>
           {!!videos && 
           <VideoList videos={videos} header="Latest videos" />
+          }
+          {props.user.type !="creator" && 
+          <ReportList reports={reports} title="Latest reports"/>
           }
         </>
       )}
