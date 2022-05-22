@@ -433,13 +433,13 @@ export default function Home(props) {
           }
           {props.user.type !="creator" && 
           <>
-          <hr style={{border:"2px solid var(--dblack)", position:"relative", top:"10px"}}/>
+          <hr style={{border:"2px solid var(--dblack)", position:"relative", top:"10px", margin:"30px"}}/>
           <ReportList reports={reports} title="Latest reports"/>
           </>
           }
           {props.user.type == "admin" &&
           <>
-          <hr style={{border:"2px solid var(--dblack)", position:"relative", top:"10px"}}/>
+          <hr style={{border:"2px solid var(--dblack)", position:"relative", top:"10px", margin:"30px"}}/>
           <ApplicationList onUpdate={{current:updateReports, update:setUpdateReports}} applications={applications}/>
           </>
           }
