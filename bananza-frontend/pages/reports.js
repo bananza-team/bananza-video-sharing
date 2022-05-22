@@ -1,6 +1,7 @@
 import {useRouter} from "next/router";
 import { useEffect, useState} from "react";
 import { NotificationManager } from "react-notifications";
+import PageHead from "../components/general/pageHead";
 export default function Reports(props){
     if(props.user == null || props.user.type == "creator"){
         useRouter().push("/");
@@ -18,5 +19,9 @@ export default function Reports(props){
             } else NotificationManager.error("Reports could not be loaded");
         }))
     }, []);
+
+    return (
+        <PageHead pageTitle="User reports"/>
+    )
 
 }
