@@ -90,7 +90,7 @@ export default function Video(props) {
         if(response.status == 200){
           setReactions(parsedJSON);
           let rawState = parsedJSON.current_user_reaction;
-          setReactionState(rawState == "dislikes"?-1:rawState == "neutral"?0:1);
+          setReactionState(rawState == "dislike"?-1:(rawState == "neutral")?0:1);
         }
         else NotificationManager.error("Like/dislike counters could not be loaded. Your session may have expired");
       }))
