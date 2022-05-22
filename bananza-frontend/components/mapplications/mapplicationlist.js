@@ -13,6 +13,12 @@ export default function ApplicationList (props){
         <>
         <div className={styles.applistTitle}>Manager Applications</div>
         <div className={styles.applistContainer}>
+            <span className={styles.sectionTitle}>Unanswered applications</span>
+            {unanswered}
+        </div>
+        <div className={styles.applistContainer}>
+            <span className={styles.sectionTitle}>Answered applications</span>
+            {answered}
         </div>
         </>
     )
