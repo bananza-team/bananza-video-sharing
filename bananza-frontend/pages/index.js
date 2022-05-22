@@ -13,7 +13,7 @@ import {
   validateExists,
 } from "/libs/validation/validation.js";
 import { NotificationManager } from "react-notifications";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 
 let fileOnChange = (e) => {
   setCVFile(e.target.files[0]);
@@ -78,6 +78,9 @@ export default function Home(props) {
             localStorage.setItem("token", parsedJSON.access_token);
             Router.reload();
           } else {
+            if(response.status == 405){
+              window.location = "/suspend";
+            } else
             NotificationManager.error("Login failed");
           }
         });
