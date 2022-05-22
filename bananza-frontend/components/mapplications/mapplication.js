@@ -11,7 +11,13 @@ export default function Application(props){
                 {
                     label:"Yes",
                     onClick:()=>{
-
+                        fetch("//localhost:8000/application/"+props.id, {
+                            method:"POST",
+                            headers:{
+                                Authorization:"Bearer "+localStorage.token,
+                                'accept':'application/json',
+                            }
+                        })
                     }
                 }, {
                     label:"No",
@@ -21,7 +27,7 @@ export default function Application(props){
     }
 
     let deny = ()=>{
-        
+
     }
 
     return (
