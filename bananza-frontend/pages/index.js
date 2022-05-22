@@ -31,7 +31,7 @@ export default function Home(props) {
     password: "",
   });
 
-  let [registerFormData, setRegisterFormData] = useState({
+  let defaultRegisterData = {
     username: "",
     email: "",
     password: "",
@@ -45,7 +45,8 @@ export default function Home(props) {
     name: "",
     surname: "",
     phone: "",
-  });
+  }
+  let [registerFormData, setRegisterFormData] = useState(defaultRegisterData);
 
   function login(event) {
     event.preventDefault();
@@ -193,6 +194,7 @@ export default function Home(props) {
                 NotificationManager.error("Error uploading CV");
               });
             setActiveForm(0);
+            setRegisterFormData(defaultRegisterData);
             return;
           }
 
