@@ -15,6 +15,7 @@ import {
 } from "/libs/validation/validation.js";
 import { NotificationManager } from "react-notifications";
 import Router, { useRouter } from "next/router";
+import ApplicationList from "../components/applications/applicationlist";
 
 let fileOnChange = (e) => {
   setCVFile(e.target.files[0]);
@@ -283,7 +284,7 @@ export default function Home(props) {
         }
       }).then(response => response.json().then(parsedJSON=>{
         if(response.status == 200){
-          setApplications(parsedJSON);
+          setApplications(parsedJSON.filter(application => application.user!=null));
         } else NotificationManager.error("Could not load manager applications");
       }))
     }, []);
@@ -434,6 +435,7 @@ export default function Home(props) {
           {
             props.user.type == "admin" &&
             <>
+              <ApplicationList applications={applications}/>
             </>
           }
         </>
