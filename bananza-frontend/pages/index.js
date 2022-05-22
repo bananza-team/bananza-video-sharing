@@ -21,6 +21,7 @@ let fileOnChange = (e) => {
 };
 
 export default function Home(props) {
+
   let [cvfile, setCVFile] = useState(null);
   let [activeForm, setActiveForm] = useState(0);
 
@@ -242,6 +243,9 @@ export default function Home(props) {
   };
 
   let [videos, setVideos] = useState(null);
+  let [reports, setReports] = useState([]);
+
+  if(props.user){
 
   useEffect(()=>{
     fetch("//localhost:8000/video/all", {
@@ -254,9 +258,8 @@ export default function Home(props) {
       } catch(e){};
     }))
   }, []);
-
-  let [reports, setReports] = useState([]);
   
+  if(props.user.type == "manager"){
   useEffect(()=>{
     fetch("//localhost:8000/video/interact/report", {
         headers:{
@@ -268,6 +271,8 @@ export default function Home(props) {
         } else NotificationManager.error("Reports could not be loaded");
     }))
   }, []);
+  }
+  }
 
   return (
     <>
