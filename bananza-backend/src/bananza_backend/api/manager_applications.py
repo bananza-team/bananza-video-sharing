@@ -22,7 +22,7 @@ async def submit_user_application(user_id: int, cv_file: UploadFile = File(...),
 async def accept_user_application(application_id: int, db: Session = Depends(get_db),
                                   token: str = Depends(oauth2_scheme)):
     current_user = AuthHandler(db).get_current_user_by_token(token)
-    new_application = ManagerApplicationsRepo(db).set_answered_status(application_id, current_user, accepted=True)
+    new_application = ManagerApplicationsRepo(db).answer_application(application_id, current_user, accepted=True)
 
     return new_application
 
