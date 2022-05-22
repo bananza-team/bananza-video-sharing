@@ -16,7 +16,7 @@ export default function Reports(props){
             }
         }).then(response=>response.json().then(parsedJSON=>{
             if(response.status == 200){
-                setReports(parsedJSON);
+                setReports(parsedJSON.reverse());
             } else NotificationManager.error("Reports could not be loaded");
         }))
     }, []);
