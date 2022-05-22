@@ -8,7 +8,11 @@ export default function Reports(props){
 
     let [reports, setReports] = useState(null);
     useEffect(()=>{
-        fetch("/video/interact/report").then(response=>response.json().then(parsedJSON=>{
+        fetch("//localhost:8000/video/interact/report", {
+            headers:{
+                Authorization:"Bearer "+localStorage.token,
+            }
+        }).then(response=>response.json().then(parsedJSON=>{
             if(response.status == 200){
                 setReports(parsedJSON);
             } else NotificationManager.error("Reports could not be loaded");
