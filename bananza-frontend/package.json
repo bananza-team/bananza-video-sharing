@@ -19,6 +19,7 @@
     "video-react": "^0.15.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.22.2",
     "eslint": "8.13.0",
     "eslint-config-next": "12.1.4"
   }
