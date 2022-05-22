@@ -35,7 +35,26 @@ export default function Application(props){
     }
 
     let deny = ()=>{
-
+        confirmAlert({
+            description:"Are you sure you want to deny this application?",
+            title:"Confirm denying this application",
+            buttons:[
+                {
+                    label:"Yes",
+                    onClick:()=>{
+                        fetch("//localhost:8000/application/"+props.application.id+"/deny", {
+                            method:"POST",
+                            headers:{
+                                Authorization:"Bearer "+localStorage.token,
+                                'accept':'application/json',
+                            }
+                        })
+                    }
+                }, {
+                    label:"No",
+                }
+            ]
+        })
     }
 
     return (
