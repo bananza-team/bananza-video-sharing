@@ -244,6 +244,7 @@ export default function Home(props) {
 
   let [videos, setVideos] = useState(null);
   let [reports, setReports] = useState([]);
+  let [applications, setApplications] = useState([]);
 
   if(props.user){
 
@@ -272,6 +273,13 @@ export default function Home(props) {
     }))
   }, []);
   }
+
+  if(props.user.type == "admin"){
+    useEffect(()=>{
+      
+    }, []);
+  }
+
   }
 
   return (
@@ -413,6 +421,11 @@ export default function Home(props) {
           }
           {props.user.type !="creator" && 
           <ReportList reports={reports} title="Latest reports"/>
+          }
+          {
+            props.user.type == "admin" &&
+            <>
+            </>
           }
         </>
       )}
