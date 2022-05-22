@@ -17,7 +17,7 @@ referring the platform's users, their channels and videos.
 
 **Requirements**:
 
-- Python
+- Python (https://www.python.org/downloads/)
 
 - Poetry (https://python-poetry.org/docs/) <br>
 
@@ -68,8 +68,8 @@ Being in the main repository directory:
 **Requirements**:
 
 - npm 
-	- the easiest way to install npm is by installing node-js(https://nodejs.org/en/download/). An installer for Windows and macOS is available. Linux Users can either compile the source code, or install via a package manager(https://nodejs.org/en/download/package-manager/)
-	- the official npm website offers some alternatives for installing npm:https://docs.npmjs.com/downloading-and-installing-node-js-and-npm. I've had succes with nvm-installer on windows.
+	- the easiest way to install npm is by installing node-js (https://nodejs.org/en/download/). An installer for Windows and macOS is available. Linux Users can either compile the source code, or install via a package manager (https://nodejs.org/en/download/package-manager/)
+	- the official npm website offers some alternatives for installing npm (https://docs.npmjs.com/downloading-and-installing-node-js-and-npm). I've had succes with nvm-installer on windows.
 
   
   
