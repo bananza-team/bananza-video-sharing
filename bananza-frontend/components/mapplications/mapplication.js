@@ -48,7 +48,14 @@ export default function Application(props){
                                 Authorization:"Bearer "+localStorage.token,
                                 'accept':'application/json',
                             }
-                        })
+                        }).then(response => response.json().then(parsedJSON=>{
+                            if(response.status == 200){
+                                NotificationManager.info("Application has been succesfully denied");
+                                props.onUpdate(false);
+                            } else {
+                                NotificationManager.error("An error occured while trying to deny the application");
+                            }
+                        }))
                     }
                 }, {
                     label:"No",
