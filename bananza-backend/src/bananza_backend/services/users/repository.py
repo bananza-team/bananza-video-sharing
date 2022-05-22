@@ -1,6 +1,7 @@
 from bananza_backend.db.sql_models import UserModel
-from bananza_backend.models import UserCreate, UserEdit, UserTypeEnum, UserPublic
-from bananza_backend.exceptions import EntityNotFound, EntityAlreadyExists, InvalidCredentials, FileUploadFailed
+from bananza_backend.models import UserCreate, UserEdit, UserTypeEnum, UserPublic, User
+from bananza_backend.exceptions import EntityNotFound, EntityAlreadyExists, InvalidCredentials, FileUploadFailed, \
+    ForbiddenAccess
 from passlib.context import CryptContext
 
 from loguru import logger
@@ -143,17 +144,28 @@ class UserRepo:
         except Exception as e:
             raise FileUploadFailed(message="Couldn't update cover pic", details=str(e))
 
-    def get_all(self):
-        pass
+    def suspend_by_id(self, user_id: int, user_that_queried: User):
+        if user_that_queried.type not in [UserTypeEnum.manager, UserTypeEnum.admin]:
+            raise ForbiddenAccess(message="Access denied to suspend users",
+                                  details=f"User with id {user_that_queried.id} is not a manager or admin")
 
-    def delete_by_id(self):
-        pass
+        user_to_be_suspended = self.get_by_id(user_id)
 
-    def suspend_by_id(self):
-        pass
+        if user_to_be_suspended.type in [UserTypeEnum.manager, UserTypeEnum.admin]:
+            if user_that_queried.type != UserTypeEnum.admin:
+                raise ForbiddenAccess(message=f"Access denied to suspend manager with ID {user_id}",
+                                      details=f"Only an admin can suspend managers or other admins")
 
-    def unsuspend_by_id(self):
-        pass
+        user_to_be_suspended.is_active = False
+
+        logger.info(f"Manager with ID {user_that_queried.id}, '{user_that_queried.username}', "
+                    f"type {user_that_queried.type} issued"
+                    f" a suspension on user with ID {user_to_be_suspended.id}, '{user_to_be_suspended.username}',"
+                    f"type {user_to_be_suspended.type}.")
+
+        self.db.commit()
+        self.db.refresh(user_to_be_suspended)
+        return user_to_be_suspended
 
     def __hash_password(self, plain_text_password: str):
         bytecode_password = plain_text_password.encode('UTF-8')

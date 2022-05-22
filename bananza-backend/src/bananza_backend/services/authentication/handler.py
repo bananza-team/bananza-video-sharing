@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordBearer
 from bananza_backend.db.sql_models import UserModel
 from bananza_backend.services.users.repository import UserRepo
 from bananza_backend.exceptions import TokenSignatureExpired, InvalidToken, GeneralException, EntityNotFound, \
-    InvalidCredentials
+    InvalidCredentials, InactiveUser
 
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
@@ -49,10 +49,14 @@ class AuthHandler:
         try:
             user = self.users_repo.get_by_username(username)
         except EntityNotFound:
-            raise InvalidCredentials()
+            raise InvalidCredentials(message=f"Login with username {username} failed")
 
         if not self.__verify_password(password, user.hashed_password):
-            raise InvalidCredentials()
+            raise InvalidCredentials(message=f"Login with username {username} failed")
+
+        if not user.is_active:
+            raise InactiveUser(message=f"Login with username {username} failed",
+                               details=f"User '{username}' is suspended/inactive.")
 
         return user
 

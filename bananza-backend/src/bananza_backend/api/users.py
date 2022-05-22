@@ -26,6 +26,12 @@ async def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
     return UserRepo(db).get_public_by_id(user_id)
 
 
+@router.patch("/suspend/{user_id}", summary="Get user by ID", response_model=User)
+async def suspend_user(user_id: int, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
+    current_user = AuthHandler(db).get_current_user_by_token(token)
+    return UserRepo(db).suspend_by_id(user_id, user_that_queried=current_user)
+
+
 @router.patch("/current/info", summary="Edit current user's info", response_model=User)
 async def edit_current_user(new_details: UserEdit, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
     current_user = AuthHandler(db).get_current_user_by_token(token)

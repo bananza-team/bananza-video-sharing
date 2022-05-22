@@ -9,6 +9,7 @@ from bananza_backend.services.authentication.handler import AuthHandler, oauth2_
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
+from typing import List
 
 router = APIRouter(prefix="/video/interact", tags=["Video interactions"])
 
@@ -45,3 +46,8 @@ async def add_report(report: ReportedVideoCreate, db: Session = Depends(get_db),
     user = AuthHandler(db).get_current_user_by_token(token)
     return ReportRepo(db).add_report(report=report, reporter_id=user.id)
 
+
+@router.get("/report", summary="Get a list of reports (manager/admin only)", response_model=List[ReportedVideo])
+async def get_reports(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
+    user = AuthHandler(db).get_current_user_by_token(token)
+    return ReportRepo(db).get_all(user_that_queried=user)

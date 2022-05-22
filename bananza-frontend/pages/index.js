@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import Checkbox from "/components/forms/checkbox";
 import Nav from "/components/general/nav";
 import VideoList from "/components/videos/videolist";
-import LatestReports from "/components/reports/latestReports";
+import ReportList from "../components/reports/reportlist";
 import {
   validateLength,
   validateMail,
@@ -14,13 +14,14 @@ import {
   validateExists,
 } from "/libs/validation/validation.js";
 import { NotificationManager } from "react-notifications";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 
 let fileOnChange = (e) => {
   setCVFile(e.target.files[0]);
 };
 
 export default function Home(props) {
+
   let [cvfile, setCVFile] = useState(null);
   let [activeForm, setActiveForm] = useState(0);
 
@@ -79,6 +80,9 @@ export default function Home(props) {
             localStorage.setItem("token", parsedJSON.access_token);
             Router.reload();
           } else {
+            if(response.status == 405){
+              window.location = "/suspend";
+            } else
             NotificationManager.error("Login failed");
           }
         });
@@ -239,6 +243,9 @@ export default function Home(props) {
   };
 
   let [videos, setVideos] = useState(null);
+  let [reports, setReports] = useState([]);
+
+  if(props.user){
 
   useEffect(()=>{
     fetch("//localhost:8000/video/all", {
@@ -251,8 +258,21 @@ export default function Home(props) {
       } catch(e){};
     }))
   }, []);
-
-  let reports = [];
+  
+  if(props.user.type == "manager"){
+  useEffect(()=>{
+    fetch("//localhost:8000/video/interact/report", {
+        headers:{
+            Authorization:"Bearer "+localStorage.token,
+        }
+    }).then(response=>response.json().then(parsedJSON=>{
+        if(response.status == 200){
+            setReports(parsedJSON.reverse().slice(0, 5));
+        } else NotificationManager.error("Reports could not be loaded");
+    }))
+  }, []);
+  }
+  }
 
   return (
     <>
@@ -391,7 +411,9 @@ export default function Home(props) {
           {!!videos && 
           <VideoList videos={videos} header="Latest videos" />
           }
-          <LatestReports reports={reports} />
+          {props.user.type !="creator" && 
+          <ReportList reports={reports} title="Latest reports"/>
+          }
         </>
       )}
     </>
