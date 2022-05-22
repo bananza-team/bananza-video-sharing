@@ -2,12 +2,13 @@ import {useRouter} from "next/router";
 import { useEffect, useState} from "react";
 import { NotificationManager } from "react-notifications";
 import PageHead from "../components/general/pageHead";
+import ReportList from "../components/reports/reportlist";
 export default function Reports(props){
     if(props.user == null || props.user.type == "creator"){
         useRouter().push("/");
     }
 
-    let [reports, setReports] = useState(null);
+    let [reports, setReports] = useState([]);
     useEffect(()=>{
         fetch("//localhost:8000/video/interact/report", {
             headers:{
@@ -21,7 +22,10 @@ export default function Reports(props){
     }, []);
 
     return (
+        <>
         <PageHead pageTitle="User reports"/>
+        <ReportList reports={reports} title="Reports"/>
+        </>
     )
 
 }
