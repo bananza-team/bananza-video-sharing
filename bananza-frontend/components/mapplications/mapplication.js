@@ -1,6 +1,7 @@
 import styles from "/styles/application.module.css";
 import Link from "next/link";
 import { confirmAlert } from "react-confirm-alert";
+import { NotificationManager } from "react-notifications";
 export default function Application(props){
 
     let accept = ()=>{
@@ -17,7 +18,13 @@ export default function Application(props){
                                 Authorization:"Bearer "+localStorage.token,
                                 'accept':'application/json',
                             }
-                        })
+                        }).then(response => response.json().then(parsedJSON=>{
+                            if(response.status == 200){
+                                NotificationManager.info("Application has been succesfully accepted");
+                            } else {
+                                NotificationManager.error("An error occured while trying to accept the application");
+                            }
+                        }))
                     }
                 }, {
                     label:"No",
