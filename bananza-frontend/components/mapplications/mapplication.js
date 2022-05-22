@@ -12,7 +12,7 @@ export default function Application(props){
                 {
                     label:"Yes",
                     onClick:()=>{
-                        fetch("//localhost:8000/application/"+props.id, {
+                        fetch("//localhost:8000/application/"+props.application.id+"/accept", {
                             method:"POST",
                             headers:{
                                 Authorization:"Bearer "+localStorage.token,
