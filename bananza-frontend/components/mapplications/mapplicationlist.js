@@ -4,7 +4,7 @@ export default function ApplicationList (props){
     let unanswered = [];
     let answered = [];
     props.applications.forEach((application, key)=>{
-        let appElem = <Mapplication application={application} key={key}/>;
+        let appElem = <Mapplication onUpdate={props.onUpdate} application={application} key={key}/>;
         if(application.answered) answered.push(appElem);
         else unanswered.push(appElem);
     });

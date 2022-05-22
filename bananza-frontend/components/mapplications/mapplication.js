@@ -21,6 +21,7 @@ export default function Application(props){
                         }).then(response => response.json().then(parsedJSON=>{
                             if(response.status == 200){
                                 NotificationManager.info("Application has been succesfully accepted");
+                                props.onUpdate(false);
                             } else {
                                 NotificationManager.error("An error occured while trying to accept the application");
                             }

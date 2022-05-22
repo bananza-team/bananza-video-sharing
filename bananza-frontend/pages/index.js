@@ -247,6 +247,8 @@ export default function Home(props) {
   let [reports, setReports] = useState([]);
   let [applications, setApplications] = useState([]);
 
+  let [updateReports, setUpdateReports] = useState(true);
+
   if(props.user){
 
   useEffect(()=>{
@@ -287,7 +289,7 @@ export default function Home(props) {
           setApplications(parsedJSON.filter(application => application.user!=null));
         } else NotificationManager.error("Could not load manager applications");
       }))
-    }, []);
+    }, [updateReports]);
   }
 
   }
@@ -433,7 +435,7 @@ export default function Home(props) {
           <ReportList reports={reports} title="Latest reports"/>
           }
           {props.user.type == "admin" &&
-          <ApplicationList applications={applications}/>
+          <ApplicationList onUpdate={setUpdateReports} applications={applications}/>
           }
         </>
       )}
