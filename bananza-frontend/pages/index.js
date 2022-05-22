@@ -5,7 +5,6 @@ import React, { useState, useEffect } from "react";
 import Checkbox from "/components/forms/checkbox";
 import Nav from "/components/general/nav";
 import VideoList from "/components/videos/videolist";
-import LatestReports from "/components/reports/latestReports";
 import {
   validateLength,
   validateMail,
@@ -252,8 +251,6 @@ export default function Home(props) {
     }))
   }, []);
 
-  let reports = [];
-
   return (
     <>
       <PageHead pageTitle="Bananza - Homepage"></PageHead>
@@ -391,7 +388,6 @@ export default function Home(props) {
           {!!videos && 
           <VideoList videos={videos} header="Latest videos" />
           }
-          <LatestReports reports={reports} />
         </>
       )}
     </>
