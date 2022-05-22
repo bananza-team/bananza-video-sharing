@@ -22,14 +22,19 @@
     width:30%;
 }
 .applicationPhone{
-    width:30%;
+    width:20%;
 }
 .applicationCV, .applicationOptions{
-    width:5%;
+    width:10%;
 }
 .application>div{
     padding:10px;
 }
-.applicationOptions>i:nth-last-child(1){
-    margin-left:10px;
+.applicationOptions>i{
+    padding:5px;
+}
+.applicationOptions>i:hover{
+    cursor: pointer;
+    background: white;
+    color:black;
 }
